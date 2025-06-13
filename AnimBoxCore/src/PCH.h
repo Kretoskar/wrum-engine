@@ -20,3 +20,5 @@
 #include "AnimBoxCore/Core/Public/Logger.h"
 #include "AnimBoxCore/Core/Public/Assert.h"
 #include "AnimBoxCore/Core/Public/HString.h"
+
+#include "AnimBoxCore/Memory/Public/Memory.h"

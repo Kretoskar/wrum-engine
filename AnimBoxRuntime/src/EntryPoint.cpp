@@ -15,4 +15,16 @@ int main(int argc, char* argv[])
     {
         LOG_WARNING("jojo")
     }
+
+    AnimBox::AllocationMetrics::GetHeapAllocationMetrics().LogAllocationMetrics();
+	
+    std::string s = "asd";
+    AnimBox::AllocationMetrics::GetHeapAllocationMetrics().LogAllocationMetrics();
+
+    {
+        std::unique_ptr<char> c = std::make_unique<char>();
+        AnimBox::AllocationMetrics::GetHeapAllocationMetrics().LogAllocationMetrics();
+    }
+
+    AnimBox::AllocationMetrics::GetHeapAllocationMetrics().LogAllocationMetrics();
 }
