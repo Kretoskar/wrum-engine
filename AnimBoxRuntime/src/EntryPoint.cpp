@@ -2,5 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << "elo";
+    LOG_ERROR("Hello World!")
+    LOG_WARNING("jojo")
 }

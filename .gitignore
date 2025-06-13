@@ -9,3 +9,5 @@ bin-int/
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
+
+log/log.txt

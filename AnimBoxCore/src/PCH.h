@@ -16,3 +16,5 @@
 #include <cstdio>
 #include <fstream>
 #include <ostream>
+
+#include "AnimBoxCore/Public/Logger.h"
