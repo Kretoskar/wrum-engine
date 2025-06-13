@@ -19,3 +19,4 @@
 
 #include "AnimBoxCore/Core/Public/Logger.h"
 #include "AnimBoxCore/Core/Public/Assert.h"
+#include "AnimBoxCore/Core/Public/HString.h"
