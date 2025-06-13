@@ -17,4 +17,5 @@
 #include <fstream>
 #include <ostream>
 
-#include "AnimBoxCore/Public/Logger.h"
+#include "AnimBoxCore/Core/Public/Logger.h"
+#include "AnimBoxCore/Core/Public/Assert.h"
