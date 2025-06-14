@@ -22,3 +22,4 @@
 #include "AnimBoxCore/Core/Public/HString.h"
 
 #include "AnimBoxCore/Memory/Public/Memory.h"
+#include "AnimBoxCore/Memory/Public/ArenaAllocator.h"
