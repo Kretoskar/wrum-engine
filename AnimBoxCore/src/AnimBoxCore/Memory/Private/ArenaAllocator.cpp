@@ -8,12 +8,23 @@ AnimBox::ArenaAllocator::ArenaAllocator(size_t capacity)
     _offset = 0;
 }
 
-void* AnimBox::ArenaAllocator::Allocate(size_t size)
+void* AnimBox::ArenaAllocator::Allocate(size_t size, size_t alignment)
 {
-    ASSERT(_offset + size < _capacity, "Arena Allocator overflow")
-    uint8_t* data = _buffer + _offset;
+    const uint8_t* currentPtr = (_buffer + _offset);
+
+    const size_t currentAddress = reinterpret_cast<size_t>(currentPtr);
+    // round up the pointer to next multiple of alignment
+    const size_t alignedAddress = (currentAddress + alignment - 1) & ~(alignment - 1);
+
+    const size_t padding = alignedAddress - currentAddress;
+
+    ASSERT(_offset + size + padding <= _capacity, "Arena Allocator overflow")
+
+    _offset += padding;
+    uint8_t* alignedPtr = _buffer + _offset;
+    
     _offset += size;
-    return data;
+    return alignedPtr;
 }
 
 void AnimBox::ArenaAllocator::Reset()

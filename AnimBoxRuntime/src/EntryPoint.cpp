@@ -22,8 +22,14 @@ int main(int argc, char* argv[])
 {
     {
         ArenaAllocator Arena(1024 * 1024);
+        char* ch = ArenaAllocator::New<char>(&Arena, 'f');
+        std::cout << *ch << '\n';
+        
         Test* t = ArenaAllocator::New<Test>(&Arena, 123, 321);
         printf("%d\n", t->a);
+
+        char* ch2 = ArenaAllocator::New<char>(&Arena, 'q');
+        std::cout << *ch2 << '\n';
 
         TestA* tA = ArenaAllocator::New<TestA>(&Arena, 456, 654);
         printf("%llu\n", tA->b);
