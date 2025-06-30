@@ -116,10 +116,12 @@ namespace AnimBox
 
 	Mat4 Mat4::Frustum(float left, float right, float bottom, float top, float near, float far)
 	{
-		if (left == right || top == bottom || near == far)
+		if (MathCore::NearlyEqual(left, right) ||
+			MathCore::NearlyEqual(top, bottom) ||
+			MathCore::NearlyEqual(far, near))
 		{
 			LOG_ERROR("Trying to create invalid frustum")
-			return Mat4();
+			return {};
 		}
 		return Mat4(
 			(2.0f * near) / (right - left), 0, 0, 0,
