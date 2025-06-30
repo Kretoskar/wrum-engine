@@ -1,5 +1,8 @@
 #include "PCH.h"
 
+#include "AnimBoxCore/Math/Public/Mat4.h"
+#include "AnimBoxCore/Math/Public/Vec3.h"
+
 struct Test
 {
     Test(int a, int b) : a(a), b(b) {}
@@ -21,6 +24,9 @@ using namespace AnimBox;
 int main(int argc, char* argv[])
 {
     {
+        Mat4 m;
+        Vec3 v;
+        
         ArenaAllocator Arena(1024 * 1024);
         char* ch = ArenaAllocator::New<char>(&Arena, 'f');
         std::cout << *ch << '\n';
