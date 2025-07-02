@@ -1,5 +1,7 @@
 ﻿#include "AnimBoxWindow.h"
 
+#include "AnimBoxCore/Core/Public/EventSystem.h"
+
 bool AnimBox::AnimBoxWindow::Init()
 {
     if (!glfwInit())
@@ -26,7 +28,7 @@ bool AnimBox::AnimBoxWindow::Init()
 
     if (!_glfwWindow)
     {
-        //TURTLE_LOG_ERROR("Failed to initialize window")
+        LOG_ERROR("Failed to initialize window")
         glfwTerminate();
         return false;
     }
@@ -46,7 +48,7 @@ bool AnimBox::AnimBoxWindow::Init()
     glfwSwapInterval(1);
 
     //BindWindowEvents();
-
+    
     return true;
 }
 

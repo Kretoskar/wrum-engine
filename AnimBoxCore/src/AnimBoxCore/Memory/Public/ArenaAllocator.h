@@ -14,9 +14,9 @@ namespace AnimBox
         void Free();
 
         template<typename T, typename ... Args>
-        static T* New(ArenaAllocator* arena, Args&&... args)
+        static T* New(ArenaAllocator& arena, Args&&... args)
         {
-            void* memory = arena->Allocate(sizeof(T), alignof(T));
+            void* memory = arena.Allocate(sizeof(T), alignof(T));
             return new (memory) T(std::forward<Args>(args)...);
         }
     
