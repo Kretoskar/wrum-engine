@@ -2,7 +2,7 @@ project "AnimBoxRuntime"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -26,6 +26,11 @@ project "AnimBoxRuntime"
 
     filter "system:windows"
 		systemversion "latest"
+		
+		defines
+		{
+			"GLCORE_PLATFORM_WINDOWS"
+		}
 
 	filter "configurations:Debug"
 		defines "AB_DEBUG"

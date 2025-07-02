@@ -14,10 +14,10 @@ workspace "AnimBox"
 		"MultiProcessorCompile"
 	}
 
-    outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
-	
+	include "AnimBoxCore/vendor/GLFW"
 group ""
 
 group "AnimBox"

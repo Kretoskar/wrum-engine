@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include <string>
+#include "AnimBoxCore/Core/Public/Assert.h"
+
 namespace AnimBox
 {
     class HString

@@ -1,7 +1,10 @@
+#include "AnimBoxWindow.h"
 #include "PCH.h"
 
 #include "AnimBoxCore/Math/Public/Mat4.h"
 #include "AnimBoxCore/Math/Public/Vec3.h"
+
+#include "glfw/include/GLFW/glfw3.h"
 
 struct Test
 {
@@ -39,5 +42,12 @@ int main(int argc, char* argv[])
 
         TestA* tA = ArenaAllocator::New<TestA>(&Arena, 456, 654);
         printf("%llu\n", tA->b);
+    }
+
+    AnimBoxWindow window;
+    window.Init();
+    while (true)
+    {
+        window.Update();
     }
 }
