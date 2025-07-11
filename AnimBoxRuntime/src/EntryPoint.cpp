@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     
     AnimBoxWindow window;
     window.Init();
-    while (true)
+    while (!window.GetShouldClose())
     {
         window.Update();
     }

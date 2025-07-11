@@ -10,5 +10,8 @@ namespace AnimBox
         bool Init() override;
         void Update() override;
         void Shutdown() override;
+
+    protected:
+        void HandleWindowMoveEvents(int16_t xPos, int16_t yPos) override;
     };
 }

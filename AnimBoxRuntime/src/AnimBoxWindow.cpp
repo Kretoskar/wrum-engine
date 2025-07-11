@@ -6,7 +6,7 @@ bool AnimBox::AnimBoxWindow::Init()
 {
     if (!glfwInit())
     {
-        //HB_LOG_ERROR("Failed to initialize window")
+        LOG_ERROR("Failed to initialize window")
         return false;
     }
 
@@ -15,10 +15,29 @@ bool AnimBox::AnimBoxWindow::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    _width = 1920;// HoneyBadger::Engine::EngineSettings->GetWindowSettings().Width;
-    _height = 1080;// HoneyBadger::Engine::EngineSettings->GetWindowSettings().Height;
-    _name = "x";// HoneyBadger::Engine::EngineSettings->GetWindowSettings().Name;
 
+    // Get the primary monitor
+    GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+    if (!primaryMonitor)
+    {
+        LOG_ERROR("no monitor found")
+        return false;
+    }
+
+    // Get the current video mode of the monitor
+    const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
+    if (!videoMode) {
+        LOG_ERROR("no video mode found")
+        return false;
+    }
+
+    // Use monitor's resolution
+    _width = videoMode->width / 2;
+    _height = videoMode->height / 2;
+    _name = "Anim Box";
+
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    
     _glfwWindow = glfwCreateWindow(
         _width,
         _height,
@@ -41,13 +60,18 @@ bool AnimBox::AnimBoxWindow::Init()
     //		return false;
     //}
 
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     glViewport(0, 0, _width, _height);
     glClearColor(0.15f, 0.5f, 1.0f, 1.0f);
 
     // force VSYNC
     glfwSwapInterval(1);
 
-    //BindWindowEvents();
+    BindWindowEvents();
     
     return true;
 }
@@ -62,4 +86,9 @@ void AnimBox::AnimBoxWindow::Shutdown()
 {
     glfwDestroyWindow(_glfwWindow);
     glfwTerminate();
+}
+
+void AnimBox::AnimBoxWindow::HandleWindowMoveEvents(int16_t xPos, int16_t yPos)
+{
+    LOG_MESSAGE("it's %d %d", xPos, yPos)
 }
