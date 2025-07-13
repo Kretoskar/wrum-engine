@@ -5,8 +5,6 @@
 #include "AnimBoxCore/Math/Public/Mat4.h"
 #include "AnimBoxCore/Math/Public/Vec3.h"
 
-#include "glfw/include/GLFW/glfw3.h"
-
 struct Test
 {
     Test(int a, int b) : a(a), b(b) {}

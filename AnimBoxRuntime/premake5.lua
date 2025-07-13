@@ -16,7 +16,7 @@ project "AnimBoxRuntime"
 	includedirs
 	{
 		"%{wks.location}/AnimBoxCore/src",
-		"%{wks.location}/AnimBoxCore/vendor",
+		"%{wks.location}/AnimBoxCore/vendor/glfw/include",
 	}
 
 	links

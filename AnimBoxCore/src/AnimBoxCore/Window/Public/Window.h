@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "glfw/include/GLFW/glfw3.h"
+#include "GLFW/glfw3.h"
 #include "AnimBoxCore/Core/Public/HString.h"
 #include "AnimBoxCore/Core/Public/Types.h"
 
