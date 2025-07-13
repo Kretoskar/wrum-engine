@@ -1,7 +1,7 @@
 #include "PCH.h"
 
-#include "AnimBoxCore/Math/Public/Quat.h"
-#include "AnimBoxCore/Math/Public/Mat4.h"
+#include "AnimBoxCore/Math/Quat.h"
+#include "AnimBoxCore/Math/Mat4.h"
 
 #include <cmath>
 

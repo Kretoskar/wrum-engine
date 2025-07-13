@@ -1,6 +1,6 @@
 ﻿#include "PCH.h"
 
-#include "AnimBoxCore/Core/Public/HString.h"
+#include "AnimBoxCore/Core/HString.h"
 
 namespace AnimBox
 {

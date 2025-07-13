@@ -1,9 +1,9 @@
-#include "AnimBoxWindow.h"
+#include "AnimBoxRuntime/Window/AnimBoxWindow.h"
 #include "PCH.h"
-#include "AnimBoxCore/Core/Public/EventSystem.h"
+#include "AnimBoxCore/Core/EventSystem.h"
 
-#include "AnimBoxCore/Math/Public/Mat4.h"
-#include "AnimBoxCore/Math/Public/Vec3.h"
+#include "AnimBoxCore/Math/Mat4.h"
+#include "AnimBoxCore/Math/Vec3.h"
 
 struct Test
 {

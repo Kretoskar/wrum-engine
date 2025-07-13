@@ -1,8 +1,8 @@
 #include "PCH.h"
-#include "AnimBoxCore/Math/Public/Mat4.h"
-#include "AnimBoxCore/Math/Public/Vec3.h"
-#include "AnimBoxCore/Core/Public/Logger.h"
-#include "AnimBoxCore/Math/Public/MathCore.h"
+#include "AnimBoxCore/Math/Mat4.h"
+#include "AnimBoxCore/Math/Vec3.h"
+#include "AnimBoxCore/Core/Logger.h"
+#include "AnimBoxCore/Math/MathCore.h"
 
 #define MAT4_EPSILON 0.000001f
 

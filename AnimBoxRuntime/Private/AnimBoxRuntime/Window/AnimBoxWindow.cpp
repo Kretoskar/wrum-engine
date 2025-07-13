@@ -1,6 +1,6 @@
-﻿#include "AnimBoxWindow.h"
+﻿#include "AnimBoxRuntime/Window/AnimBoxWindow.h"
 
-#include "AnimBoxCore/Core/Public/EventSystem.h"
+#include "AnimBoxCore/Core/EventSystem.h"
 
 bool AnimBox::AnimBoxWindow::Init()
 {

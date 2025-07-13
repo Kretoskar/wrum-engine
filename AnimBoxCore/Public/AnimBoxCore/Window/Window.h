@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "GLFW/glfw3.h"
-#include "AnimBoxCore/Core/Public/HString.h"
-#include "AnimBoxCore/Core/Public/Types.h"
+#include "AnimBoxCore/Core/HString.h"
+#include "AnimBoxCore/Core/Types.h"
 
 namespace AnimBox
 {

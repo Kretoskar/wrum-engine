@@ -1,7 +1,7 @@
 #include "PCH.h"
-#include "AnimBoxCore/Window/Public/Window.h"
+#include "AnimBoxCore/Window/Window.h"
 
-#include "AnimBoxCore/Core/Public/Types.h"
+#include "AnimBoxCore/Core/Types.h"
 
 using namespace AnimBox;
 

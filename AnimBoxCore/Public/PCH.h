@@ -18,9 +18,10 @@
 #include <fstream>
 #include <ostream>
 
-#include "AnimBoxCore/Core/Public/Logger.h"
-#include "AnimBoxCore/Core/Public/Assert.h"
-#include "AnimBoxCore/Core/Public/HString.h"
+#include "AnimBoxCore/Core/Logger.h"
+#include "AnimBoxCore/Core/Assert.h"
+#include "AnimBoxCore/Core/HString.h"
 
-#include "AnimBoxCore/Memory/Public/Memory.h"
-#include "AnimBoxCore/Memory/Public/ArenaAllocator.h"
+#include "AnimBoxCore/Memory/Memory.h"
+#include "AnimBoxCore/Memory/ArenaAllocator.h"
+#include "AnimBoxCore/Core/Types.h"

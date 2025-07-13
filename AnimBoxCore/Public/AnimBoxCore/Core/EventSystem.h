@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "AnimBoxCore/Core/Public/HString.h"
+#include "AnimBoxCore/Core/HString.h"
 
 #define BIND_EVENT(type, event) \
 AnimBox::Dispatcher::GetInstance()->Subscribe(type, \

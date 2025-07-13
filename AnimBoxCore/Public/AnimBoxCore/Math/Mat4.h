@@ -1,7 +1,7 @@
 #pragma once
 
-#include "AnimBoxCore/Math/Public/Vec4.h"
-#include "AnimBoxCore/Math/Public/Vec3.h"
+#include "AnimBoxCore/Math/Vec4.h"
+#include "AnimBoxCore/Math/Vec3.h"
 
 namespace AnimBox
 {

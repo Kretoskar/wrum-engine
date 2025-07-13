@@ -1,6 +1,6 @@
 #include "PCH.h"
-#include "AnimBoxCore/Math/Public/Vec3.h"
-#include "AnimBoxCore/Math/Public/MathCore.h"
+#include "AnimBoxCore/Math/Vec3.h"
+#include "AnimBoxCore/Math/MathCore.h"
 
 #define VEC3_EPSILON 0.000001f
 

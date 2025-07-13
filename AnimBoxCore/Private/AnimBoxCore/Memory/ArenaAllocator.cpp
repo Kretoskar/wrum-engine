@@ -1,5 +1,5 @@
 ﻿#include "PCH.h"
-#include "AnimBoxCore/Memory/Public/ArenaAllocator.h"
+#include "AnimBoxCore/Memory/ArenaAllocator.h"
 
 AnimBox::ArenaAllocator::ArenaAllocator(uint64 capacity)
 {

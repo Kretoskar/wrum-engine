@@ -1,5 +1,5 @@
 #include "PCH.h"
-#include "AnimBoxCore/Core/Public/EventSystem.h"
+#include "AnimBoxCore/Core/EventSystem.h"
 
 AnimBox::Dispatcher* AnimBox::Dispatcher::_instance = nullptr;
 

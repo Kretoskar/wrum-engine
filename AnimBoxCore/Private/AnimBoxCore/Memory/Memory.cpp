@@ -1,7 +1,7 @@
 ﻿#include "PCH.h"
 
-#include "AnimBoxCore/Memory/Public/Memory.h"
-#include "AnimBoxCore/Core/Public/Logger.h"
+#include "AnimBoxCore/Memory/Memory.h"
+#include "AnimBoxCore/Core/Logger.h"
 
 void AnimBox::AllocationMetrics::LogAllocationMetrics() const
 {

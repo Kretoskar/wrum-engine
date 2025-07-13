@@ -9,13 +9,16 @@ project "AnimBoxRuntime"
 
     files
 	{
-		"src/**.h",
-		"src/**.cpp"
+		"Public/**.h",
+		"Public/**.cpp",
+		"Private/**.h",
+		"Private/**.cpp"
 	}
 
 	includedirs
 	{
 		"%{wks.location}/AnimBoxCore/Public",
+		"%{wks.location}/AnimBoxRuntime/Public",
 		"%{wks.location}/vendor/glfw/include",
 	}
 

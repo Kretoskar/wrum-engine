@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "AnimBoxCore/Core/Public/Types.h"
-#include "AnimBoxCore/Window/Public/Window.h"
+#include "AnimBoxCore/Core/Types.h"
+#include "AnimBoxCore/Window/Window.h"
 
 namespace AnimBox 
 {
