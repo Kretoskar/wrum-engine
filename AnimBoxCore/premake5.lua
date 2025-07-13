@@ -8,12 +8,15 @@ project "AnimBoxCore"
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
     pchheader "PCH.h"
-    pchsource "src/PCH.cpp"
+    pchsource "Private/PCH.cpp"
 
     files
 	{
-		"src/**.h",
-		"src/**.cpp",
+		"Public/**.h",
+		"Public/**.cpp",
+		
+		"Private/**.h",
+		"Private/**.cpp",
 	}
 
     defines
@@ -24,7 +27,7 @@ project "AnimBoxCore"
 
     includedirs
 	{
-		"src",
+		"Public",
 		"%{wks.location}/vendor/glfw/include"
 	}
 
