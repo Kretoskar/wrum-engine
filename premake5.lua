@@ -17,7 +17,7 @@ workspace "AnimBox"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
-	include "AnimBoxCore/vendor/GLFW"
+	include "vendor/GLFW"
 group ""
 
 group "AnimBox"
