@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "AnimBoxCore/Core/Public/Types.h"
 #include "AnimBoxCore/Window/Public/Window.h"
 
 namespace AnimBox 
@@ -12,6 +13,6 @@ namespace AnimBox
         void Shutdown() override;
 
     protected:
-        void HandleWindowMoveEvents(int16_t xPos, int16_t yPos) override;
+        void HandleWindowMoveEvents(int16 xPos, int16 yPos) override;
     };
 }

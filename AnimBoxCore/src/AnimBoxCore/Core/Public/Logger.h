@@ -1,6 +1,8 @@
 ﻿#pragma once
 
-#include "PCH.h"
+#include <string>
+#include <iostream>
+#include <fstream>
 
 enum : std::uint16_t
 {
@@ -95,7 +97,7 @@ namespace AnimBox
                 }
                 else
                 {
-                    std::cerr << logTemplate << buffer << '\n';
+                    std::cout << logTemplate << buffer << '\n';
                 }
 
                 if (logToFile)

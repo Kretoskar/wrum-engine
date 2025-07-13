@@ -30,6 +30,7 @@ namespace AnimBox
         Dispatcher(Dispatcher const&) = delete;
         void operator=(Dispatcher const&) = delete;
 
+        [[nodiscard]]
         static Dispatcher* GetInstance()
         {
             return _instance;
@@ -93,7 +94,7 @@ namespace AnimBox
     {
         struct MousePositionEventPayload
         {
-            int32_t posX, posY;
+            int32 posX, posY;
         };
 
         static HString Type()

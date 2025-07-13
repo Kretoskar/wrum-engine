@@ -39,8 +39,8 @@ bool AnimBox::AnimBoxWindow::Init()
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     
     _glfwWindow = glfwCreateWindow(
-        _width,
-        _height,
+        SafeCast_int(_width),
+        SafeCast_int(_height),
         _name.Get(),
         nullptr,
         nullptr);
@@ -65,7 +65,7 @@ bool AnimBox::AnimBoxWindow::Init()
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    glViewport(0, 0, _width, _height);
+    glViewport(0, 0, SafeCast_int(_width),  SafeCast_int(_height));
     glClearColor(0.15f, 0.5f, 1.0f, 1.0f);
 
     // force VSYNC
@@ -88,7 +88,7 @@ void AnimBox::AnimBoxWindow::Shutdown()
     glfwTerminate();
 }
 
-void AnimBox::AnimBoxWindow::HandleWindowMoveEvents(int16_t xPos, int16_t yPos)
+void AnimBox::AnimBoxWindow::HandleWindowMoveEvents(int16 xPos, int16 yPos)
 {
     LOG_MESSAGE("it's %d %d", xPos, yPos)
 }

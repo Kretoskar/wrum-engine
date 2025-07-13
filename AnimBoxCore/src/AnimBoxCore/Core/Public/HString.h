@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <string>
-#include "AnimBoxCore/Core/Public/Assert.h"
+#include "AnimBoxCore/Core/Public/Types.h"
 
 namespace AnimBox
 {
@@ -17,14 +17,16 @@ namespace AnimBox
         HString(std::string s)
             : _hash(Hash(s.c_str())) {}
 
-        uint32_t GetHash() const { return _hash; }
+        [[nodiscard]]
+        uint32 GetHash() const { return _hash; }
 
         static HString None;
 
     private:
-        uint32_t _hash {};
+        uint32 _hash {};
 
     public:
+        [[nodiscard]]
         const char* Get() const
         {
             return hashTable[_hash];
@@ -32,10 +34,10 @@ namespace AnimBox
 
     private:
         // hash using prime numbers
-        static constexpr uint32_t Hash(const char* s)
+        static constexpr uint32 Hash(const char* s)
         {
-            uint32_t h = 37;
-            uint32_t size = 0;
+            uint32 h = 37;
+            uint32 size = 0;
 
             while (*s)
             {
@@ -52,7 +54,7 @@ namespace AnimBox
             // Check for hash conflicts
             if (hashTable[h][0] != '\0')
             {
-                for (unsigned i = 0; i < hashTableMaxStringLength; i++)
+                for (uint32 i = 0; i < hashTableMaxStringLength; i++)
                 {
                     const char existingChar = hashTable[h][i];
                     const char newChar = *(s + i);
@@ -67,7 +69,7 @@ namespace AnimBox
             }
 #endif
 
-            unsigned i = 0;
+            uint32 i = 0;
 
             while (*s)
             {
@@ -79,8 +81,8 @@ namespace AnimBox
             return h;
         }
 
-        static constexpr uint32_t hashTableSize = 65536;
-        static constexpr uint32_t hashTableMaxStringLength = 512;
+        static constexpr uint32 hashTableSize = 65536;
+        static constexpr uint32 hashTableMaxStringLength = 512;
         static char hashTable[hashTableSize][hashTableMaxStringLength];
 
     public:

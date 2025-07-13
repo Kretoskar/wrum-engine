@@ -1,6 +1,8 @@
 #include "PCH.h"
 #include "AnimBoxCore/Window/Public/Window.h"
 
+#include "AnimBoxCore/Core/Public/Types.h"
+
 using namespace AnimBox;
 
 void Window::BindWindowEvents()
@@ -13,6 +15,6 @@ void Window::BindWindowEvents()
     {
         Window* thisWindow = static_cast<Window*>(glfwGetWindowUserPointer(win));
         // TODO: custom narrowing cast
-        thisWindow->HandleWindowMoveEvents(xPos, yPos);
+        thisWindow->HandleWindowMoveEvents(SafeCast_int16(xPos), SafeCast_int16(yPos));
     });
 }

@@ -9,7 +9,7 @@ void AnimBox::AllocationMetrics::LogAllocationMetrics() const
         GetCurrentUsage(), TotalAllocated, TotalFreed)
 }
 
-void* operator new(size_t size)
+void* operator new(uint64 size)
 {
 #ifdef AB_DEBUG
     AnimBox::AllocationMetrics::GetHeapAllocationMetrics().TotalAllocated += size;
@@ -18,7 +18,7 @@ void* operator new(size_t size)
     return malloc(size);
 }
 
-void operator delete(void* memory, size_t size)
+void operator delete(void* memory, uint64 size)
 {
 #ifdef AB_DEBUG
     AnimBox::AllocationMetrics::GetHeapAllocationMetrics().TotalFreed += size;

@@ -2,6 +2,7 @@
 
 #include "glfw/include/GLFW/glfw3.h"
 #include "AnimBoxCore/Core/Public/HString.h"
+#include "AnimBoxCore/Core/Public/Types.h"
 
 namespace AnimBox
 {
@@ -20,12 +21,12 @@ namespace AnimBox
     protected:
         void BindWindowEvents();
 
-        virtual void HandleWindowMoveEvents(int16_t xPos, int16_t yPos){}
+        virtual void HandleWindowMoveEvents(int16 xPos, int16 yPos){}
         
         GLFWwindow* _glfwWindow = nullptr;
         bool _isValid = false;
 
-        uint32_t _width {}, _height{};
+        uint32 _width {}, _height{};
         HString _name;
     };
 } 

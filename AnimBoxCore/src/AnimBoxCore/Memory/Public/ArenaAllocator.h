@@ -1,15 +1,17 @@
 ﻿#pragma once
 
+#include "AnimBoxCore/Core/Public/Types.h"
+
 namespace AnimBox
 {
     class ArenaAllocator
     {
     public:
         ArenaAllocator() = delete;
-        ArenaAllocator(size_t capacity);
+        ArenaAllocator(uint64 capacity);
         ~ArenaAllocator();
         
-        void* Allocate(size_t size, size_t alignment);
+        void* Allocate(uint64 size, uint64 alignment);
         void Reset();
         void Free();
 
@@ -20,8 +22,8 @@ namespace AnimBox
             return new (memory) T(std::forward<Args>(args)...);
         }
     
-        uint8_t* _buffer;
-        size_t _offset;
-        size_t _capacity;
+        uint8* _buffer;
+        uint64 _offset;
+        uint64 _capacity;
     };
 }
