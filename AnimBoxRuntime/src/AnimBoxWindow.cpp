@@ -32,8 +32,8 @@ bool AnimBox::AnimBoxWindow::Init()
     }
 
     // Use monitor's resolution
-    _width = videoMode->width / 2;
-    _height = videoMode->height / 2;
+    _width = SafeCast_uint16(videoMode->width / 2);
+    _height = SafeCast_uint16(videoMode->height / 2);
     _name = "Anim Box";
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -71,6 +71,7 @@ bool AnimBox::AnimBoxWindow::Init()
     // force VSYNC
     glfwSwapInterval(1);
 
+    UpdateWindowDimensions();
     BindWindowEvents();
     
     return true;
@@ -88,7 +89,32 @@ void AnimBox::AnimBoxWindow::Shutdown()
     glfwTerminate();
 }
 
-void AnimBox::AnimBoxWindow::HandleWindowMoveEvents(int16 xPos, int16 yPos)
+void AnimBox::AnimBoxWindow::OnWindowMoved(int16 xPos, int16 yPos)
 {
-    LOG_MESSAGE("it's %d %d", xPos, yPos)
+    //LOG_MESSAGE("it's %d %d", xPos, yPos)
+}
+
+void AnimBox::AnimBoxWindow::OnWindowMinimized()
+{
+    UpdateWindowDimensions();
+}
+
+void AnimBox::AnimBoxWindow::OnWindowRestored()
+{
+    UpdateWindowDimensions();
+}
+
+void AnimBox::AnimBoxWindow::OnWindowMaximized()
+{
+    UpdateWindowDimensions();
+}
+
+void AnimBox::AnimBoxWindow::OnWindowUnmaximized()
+{
+    UpdateWindowDimensions();
+}
+
+void AnimBox::AnimBoxWindow::OnWindowResized(uint16 width, uint16 height)
+{
+    UpdateWindowDimensions();
 }

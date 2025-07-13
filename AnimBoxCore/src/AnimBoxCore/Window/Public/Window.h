@@ -20,13 +20,22 @@ namespace AnimBox
 
     protected:
         void BindWindowEvents();
+        void UpdateWindowDimensions();
 
-        virtual void HandleWindowMoveEvents(int16 xPos, int16 yPos){}
+        virtual void OnWindowMoved(int16 xPos, int16 yPos){}
+        
+        virtual void OnWindowMinimized() {}
+        virtual void OnWindowRestored() {}
+        
+        virtual void OnWindowMaximized() {}
+        virtual void OnWindowUnmaximized() {}
+
+        virtual void OnWindowResized(uint16 width, uint16 height) {}
         
         GLFWwindow* _glfwWindow = nullptr;
         bool _isValid = false;
 
-        uint32 _width {}, _height{};
+        uint16 _width {}, _height{};
         HString _name;
     };
 } 

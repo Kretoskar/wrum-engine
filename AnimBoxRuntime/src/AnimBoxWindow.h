@@ -13,6 +13,14 @@ namespace AnimBox
         void Shutdown() override;
 
     protected:
-        void HandleWindowMoveEvents(int16 xPos, int16 yPos) override;
+        void OnWindowMoved(int16 xPos, int16 yPos) override;
+        
+        void OnWindowMinimized() override;
+        void OnWindowRestored() override;
+
+        void OnWindowMaximized() override;
+        void OnWindowUnmaximized() override;
+
+        void OnWindowResized(uint16 width, uint16 height) override;
     };
 }
