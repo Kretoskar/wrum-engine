@@ -25,7 +25,6 @@ using namespace AnimBox;
 
 int main(int argc, char* argv[])
 {
-    {
         Mat4 m;
         Vec3 v;
     
@@ -43,7 +42,6 @@ int main(int argc, char* argv[])
         printf("%llu\n", tA->b);
 
         Dispatcher::Init(Arena);
-    }
     
     AnimBoxWindow window;
     window.Init();

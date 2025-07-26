@@ -38,10 +38,23 @@ namespace AnimBox
 
         void Subscribe(HString Type, std::function<void(void*)>&& Func);
 
-        void Post(HString Type, void* Payload) const;
+        void Post(HString Type, void* Payload);
+
+        void CallEvents();
         
+    private:
         static Dispatcher* _instance;
         std::map<HString, std::vector<std::function<void(void*)>>> _observers;
+
+        struct Event
+        {
+            Event(HString Type, void* Payload) : Type(Type), Payload(Payload) {}
+            
+            HString Type;
+            void* Payload;
+        };
+        
+        std::vector<Event> _eventsReadyToPost;
     };
 
     namespace CustomEvent

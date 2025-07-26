@@ -5,7 +5,7 @@ AnimBox::Dispatcher* AnimBox::Dispatcher::_instance = nullptr;
 
 void AnimBox::Dispatcher::Init(ArenaAllocator& Arena)
 {
-    _instance = ArenaAllocator::New<Dispatcher>(Arena);
+    _instance =  ArenaAllocator::New<Dispatcher>(Arena);
 }
 
 void AnimBox::Dispatcher::Subscribe(HString Type, std::function<void(void*)>&& Func)
@@ -14,17 +14,26 @@ void AnimBox::Dispatcher::Subscribe(HString Type, std::function<void(void*)>&& F
     _observers[Type].push_back(Func);
 }
 
-void AnimBox::Dispatcher::Post(HString Type, void* Payload) const
+void AnimBox::Dispatcher::Post(HString Type, void* Payload)
 {
-    if (!_observers.contains(Type))
-    {
-        return;
-    }
+    _eventsReadyToPost.emplace_back(Type,Payload);
+}
 
-    auto&& observers = _observers.at(Type);
-
-    for (auto&& observer : observers)
+void AnimBox::Dispatcher::CallEvents()
+{
+    for (Event& e : _eventsReadyToPost)
     {
-        observer(Payload);
+        if (!_observers.contains(e.Type))
+        {
+            return;
+        }
+    
+        auto&& observers = _observers.at(e.Type);
+    
+        for (auto&& observer : observers)
+        {
+            observer(e.Payload);
+        }
     }
+    _eventsReadyToPost.clear();
 }
