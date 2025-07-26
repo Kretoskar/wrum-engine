@@ -3,9 +3,9 @@
 #include "AnimBoxCore/Core/Types.h"
 #include "AnimBoxCore/Window/Window.h"
 
-namespace AnimBox 
+namespace AnimBoxRuntime
 {
-    class AnimBoxWindow : public Window
+    class AnimBoxWindow : public AnimBox::Window
     {
     public:
         bool Init() override;

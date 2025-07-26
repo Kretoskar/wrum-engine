@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
         Dispatcher::Init(Arena);
     
-    AnimBoxWindow window;
+    AnimBoxRuntime::AnimBoxWindow window;
     window.Init();
     while (!window.GetShouldClose())
     {

@@ -2,7 +2,7 @@
 
 #include "AnimBoxCore/Core/EventSystem.h"
 
-bool AnimBox::AnimBoxWindow::Init()
+bool AnimBoxRuntime::AnimBoxWindow::Init()
 {
     if (!glfwInit())
     {
@@ -77,44 +77,44 @@ bool AnimBox::AnimBoxWindow::Init()
     return true;
 }
 
-void AnimBox::AnimBoxWindow::Update()
+void AnimBoxRuntime::AnimBoxWindow::Update()
 {
     glfwSwapBuffers(_glfwWindow);
     glfwPollEvents();
 }
 
-void AnimBox::AnimBoxWindow::Shutdown()
+void AnimBoxRuntime::AnimBoxWindow::Shutdown()
 {
     glfwDestroyWindow(_glfwWindow);
     glfwTerminate();
 }
 
-void AnimBox::AnimBoxWindow::OnWindowMoved(int16 xPos, int16 yPos)
+void AnimBoxRuntime::AnimBoxWindow::OnWindowMoved(int16 xPos, int16 yPos)
 {
     //LOG_MESSAGE("it's %d %d", xPos, yPos)
 }
 
-void AnimBox::AnimBoxWindow::OnWindowMinimized()
+void AnimBoxRuntime::AnimBoxWindow::OnWindowMinimized()
 {
     UpdateWindowDimensions();
 }
 
-void AnimBox::AnimBoxWindow::OnWindowRestored()
+void AnimBoxRuntime::AnimBoxWindow::OnWindowRestored()
 {
     UpdateWindowDimensions();
 }
 
-void AnimBox::AnimBoxWindow::OnWindowMaximized()
+void AnimBoxRuntime::AnimBoxWindow::OnWindowMaximized()
 {
     UpdateWindowDimensions();
 }
 
-void AnimBox::AnimBoxWindow::OnWindowUnmaximized()
+void AnimBoxRuntime::AnimBoxWindow::OnWindowUnmaximized()
 {
     UpdateWindowDimensions();
 }
 
-void AnimBox::AnimBoxWindow::OnWindowResized(uint16 width, uint16 height)
+void AnimBoxRuntime::AnimBoxWindow::OnWindowResized(uint16 width, uint16 height)
 {
     UpdateWindowDimensions();
 }
