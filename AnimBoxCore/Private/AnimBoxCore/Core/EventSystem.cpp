@@ -21,19 +21,30 @@ void AnimBox::Dispatcher::Post(HString Type, void* Payload)
 
 void AnimBox::Dispatcher::CallEvents()
 {
-    for (Event& e : _eventsReadyToPost)
+    Dispatcher* dispatcher = AnimBox::Dispatcher::GetInstance();
+
+#if AB_DEBUG
+    if (!dispatcher)
     {
-        if (!_observers.contains(e.Type))
+        LOG_ERROR("Dispatcher is null, can't call events");
+        return;
+    }
+#endif
+    
+    for (Event& e : dispatcher->_eventsReadyToPost)
+    {
+        if (!dispatcher->_observers.contains(e.Type))
         {
             return;
         }
     
-        auto&& observers = _observers.at(e.Type);
+        auto&& observers = dispatcher->_observers.at(e.Type);
     
         for (auto&& observer : observers)
         {
             observer(e.Payload);
         }
     }
-    _eventsReadyToPost.clear();
+    
+    dispatcher->_eventsReadyToPost.clear();
 }

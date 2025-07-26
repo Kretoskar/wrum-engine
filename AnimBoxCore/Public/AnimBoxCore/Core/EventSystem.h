@@ -39,8 +39,8 @@ namespace AnimBox
         void Subscribe(HString Type, std::function<void(void*)>&& Func);
 
         void Post(HString Type, void* Payload);
-
-        void CallEvents();
+        
+        static void CallEvents();
         
     private:
         static Dispatcher* _instance;
