@@ -25,3 +25,6 @@
 #include "AnimBoxCore/Memory/Memory.h"
 #include "AnimBoxCore/Memory/ArenaAllocator.h"
 #include "AnimBoxCore/Core/Types.h"
+
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
