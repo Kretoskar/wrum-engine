@@ -27,14 +27,16 @@ project "AnimBoxCore"
 
     includedirs
 	{
-		"Public",
-		"%{wks.location}/vendor/glfw/include"
+		"%{wks.location}/AnimBoxCore/Public",
+		"%{wks.location}/vendor/glfw/include",
+		"%{wks.location}/vendor/glad/include"
 	}
 
 	links
 	{
 		"GLFW",
-		"opengl32.lib"
+		"opengl32.lib",
+		"Glad",
 	}
 
     filter "system:windows"

@@ -18,6 +18,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
 	include "vendor/GLFW"
+	include "vendor/glad"
 group ""
 
 group "AnimBox"

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "AnimBoxCore/Core/HString.h"
 #include "AnimBoxCore/Core/Types.h"

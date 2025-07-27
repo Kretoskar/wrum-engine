@@ -1,5 +1,4 @@
 ﻿#include "AnimBoxRuntime/Window/AnimBoxWindow.h"
-
 #include "AnimBoxCore/Core/EventSystem.h"
 
 bool AnimBoxRuntime::AnimBoxWindow::Init()
@@ -54,11 +53,11 @@ bool AnimBoxRuntime::AnimBoxWindow::Init()
 
     glfwMakeContextCurrent(_glfwWindow);
 
-    //if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    //{
-    //	TURTLE_LOG_ERROR("Failed to initialize GLAD")
-    //		return false;
-    //}
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+    	LOG_ERROR("Failed to initialize GLAD")
+        return false;
+    }
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);

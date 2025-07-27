@@ -20,6 +20,7 @@ project "AnimBoxRuntime"
 		"%{wks.location}/AnimBoxCore/Public",
 		"%{wks.location}/AnimBoxRuntime/Public",
 		"%{wks.location}/vendor/glfw/include",
+		"%{wks.location}/vendor/glad/include",
 	}
 
 	links
