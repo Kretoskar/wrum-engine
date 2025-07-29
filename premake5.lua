@@ -1,4 +1,4 @@
-workspace "AnimBox"
+workspace "WrumEngine"
     architecture "x86_64"
 	startproject "AnimBoxRuntime"
 
@@ -21,7 +21,7 @@ group "Dependencies"
 	include "vendor/glad"
 group ""
 
-group "AnimBox"
-    include "AnimBoxCore"
-    include "AnimBoxRuntime"
+group "WrumEngine"
+    include "WrumCore"
+    include "Sandbox"
 group ""
