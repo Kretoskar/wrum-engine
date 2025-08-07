@@ -33,7 +33,7 @@ bool Sandbox::SandboxWindow::Init()
     // Use monitor's resolution
     _width = SafeCast_uint16(videoMode->width / 2);
     _height = SafeCast_uint16(videoMode->height / 2);
-    _name = "Anim Box";
+    _name = "Wrum Engine: Sandbox";
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     
