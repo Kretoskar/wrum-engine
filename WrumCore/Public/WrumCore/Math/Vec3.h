@@ -38,13 +38,23 @@ namespace Wrum
 		static float DistanceSq(const Vec3& a, const Vec3& b);
 		static Vec3 Lerp(const Vec3& a, const Vec3& b, float alpha);
 
+		static Vec3 Zero;
+		
+		static Vec3 GlobalRight;
+		static Vec3 GlobalForward;
+		static Vec3 GlobalUp;
+
+		Vec3 GetRight() const { return {x, 0.0f, 0.0f}; }
+		Vec3 GetUp() const { return {0.0f, y, 0.0f}; }
+		Vec3 GetForward() const { return {0.0f, 0.0f, -z}; }
+		
 		float LenSq() const;
 		float Len() const;
 		void Normalize();
 		Vec3 Normalized() const;
 		std::string ToString() const;
 	};
-
+	
 	Vec3& operator+=(Vec3& lhs, Vec3 rhs);
 	Vec3& operator-=(Vec3& lhs, Vec3 rhs);
 

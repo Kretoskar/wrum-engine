@@ -14,14 +14,6 @@ void Sandbox::Application::Run()
     
     SandboxWindow window;
     window.Init();
-
-    Wrum::File file = Wrum::File("test.txt", true, &Arena);
-
-
-    for (const std::string& line : file.GetLines())
-    {
-        LOG_MESSAGE("%s", line.c_str());
-    }
     
     while (!window.GetShouldClose())
     {

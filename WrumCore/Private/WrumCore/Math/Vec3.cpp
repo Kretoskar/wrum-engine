@@ -6,6 +6,11 @@
 
 namespace Wrum
 {
+	static Vec3 Zero = Vec3(0, 0, 0);
+	static Vec3 Right = Vec3(1, 0, 0);
+	static Vec3 Forward = Vec3(0, 0, -1);
+	static Vec3 Up = Vec3(0, 1, 0);
+	
 	float Vec3::Dot(const Vec3& lhs, const Vec3& rhs)
 	{
 		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
