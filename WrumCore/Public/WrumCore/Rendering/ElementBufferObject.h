@@ -7,6 +7,7 @@ namespace Wrum
     class ElementBufferObject
     {
     public:
+        ElementBufferObject() = default;
         ElementBufferObject(uint32* indices, long long size);
         ElementBufferObject(const std::vector<unsigned>& indices);
         void Init(const std::vector<unsigned>& indices);
@@ -18,6 +19,6 @@ namespace Wrum
         uint32 GetId() const { return _id; }
 
     private:
-        uint32 _id;
+        uint32 _id{};
     };
 }
