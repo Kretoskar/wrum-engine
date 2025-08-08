@@ -45,7 +45,7 @@ namespace Wrum
           _shader->SetModelMatrix(Mat4());
           _shader->SetVPMatrix(camera.GetVPMatrix());
           _lineVao->Bind();
-          glDrawElements(GL_LINES, sizeof(_lineIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+          glDrawElements(GL_LINES, _lineCount * 2, GL_UNSIGNED_INT, 0);
      }
 
      void DebugRenderer::AddLine(Vec3 start, Vec3 end, Vec3 color)
