@@ -30,9 +30,9 @@ namespace Wrum
 
         static constexpr unsigned MAX_LINE_COUNT = 4096;
         uint32_t _lineCount = 0;
-        SimpleVertex* _lineVertices = nullptr;
+        SimpleVertex _lineVertices[MAX_LINE_COUNT * 2];
 
-        uint32* _lineIndices = nullptr;
+        unsigned _lineIndices[MAX_LINE_COUNT * 2];
     };
 
 }

@@ -13,9 +13,6 @@ namespace Wrum
           _lineVbo = new VertexBufferObject((float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
           _lineEbo = new ElementBufferObject(_lineIndices, MAX_LINE_COUNT * 2 * 4);
 
-          _lineVertices = new SimpleVertex[MAX_LINE_COUNT * 2]();
-          _lineIndices = new uint32[MAX_LINE_COUNT * 2]();
-
           DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
 		
