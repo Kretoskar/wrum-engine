@@ -18,7 +18,7 @@ void Sandbox::Application::Run()
 
     Wrum::CameraSettings camSettings; 
     
-    Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(0.0f, 0.0f, 0.0f), Wrum::Vec3(0.0f, 0.0f, 0.0f), camSettings);
+    Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings);
     
     Wrum::DebugRenderer Dr;
     Dr.Init();

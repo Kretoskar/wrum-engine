@@ -5,16 +5,16 @@ namespace Wrum
 {
      bool DebugRenderer::Init()
      {
-          _shader = ArenaAllocator::New<Shader>(_arena, "shaders/debug.frag", "shaders/debug.vert");
+          _shader = new Shader("shaders/debug.vert", "shaders/debug.frag");
           _shader->Bind();
 
-          _lineVao = ArenaAllocator::New<VertexArrayObject>(_arena);
+          _lineVao = new VertexArrayObject();
           _lineVao->Bind();
-          _lineVbo = ArenaAllocator::New<VertexBufferObject>(_arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
-          _lineEbo = ArenaAllocator::New<ElementBufferObject>(_arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
+          _lineVbo = new VertexBufferObject((float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
+          _lineEbo = new ElementBufferObject(_lineIndices, MAX_LINE_COUNT * 2 * 4);
 
-          _lineVertices = ArenaAllocator::NewArray<SimpleVertex>(_arena, MAX_LINE_COUNT * 2);
-          _lineIndices = ArenaAllocator::New<uint32>(_arena, MAX_LINE_COUNT * 2);
+          _lineVertices = new SimpleVertex[MAX_LINE_COUNT * 2]();
+          _lineIndices = new uint32[MAX_LINE_COUNT * 2]();
 
           DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));

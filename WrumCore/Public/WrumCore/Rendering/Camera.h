@@ -19,7 +19,7 @@ namespace Wrum
 	{
 	protected:
 		Vec3 _position = Vec3::Zero;
-		Vec3 _forward = Vec3::GlobalForward;
+		Vec3 _forward = {-0.5f, -0.5f, -0.5f};
 		Vec3 _up = Vec3::GlobalUp;
 
 		Mat4 _view;
