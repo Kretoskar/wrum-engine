@@ -18,7 +18,7 @@ namespace Wrum
         bool Init();
         void Render(const Camera& camera);
         void AddLine(Vec3 start, Vec3 end, Vec3 color);
-        void DrawNet(unsigned count, float stride, float size, Vec3 color);
+        void AddNet(unsigned count, float stride, float size, Vec3 color);
 
     private:
         ArenaAllocator _arena = ArenaAllocator(2048 * 2048);
@@ -28,11 +28,11 @@ namespace Wrum
         ElementBufferObject* _lineEbo = nullptr;
         VertexArrayObject* _lineVao = nullptr;
 
+        uint32 _lineCount = 0;
+        
         static constexpr unsigned MAX_LINE_COUNT = 4096;
-        uint32_t _lineCount = 0;
         SimpleVertex _lineVertices[MAX_LINE_COUNT * 2];
-
-        unsigned _lineIndices[MAX_LINE_COUNT * 2];
+        uint32 _lineIndices[MAX_LINE_COUNT * 2];
     };
 
 }

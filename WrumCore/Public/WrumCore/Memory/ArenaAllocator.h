@@ -22,15 +22,29 @@ namespace Wrum
             return new (memory) T(std::forward<Args>(args)...);
         }
 
-        template<typename T>
-        static T* NewArray(ArenaAllocator& arena, size_t count)
+        template<typename T, typename ... Args>
+        static T* NewArray(ArenaAllocator& arena, size_t count, Args&&... args)
         {
             void* memory = arena.Allocate(sizeof(T) * count, alignof(T));
             T* array = static_cast<T*>(memory);
             
             for (size_t i = 0; i < count; ++i)
             {
-                new (&array[i]) T();
+                new (&array[i]) T(std::forward<Args>(args)...);
+            }
+
+            return array;
+        }
+
+        template<typename T, typename ... Args>
+        static T* NewArrayBuiltIn(ArenaAllocator& arena, size_t count)
+        {
+            void* memory = arena.Allocate(sizeof(T) * count, alignof(T));
+            T* array = static_cast<T*>(memory);
+            
+            for (size_t i = 0; i < count; ++i)
+            {
+                new (&array[i]) T;
             }
 
             return array;

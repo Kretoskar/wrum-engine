@@ -5,17 +5,17 @@ namespace Wrum
 {
      bool DebugRenderer::Init()
      {
-          _shader = new Shader("shaders/debug.vert", "shaders/debug.frag");
+          _shader = ArenaAllocator::New<Shader>(_arena, "shaders/debug.vert", "shaders/debug.frag");
           _shader->Bind();
-
-          _lineVao = new VertexArrayObject();
+          
+          _lineVao = ArenaAllocator::New<VertexArrayObject>(_arena);
           _lineVao->Bind();
-          _lineVbo = new VertexBufferObject((float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
-          _lineEbo = new ElementBufferObject(_lineIndices, MAX_LINE_COUNT * 2 * 4);
-
-          DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
-          DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
-		
+          _lineVbo = ArenaAllocator::New<VertexBufferObject>(_arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
+          _lineEbo = ArenaAllocator::New<ElementBufferObject>(_arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
+          
+          AddNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
+          AddNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
+          
           AddLine({ 0,0,0 }, { 1.0f,0,0 }, { 1.0f,0,0 });
           AddLine({ 1.0f,0,0 }, { 0.9f,0,-0.1f }, { 1.0f,0,0 });
           AddLine({ 1.0f,0,0 }, { 0.9f,0,0.1f }, { 1.0f,0,0 });
@@ -23,7 +23,6 @@ namespace Wrum
           AddLine({ 0,0,0 }, { 0,1.0f,0 }, { 0,1.0f,0 });
           AddLine({ 0,1.0f,0 }, { 0,0.9f,0.1f }, { 0,1.0f,0 });
           AddLine({ 0,1.0f,0 }, { 0,0.9f,-0.1f }, { 0,1.0f,0 });
-
 
           AddLine({ 0,0,0 }, { 0,0,1.0f }, { 0,0,1.0f });
           AddLine({ 0,0,1.0f }, { 0.1f,0,0.9f }, { 0,0,1.0f });
@@ -66,7 +65,7 @@ namespace Wrum
           _lineCount++;
      }
 
-     void DebugRenderer::DrawNet(unsigned count, float stride, float size, Vec3 color)
+     void DebugRenderer::AddNet(unsigned count, float stride, float size, Vec3 color)
      {
           //TODO: Allow adding lines in batch
           for (int i = 0; i <= count; i++)
