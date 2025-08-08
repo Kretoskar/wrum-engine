@@ -6,12 +6,17 @@ namespace Wrum
 {
     Shader::Shader(const File& vertexShaderFile, const File& fragmentShaderFile)
     {
-        _id = CreateShader(vertexShaderFile, fragmentShaderFile);
+        Create(vertexShaderFile, fragmentShaderFile);
     }
 
     Shader::~Shader()
     {
         Delete();
+    }
+
+    void Shader::Create(const File& vertexShaderFile, const File& fragmentShaderFile)
+    {
+        _id = CreateShader(vertexShaderFile, fragmentShaderFile);
     }
 
     void Shader::Bind() const

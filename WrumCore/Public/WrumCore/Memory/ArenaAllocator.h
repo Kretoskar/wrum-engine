@@ -21,6 +21,20 @@ namespace Wrum
             void* memory = arena.Allocate(sizeof(T), alignof(T));
             return new (memory) T(std::forward<Args>(args)...);
         }
+
+        template<typename T>
+        static T* NewArray(ArenaAllocator& arena, size_t count)
+        {
+            void* memory = arena.Allocate(sizeof(T) * count, alignof(T));
+            T* array = static_cast<T*>(memory);
+            
+            for (size_t i = 0; i < count; ++i)
+            {
+                new (&array[i]) T();
+            }
+
+            return array;
+        }
     
         uint8* _buffer;
         uint64 _offset;

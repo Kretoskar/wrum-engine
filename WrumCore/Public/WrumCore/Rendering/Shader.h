@@ -16,7 +16,8 @@ namespace Wrum
     public:
         Shader(const File& vertexShaderFile, const File& fragmentShaderFile);
         ~Shader();
-        
+
+        void Create(const File& vertexShaderFile, const File& fragmentShaderFile);
         void Bind() const;
         void Delete();
 

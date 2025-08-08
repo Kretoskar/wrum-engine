@@ -6,10 +6,10 @@
 
 namespace Wrum
 {
-	static Vec3 Zero = Vec3(0, 0, 0);
-	static Vec3 Right = Vec3(1, 0, 0);
-	static Vec3 Forward = Vec3(0, 0, -1);
-	static Vec3 Up = Vec3(0, 1, 0);
+	Vec3 Vec3::Zero = Vec3(0, 0, 0);
+	Vec3 Vec3::GlobalRight = Vec3(1, 0, 0);
+	Vec3 Vec3::GlobalForward = Vec3(0, 0, -1);
+	Vec3 Vec3::GlobalUp = Vec3(0, 1, 0);
 	
 	float Vec3::Dot(const Vec3& lhs, const Vec3& rhs)
 	{

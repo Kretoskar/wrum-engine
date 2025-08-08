@@ -59,13 +59,13 @@ bool Sandbox::SandboxWindow::Init()
         return false;
     }
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
+   //glEnable(GL_DEPTH_TEST);
+   //glEnable(GL_BLEND);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    glViewport(0, 0, SafeCast_int(_width),  SafeCast_int(_height));
-    glClearColor(0.15f, 0.5f, 1.0f, 1.0f);
+    //glViewport(0, 0, SafeCast_int(_width),  SafeCast_int(_height));
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     // force VSYNC
     glfwSwapInterval(1);
@@ -80,6 +80,8 @@ void Sandbox::SandboxWindow::Update()
 {
     glfwSwapBuffers(_glfwWindow);
     glfwPollEvents();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Sandbox::SandboxWindow::Shutdown()
