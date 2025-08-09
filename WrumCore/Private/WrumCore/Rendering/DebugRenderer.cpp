@@ -15,22 +15,10 @@ namespace Wrum
           _lineVbo = ArenaAllocator::New<VertexBufferObject>(_arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
           _lineEbo = ArenaAllocator::New<ElementBufferObject>(_arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
           
-          AddNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
-          AddNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
+          DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
+          DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
           
-          //AddLine({ 0,0,0 }, { 1.0f,0,0 }, { 1.0f,0,0 });
-          //AddLine({ 1.0f,0,0 }, { 0.9f,0,-0.1f }, { 1.0f,0,0 });
-          //AddLine({ 1.0f,0,0 }, { 0.9f,0,0.1f }, { 1.0f,0,0 });
-//
-          //AddLine({ 0,0,0 }, { 0,1.0f,0 }, { 0,1.0f,0 });
-          //AddLine({ 0,1.0f,0 }, { 0,0.9f,0.1f }, { 0,1.0f,0 });
-          //AddLine({ 0,1.0f,0 }, { 0,0.9f,-0.1f }, { 0,1.0f,0 });
-//
-          //AddLine({ 0,0,0 }, { 0,0,1.0f }, { 0,0,1.0f });
-          //AddLine({ 0,0,1.0f }, { 0.1f,0,0.9f }, { 0,0,1.0f });
-          AddLine({ 0,0,1.0f }, { -0.1f,0,0.9f }, { 0,0,1.0f }, 5000.0f);
-
-          
+          DrawCoordinateSystem();
           
           return true;
      }
@@ -82,7 +70,7 @@ namespace Wrum
           glDrawElements(GL_LINES, _lineCount * 2, GL_UNSIGNED_INT, 0);
      }
 
-     void DebugRenderer::AddLine(Vec3 start, Vec3 end, Vec3 color)
+     void DebugRenderer::DrawLine(Vec3 start, Vec3 end, Vec3 color)
      {
           if (_lineCount == MAX_LINE_COUNT)
           {
@@ -99,20 +87,35 @@ namespace Wrum
           _lineCount++;
      }
 
-     void DebugRenderer::AddLine(Vec3 start, Vec3 end, Vec3 color, float lifetime)
+     void DebugRenderer::DrawLine(Vec3 start, Vec3 end, Vec3 color, float lifetime, TimeUnit timeUnit)
      {
-          _lifetimesLeft.emplace_back(_lineCount * 2, lifetime);
+          _lifetimesLeft.emplace_back(_lineCount * 2,  Time::Convert(lifetime, timeUnit, TimeUnit::Milliseconds));
           
-          AddLine(start, end, color);
+          DrawLine(start, end, color);
      }
 
-     void DebugRenderer::AddNet(unsigned count, float stride, float size, Vec3 color)
+     void DebugRenderer::DrawNet(unsigned count, float stride, float size, Vec3 color)
      {
           //TODO: Allow adding lines in batch
           for (int i = 0; i <= count; i++)
           {
-               AddLine(Vec3(size / 2, 0.0f, i * stride - count * stride / 2), Vec3(-size / 2, 0.0f, i * stride - count * stride / 2), color);
-               AddLine(Vec3(i * stride - count * stride / 2, 0.0f, size / 2), Vec3(i * stride - count * stride / 2, 0.0f, -size / 2), color);
+               DrawLine(Vec3(size / 2, 0.0f, i * stride - count * stride / 2), Vec3(-size / 2, 0.0f, i * stride - count * stride / 2), color);
+               DrawLine(Vec3(i * stride - count * stride / 2, 0.0f, size / 2), Vec3(i * stride - count * stride / 2, 0.0f, -size / 2), color);
           }
+     }
+
+     void DebugRenderer::DrawCoordinateSystem()
+     {
+          DrawLine({ 0,0,0 }, { 1.0f,0,0 }, { 1.0f,0,0 });
+          DrawLine({ 1.0f,0,0 }, { 0.9f,0,-0.1f }, { 1.0f,0,0 });
+          DrawLine({ 1.0f,0,0 }, { 0.9f,0,0.1f }, { 1.0f,0,0 });
+
+          DrawLine({ 0,0,0 }, { 0,1.0f,0 }, { 0,1.0f,0 });
+          DrawLine({ 0,1.0f,0 }, { 0,0.9f,0.1f }, { 0,1.0f,0 });
+          DrawLine({ 0,1.0f,0 }, { 0,0.9f,-0.1f }, { 0,1.0f,0 });
+
+          DrawLine({ 0,0,0 }, { 0,0,1.0f }, { 0,0,1.0f });
+          DrawLine({ 0,0,1.0f }, { 0.1f,0,0.9f }, { 0,0,1.0f });
+          DrawLine({ 0,0,1.0f }, { -0.1f,0,0.9f }, { 0,0,1.0f });
      }
 }

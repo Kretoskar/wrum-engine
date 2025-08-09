@@ -14,19 +14,26 @@ namespace Wrum
     
     class Time
     {
-        static double GetCurrentTimeMicroSec() {
+        static double GetCurrentTimeMicroSec()
+        {
             LARGE_INTEGER freq, counter;
             QueryPerformanceFrequency(&freq);
             QueryPerformanceCounter(&counter);
             return (counter.QuadPart * 1000000LL) / freq.QuadPart;
         }
         
-        static inline const ULONGLONG ProgramStartTime = GetCurrentTimeMicroSec();
-
+        static inline const double ProgramStartTime = GetCurrentTimeMicroSec();
+        static inline double ProgramCurrentTime = ProgramStartTime;
+        
     public:
+        static void Update()
+        {
+            ProgramCurrentTime = GetCurrentTimeMicroSec();
+        }
+        
         static double TimeSinceProgramStart(TimeUnit unit)
         {
-            double timeMicroS = GetCurrentTimeMicroSec() - SafeCast_double(ProgramStartTime);
+            double timeMicroS = ProgramCurrentTime - ProgramStartTime;
             switch (unit)
             {
                 case TimeUnit::Microseconds:
@@ -40,6 +47,40 @@ namespace Wrum
             }
             
             return 0.0;
+        }
+
+        static double Convert(double num, TimeUnit from, TimeUnit to)
+        {
+            // TODO: do it smarter
+            
+            double microSTime = num;
+            switch (from)
+            {
+                case TimeUnit::Microseconds:
+                    break;
+                case TimeUnit::Milliseconds:
+                    microSTime *= 1000.0;
+                    break;
+                case TimeUnit::Seconds:
+                    microSTime *= 1000000.0;
+                    break;
+                default:
+                    ASSERT_NO_ENTRY()
+            }
+
+            switch (to)
+            {
+                case TimeUnit::Microseconds:
+                    return microSTime;
+                case TimeUnit::Milliseconds:
+                    microSTime /= 1000.0;
+                    return microSTime;
+                case TimeUnit::Seconds:
+                    microSTime /= 1000000.0;
+                    return microSTime;
+                default:
+                    ASSERT_NO_ENTRY()
+            }
         }
     };
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <map>
 #include <memory>
 
+#include "WrumCore/Core/Time.h"
 #include "WrumCore/Rendering/Camera.h"
 #include "WrumCore/Rendering/ElementBufferObject.h"
 #include "WrumCore/Rendering/VertexArrayObject.h"
@@ -19,9 +19,13 @@ namespace Wrum
         bool Init();
         void Update(float deltaTime);
         void Render(const Camera& camera);
-        void AddLine(Vec3 start, Vec3 end, Vec3 color);
-        void AddLine(Vec3 start, Vec3 end, Vec3 color, float lifetime);
-        void AddNet(unsigned count, float stride, float size, Vec3 color);
+        
+        void DrawLine(Vec3 start, Vec3 end, Vec3 color);
+        void DrawLine(Vec3 start, Vec3 end, Vec3 color, float lifetime, TimeUnit timeUnit = TimeUnit::Seconds);
+        
+        void DrawNet(unsigned count, float stride, float size, Vec3 color);
+        
+        void DrawCoordinateSystem();
 
     private:
         ArenaAllocator _arena = ArenaAllocator(2048 * 2048);
@@ -35,7 +39,7 @@ namespace Wrum
         
         static constexpr unsigned MAX_LINE_COUNT = 4096;
         SimpleVertex _lineVertices[MAX_LINE_COUNT * 2];
-        uint32 _lineIndices[MAX_LINE_COUNT * 2];
+        uint32 _lineIndices[MAX_LINE_COUNT * 2] = {};
 
         struct DebugVertexLifetime
         {

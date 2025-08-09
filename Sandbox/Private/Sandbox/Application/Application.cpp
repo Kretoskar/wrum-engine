@@ -30,6 +30,8 @@ void Sandbox::Application::Run()
     // TODO: delta time for debug renderer
     while (!window.GetShouldClose())
     {
+        Wrum::Time::Update();
+        
         double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
         dt = timeSinceStart - lastFrameTime; 
         lastFrameTime = timeSinceStart;
