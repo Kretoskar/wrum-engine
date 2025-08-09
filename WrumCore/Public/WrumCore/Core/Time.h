@@ -24,10 +24,14 @@ namespace Wrum
         
         static inline const double ProgramStartTime = GetCurrentTimeMicroSec();
         static inline double ProgramCurrentTime = ProgramStartTime;
+        static inline unsigned long long Frame = 0;
         
     public:
+        static unsigned long long GetFrame() { return Frame; }
+        
         static void Update()
         {
+            Frame++;
             ProgramCurrentTime = GetCurrentTimeMicroSec();
         }
         
