@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <memory>
 
 #include "WrumCore/Rendering/Camera.h"
@@ -16,8 +17,10 @@ namespace Wrum
     {
     public:
         bool Init();
+        void Update(float deltaTime);
         void Render(const Camera& camera);
         void AddLine(Vec3 start, Vec3 end, Vec3 color);
+        void AddLine(Vec3 start, Vec3 end, Vec3 color, float lifetime);
         void AddNet(unsigned count, float stride, float size, Vec3 color);
 
     private:
@@ -33,6 +36,14 @@ namespace Wrum
         static constexpr unsigned MAX_LINE_COUNT = 4096;
         SimpleVertex _lineVertices[MAX_LINE_COUNT * 2];
         uint32 _lineIndices[MAX_LINE_COUNT * 2];
+
+        struct DebugVertexLifetime
+        {
+            uint32 Index{};
+            float TimeLeft{};
+        };
+        
+        std::vector<DebugVertexLifetime> _lifetimesLeft;
     };
 
 }

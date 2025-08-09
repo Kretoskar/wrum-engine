@@ -6,6 +6,7 @@
 #include "Sandbox/Window/SandboxWindow.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
+#include "WrumCore/Core/Time.h"
 
 void Sandbox::Application::Run()
 {
@@ -22,10 +23,19 @@ void Sandbox::Application::Run()
     
     Wrum::DebugRenderer Dr;
     Dr.Init();
-    
+
+
+    double lastFrameTime = 0.0;
+    double dt = 0.0;
+    // TODO: delta time for debug renderer
     while (!window.GetShouldClose())
     {
+        double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
+        dt = timeSinceStart - lastFrameTime; 
+        lastFrameTime = timeSinceStart;
+        
         cam.Update();
+        Dr.Update(dt);
         Dr.Render(cam);
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();

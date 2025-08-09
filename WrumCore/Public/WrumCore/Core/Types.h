@@ -38,3 +38,9 @@ static int SafeCast_int(uint32 i)
     ASSERT(i <= INT_MAX, "Failed to cast uint32 to int")
     return static_cast<int>(i);
 }
+
+static double SafeCast_double(unsigned long long i)
+{
+    ASSERT(i <= DBL_MAX, "Failed to cast unsigned long long to uint")
+    return static_cast<double>(i);
+}

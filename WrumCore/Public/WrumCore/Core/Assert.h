@@ -13,6 +13,10 @@
             std::terminate(); \
         } \
     }
+
+#define ASSERT_NO_ENTRY() ASSERT(false, "No entry assert entered")
+
 #else
     #   define ASSERT(condition, message) {}
+    #   define ASSERT_NO_ENTRY(message) {}
 #endif
