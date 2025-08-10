@@ -8,7 +8,7 @@
 
 namespace Wrum
 {
-	Mat4 Identity = 
+	Mat4 Mat4::Identity = 
 	{
 	  1,0,0,0,
 	  0,1,0,0,

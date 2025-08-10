@@ -6,9 +6,20 @@
 
 namespace Wrum
 {
+    class Camera;
+}
+
+namespace Wrum
+{
     class Renderer
     {
     public:
-        void DrawMesh(const Mesh& mesh, Material& material, const Mat4& transform);
+        Renderer(Camera* camera) : _camera(camera) {}
+        
+        void DrawMesh(Mesh& mesh, Material& material, const Mat4& transform) const;
+        
+    private:
+        Camera* _camera;
+        std::vector<std::weak_ptr<Shader>> _shaders;
     };
 }

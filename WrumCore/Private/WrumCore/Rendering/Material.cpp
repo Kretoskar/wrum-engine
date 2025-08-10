@@ -5,10 +5,10 @@ namespace Wrum
 {
     void Material::Bind()
     {
-        if (std::shared_ptr<Shader> shaderPtr = BoundShader.lock())
+        if (BoundShader)
         {
-            shaderPtr->Bind();
-            Bind_Internal(shaderPtr.get());
+            BoundShader->Bind();
+            Bind_Internal(BoundShader);
         }
         else
         {

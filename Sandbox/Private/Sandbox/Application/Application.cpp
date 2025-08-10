@@ -7,6 +7,9 @@
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
 #include "WrumCore/Core/Time.h"
+#include "WrumCore/Rendering/Material.h"
+#include "WrumCore/Rendering/Renderer.h"
+#include "WrumCore/Rendering/Mesh/Primitives/Plane.h"
 
 void Sandbox::Application::Run()
 {
@@ -24,7 +27,13 @@ void Sandbox::Application::Run()
     Wrum::DebugRenderer Dr;
     Dr.Init();
 
+    Wrum::Plane plane = Wrum::Plane({1.0f, 0.0f, 0.0f});
 
+    Wrum::Shader shader = Wrum::Shader("shaders/debug.vert", "shaders/debug.frag");
+    Wrum::Material material = Wrum::Material(&shader);
+
+    Wrum::Renderer renderer = Wrum::Renderer(&cam);
+    
     double lastFrameTime = 0.0;
     double dt = 0.0;
     // TODO: delta time for debug renderer
@@ -36,9 +45,11 @@ void Sandbox::Application::Run()
         dt = timeSinceStart - lastFrameTime; 
         lastFrameTime = timeSinceStart;
         
+        
         cam.Update(window.GetWidth(), window.GetHeight());
         Dr.Update(dt);
         Dr.Render(cam);
+        renderer.DrawMesh(plane, material, Wrum::Mat4::Identity);
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();

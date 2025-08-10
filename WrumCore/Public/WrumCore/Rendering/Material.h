@@ -7,9 +7,10 @@ namespace Wrum
 {
     struct Material
     {
+        Material(Shader* shader) : BoundShader(shader) {}
         virtual ~Material() = default;
         
-        std::weak_ptr<Shader> BoundShader;
+        Shader* BoundShader;
 
         void Bind();
 
