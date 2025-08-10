@@ -7,7 +7,7 @@ namespace Wrum
      {
           _lifetimesLeft.reserve(MAX_LINE_COUNT);
           
-          _shader = ArenaAllocator::New<Shader>(_arena, "shaders/debug.vert", "shaders/debug.frag");
+          _shader = ArenaAllocator::New<Shader>(_arena, "shaders/debug.vert", "shaders/vertexColor.frag");
           _shader->Bind();
           
           _lineVao = ArenaAllocator::New<VertexArrayObject>(_arena);

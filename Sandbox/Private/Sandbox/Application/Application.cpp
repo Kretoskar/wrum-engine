@@ -27,9 +27,9 @@ void Sandbox::Application::Run()
     Wrum::DebugRenderer Dr;
     Dr.Init();
 
-    Wrum::Plane plane = Wrum::Plane({1.0f, 0.0f, 0.0f});
+    Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
 
-    Wrum::Shader shader = Wrum::Shader("shaders/debug.vert", "shaders/debug.frag");
+    Wrum::Shader shader = Wrum::Shader("shaders/pbr.vert", "shaders/vertexColor.frag");
     Wrum::Material material = Wrum::Material(&shader);
 
     Wrum::Renderer renderer = Wrum::Renderer(&cam);
@@ -37,6 +37,11 @@ void Sandbox::Application::Run()
     double lastFrameTime = 0.0;
     double dt = 0.0;
     // TODO: delta time for debug renderer
+
+    Wrum::Mat4 model = Wrum::Mat4::Identity;
+    model.SetScale({0.1, 0.1, 0.1});
+    model.SetPosition({0.1f, 0.0f, 0.1f});
+    
     while (!window.GetShouldClose())
     {
         Wrum::Time::Update();
@@ -49,7 +54,7 @@ void Sandbox::Application::Run()
         cam.Update(window.GetWidth(), window.GetHeight());
         Dr.Update(dt);
         Dr.Render(cam);
-        renderer.DrawMesh(plane, material, Wrum::Mat4::Identity);
+        renderer.DrawMesh(plane, material, model);
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();

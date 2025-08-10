@@ -148,6 +148,11 @@ namespace Wrum
 		c2r2 = scale.z;
 	}
 
+	void Mat4::SetPosition(const Vec3& pos)
+	{
+		position = {pos.x, pos.y, pos.z, 1.0f};
+	}
+
 	Vec3 Mat4::GetScale() const
 	{
 		return Vec3(c0r0, c1r1, c2r2);

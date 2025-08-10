@@ -115,6 +115,7 @@ namespace Wrum
 		static Vec3 TransformVector(const Mat4& m, const Vec3& v);
 		static Mat4 FromPosition(const Vec3& pos);
 		void SetScale (const Vec3& scale);
+		void SetPosition (const Vec3& pos);
 		Vec3 GetScale() const;
 		float Determinant();
 		Mat4 Transposed();
