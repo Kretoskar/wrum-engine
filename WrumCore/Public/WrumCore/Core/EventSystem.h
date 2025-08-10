@@ -9,14 +9,14 @@
 #include "WrumCore/Core/HString.h"
 
 #define BIND_EVENT(type, event) \
-AnimBox::Dispatcher::GetInstance()->Subscribe(type, \
+Wrum::Dispatcher::GetInstance()->Subscribe(type, \
 [this](auto&& PH1) \
 { \
 event(std::forward<decltype(PH1)>(PH1)); \
 });
 
 #define POST_EVENT(type, payload) \
-AnimBox::Dispatcher::GetInstance()->Post(type, payload);
+Wrum::Dispatcher::GetInstance()->Post(type, payload);
 
 namespace Wrum
 {

@@ -4,6 +4,7 @@
 
 #include "Sandbox/Application/Application.h"
 #include "Sandbox/Window/SandboxWindow.h"
+#include "WrumCore/Controllers/InputController.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
 #include "WrumCore/Core/Time.h"
@@ -49,7 +50,13 @@ void Sandbox::Application::Run()
         double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
         dt = timeSinceStart - lastFrameTime; 
         lastFrameTime = timeSinceStart;
-        
+
+        Wrum::InputController::PollInput(window);
+
+        if (Wrum::InputController::GetInput(Wrum::Input::W) == Wrum::InputState::Pressed)
+        {
+            LOG_MESSAGE("w")
+        }
         
         cam.Update(window.GetWidth(), window.GetHeight());
         Dr.Update(dt);
