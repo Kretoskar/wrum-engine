@@ -3,11 +3,11 @@
 
 namespace Wrum
 {
-    void Camera::Update()
+    void Camera::Update(float width, float height)
     {
         _view = Mat4::LookAt(_position, _position + _forward, _up);
         _projection = Mat4::Perspective(
-            _settings._FOVdeg, static_cast<float>(_settings._width) / static_cast<float>(_settings._height), _settings._nearPlane, _settings._farPlane);
+            _settings._FOVdeg, width / height, _settings._nearPlane, _settings._farPlane);
         _viewProjection = _projection * _view;
     }
 }

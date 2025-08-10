@@ -64,7 +64,7 @@ bool Sandbox::SandboxWindow::Init()
 
    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    //glViewport(0, 0, SafeCast_int(_width),  SafeCast_int(_height));
+    glViewport(0, 0, SafeCast_int(_width),  SafeCast_int(_height));
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     // force VSYNC

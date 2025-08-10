@@ -36,7 +36,7 @@ void Sandbox::Application::Run()
         dt = timeSinceStart - lastFrameTime; 
         lastFrameTime = timeSinceStart;
         
-        cam.Update();
+        cam.Update(window.GetWidth(), window.GetHeight());
         Dr.Update(dt);
         Dr.Render(cam);
         // Call all pending events 

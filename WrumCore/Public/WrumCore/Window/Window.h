@@ -19,6 +19,9 @@ namespace Wrum
         GLFWwindow* GetGlfwWindow() const { return _glfwWindow; }
         bool GetShouldClose() const { return _glfwWindow ? glfwWindowShouldClose(_glfwWindow) : false; }
 
+        uint16 GetWidth() const { return _width; }
+        uint16 GetHeight() const { return _height; }
+        
     protected:
         void BindWindowEvents();
         void UpdateWindowDimensions();

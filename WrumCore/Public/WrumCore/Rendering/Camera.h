@@ -35,7 +35,7 @@ namespace Wrum
 
 		virtual ~Camera() = default;
 		
-		virtual void Update();
+		virtual void Update(float width, float height);
 
 		const Mat4& GetVPMatrix() const { return _viewProjection; }
 		const Mat4& GetProjectionMatrix() const { return _projection; }

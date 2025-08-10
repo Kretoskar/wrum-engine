@@ -58,6 +58,6 @@ void Window::UpdateWindowDimensions()
     glfwGetWindowSize(GetGlfwWindow(), &width, &height);
     _width = width;
     _height = height;
-    
+    glViewport(0,0,width,height);
     LOG_MESSAGE("width: %d height: %d", width, height)
 }
