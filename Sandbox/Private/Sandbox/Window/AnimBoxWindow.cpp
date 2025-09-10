@@ -1,5 +1,6 @@
 ﻿#include "Sandbox/Window/SandboxWindow.h"
 #include "WrumCore/Core/EventSystem.h"
+#include "WrumCore/Rendering/Framebuffer.h"
 
 bool Sandbox::SandboxWindow::Init()
 {
@@ -92,30 +93,49 @@ void Sandbox::SandboxWindow::Shutdown()
 
 void Sandbox::SandboxWindow::OnWindowMoved(int16 xPos, int16 yPos)
 {
-    //LOG_MESSAGE("it's %d %d", xPos, yPos)
 }
 
 void Sandbox::SandboxWindow::OnWindowMinimized()
 {
     UpdateWindowDimensions();
+    if (_framebuffer)
+    {
+        _framebuffer->Resize(GetWidth(), GetHeight());
+    }
 }
 
 void Sandbox::SandboxWindow::OnWindowRestored()
 {
     UpdateWindowDimensions();
+    if (_framebuffer)
+    {
+        _framebuffer->Resize(GetWidth(), GetHeight());
+    }
 }
 
 void Sandbox::SandboxWindow::OnWindowMaximized()
 {
     UpdateWindowDimensions();
+    if (_framebuffer)
+    {
+        _framebuffer->Resize(GetWidth(), GetHeight());
+    }
 }
 
 void Sandbox::SandboxWindow::OnWindowUnmaximized()
 {
     UpdateWindowDimensions();
+    if (_framebuffer)
+    {
+        _framebuffer->Resize(GetWidth(), GetHeight());
+    }
 }
 
 void Sandbox::SandboxWindow::OnWindowResized(uint16 width, uint16 height)
 {
+    if (_framebuffer)
+    {
+        _framebuffer->Resize(width, height);
+    }
     UpdateWindowDimensions();
 }

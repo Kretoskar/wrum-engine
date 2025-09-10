@@ -3,6 +3,11 @@
 #include "WrumCore/Core/Types.h"
 #include "WrumCore/Window/Window.h"
 
+namespace Wrum
+{
+    class Framebuffer;
+}
+
 namespace Sandbox
 {
     class SandboxWindow : public Wrum::Window
@@ -11,7 +16,8 @@ namespace Sandbox
         bool Init() override;
         void Update() override;
         void Shutdown() override;
-
+        void SetFramebuffer(Wrum::Framebuffer* framebuffer) { _framebuffer = framebuffer; }
+        
     protected:
         void OnWindowMoved(int16 xPos, int16 yPos) override;
         
@@ -22,5 +28,7 @@ namespace Sandbox
         void OnWindowUnmaximized() override;
 
         void OnWindowResized(uint16 width, uint16 height) override;
+
+        Wrum::Framebuffer* _framebuffer = nullptr;
     };
 }

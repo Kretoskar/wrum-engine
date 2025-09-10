@@ -3,14 +3,13 @@
 
 #include "WrumCore/Rendering/Camera.h"
 
-void Wrum::Renderer::DrawMesh(Mesh& mesh, Material& material, const Mat4& transform) const
+void Wrum::Renderer::DrawMesh(Mesh& mesh, Material& material, const Mat4& transform)
 {
-        
-        material.BoundShader->SetModelMatrix(transform);
-        material.BoundShader->SetCameraPosition(_camera->GetPosition());
-        material.BoundShader->SetVPMatrix(_camera->GetVPMatrix());
-        
-        mesh.Bind();
+    material.BoundShader->SetModelMatrix(transform);
+    material.BoundShader->SetCameraPosition(_camera->GetPosition());
+    material.BoundShader->SetVPMatrix(_camera->GetVPMatrix());
+    
+    mesh.Bind();
 
-        glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, 0);
 }

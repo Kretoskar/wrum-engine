@@ -42,6 +42,10 @@ void Sandbox::Application::Run()
     Wrum::Mat4 model = Wrum::Mat4::Identity;
     model.SetScale({0.1, 0.1, 0.1});
     model.SetPosition({0.1f, 0.0f, 0.1f});
+
+    Wrum::Framebuffer framebuffer;
+    framebuffer.Init(window.GetWidth(), window.GetHeight());
+    window.SetFramebuffer(&framebuffer);
     
     while (!window.GetShouldClose())
     {
@@ -59,9 +63,16 @@ void Sandbox::Application::Run()
         }
         
         cam.Update(window.GetWidth(), window.GetHeight());
+
+        framebuffer.Bind();
+        
         Dr.Update(dt);
         Dr.Render(cam);
         renderer.DrawMesh(plane, material, model);
+
+        framebuffer.Unbind();
+        framebuffer.Draw();
+        
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();
