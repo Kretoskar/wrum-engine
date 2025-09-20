@@ -1,4 +1,8 @@
 #include "PCH.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 #include "WrumCore/Core/EventSystem.h"
 #include "WrumCore/Memory/ArenaAllocator.h"
 
@@ -46,6 +50,13 @@ void Sandbox::Application::Run()
     Wrum::Framebuffer framebuffer;
     framebuffer.Init(window.GetWidth(), window.GetHeight());
     window.SetFramebuffer(&framebuffer);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window.GetGlfwWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 430");
     
     while (!window.GetShouldClose())
     {
@@ -64,6 +75,11 @@ void Sandbox::Application::Run()
         
         cam.Update(window.GetWidth(), window.GetHeight());
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        
+        
         framebuffer.Bind();
         
         Dr.Update(dt);
@@ -72,9 +88,20 @@ void Sandbox::Application::Run()
 
         framebuffer.Unbind();
         framebuffer.Draw();
+
+        ImGui::Begin("Hello");
+        ImGui::Text("Hello!");
+        ImGui::End();
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
