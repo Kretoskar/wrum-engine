@@ -1,12 +1,11 @@
 #include "PCH.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
 #include "WrumCore/Core/EventSystem.h"
 #include "WrumCore/Memory/ArenaAllocator.h"
 
 #include "Sandbox/Application/Application.h"
+
+#include "Sandbox/Window/SandboxUI.h"
 #include "Sandbox/Window/SandboxWindow.h"
 #include "WrumCore/Controllers/InputController.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
@@ -15,6 +14,7 @@
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Renderer.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Plane.h"
+#include "WrumCore/Window/UI.h"
 
 void Sandbox::Application::Run()
 {
@@ -51,12 +51,8 @@ void Sandbox::Application::Run()
     framebuffer.Init(window.GetWidth(), window.GetHeight());
     window.SetFramebuffer(&framebuffer);
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window.GetGlfwWindow(), true);
-    ImGui_ImplOpenGL3_Init("#version 430");
+    SandboxUI ui;
+    ui.Init(window.GetGlfwWindow());
     
     while (!window.GetShouldClose())
     {
@@ -74,11 +70,6 @@ void Sandbox::Application::Run()
         }
         
         cam.Update(window.GetWidth(), window.GetHeight());
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        
         
         framebuffer.Bind();
         
@@ -89,19 +80,14 @@ void Sandbox::Application::Run()
         framebuffer.Unbind();
         framebuffer.Draw();
 
-        ImGui::Begin("Hello");
-        ImGui::Text("Hello!");
-        ImGui::End();
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ui.CreateFrame(dt);
+        ui.Render();
         
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    ui.Cleanup();
+    window.Shutdown();
 }
