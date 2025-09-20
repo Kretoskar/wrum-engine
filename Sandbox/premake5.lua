@@ -25,6 +25,7 @@ project "Sandbox"
 
 	links
 	{
+		"GLFW",
 		"WrumCore"
 	}
 

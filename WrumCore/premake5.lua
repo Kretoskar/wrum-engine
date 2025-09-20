@@ -29,12 +29,12 @@ project "WrumCore"
 	{
 		"%{wks.location}/WrumCore/Public",
 		"%{wks.location}/vendor/glfw/include",
-		"%{wks.location}/vendor/glad/include"
+		"%{wks.location}/vendor/glad/include",
+		"%{wks.location}/vendor/imgui/include"
 	}
 
 	links
 	{
-		"GLFW",
 		"opengl32.lib",
 		"Glad",
 	}
