@@ -8,6 +8,7 @@
 #include "Sandbox/Window/SandboxUI.h"
 #include "Sandbox/Window/SandboxWindow.h"
 #include "WrumCore/Controllers/InputController.h"
+#include "WrumCore/Core/FrameDiagnostics.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
 #include "WrumCore/Core/Time.h"
@@ -56,6 +57,7 @@ void Sandbox::Application::Run()
     
     while (!window.GetShouldClose())
     {
+        Wrum::FrameDiagnostics::GatherFrameStart();
         Wrum::Time::Update();
         
         double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
@@ -86,6 +88,11 @@ void Sandbox::Application::Run()
         // Call all pending events 
         Wrum::Dispatcher::CallEvents();
         window.Update();
+
+        if (Wrum::Time::GetFrame() > 2)
+        {
+            Wrum::FrameDiagnostics::GatherFrameEnd();
+        }
     }
 
     ui.Cleanup();

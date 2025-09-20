@@ -7,9 +7,17 @@
 #include "WrumCore/Core/Logger.h"
 #include "Sandbox/Window/SandboxUI.h"
 
+#include "WrumCore/Core/FrameDiagnostics.h"
+
 namespace Sandbox
 {
     void SandboxUI::CreateWidgets()
+    {
+        CreateLoggerWidget();
+        CreateFPSWidget();
+    }
+    
+    void SandboxUI::CreateLoggerWidget()
     {
         ImVec2 HorCenterVerBottomPos = ImGui::GetMainViewport()->GetCenter();
         HorCenterVerBottomPos.y = ImGui::GetMainViewport()->Size.y;
@@ -18,7 +26,7 @@ namespace Sandbox
         ConsoleWindowSize.y /= 4;
 
         ImGuiWindowFlags flags = 0;
-        ImGui::SetNextWindowBgAlpha(0.9f);
+        ImGui::SetNextWindowBgAlpha(0.8f);
         ImGui::SetNextWindowPos(HorCenterVerBottomPos, ImGuiCond_Always, ImVec2(0.5f, 1.0f));
         ImGui::SetNextWindowSize(ConsoleWindowSize, ImGuiCond_Always);
         ImGui::Begin("CONSOLE", nullptr, flags);
@@ -50,6 +58,33 @@ namespace Sandbox
             ImGui::SetScrollHereY(0.0f);
         }
 
+        ImGui::End();
+    }
+
+    void SandboxUI::CreateFPSWidget()
+    {
+        ImVec2 DetailsWindowSize = ImGui::GetMainViewport()->Size;
+        DetailsWindowSize.x /= 6;
+        DetailsWindowSize.y = (DetailsWindowSize.y / 4);
+
+        ImGuiWindowFlags flags = 0;
+
+        ImGui::SetNextWindowBgAlpha(0.8f);
+        ImGui::SetNextWindowPos(ImVec2(ImGui::GetMainViewport()->Size.x, 0.0f), ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+        ImGui::SetNextWindowSize(DetailsWindowSize, ImGuiCond_Always);
+        ImGui::Begin("Frame:", nullptr, flags);
+        ImGui::Columns(4);
+        ImGui::Text("Last");
+        ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::last);
+        ImGui::NextColumn();
+        ImGui::Text("Avg");
+        ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::avg);
+        ImGui::NextColumn();
+        ImGui::Text("Min");
+        ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::min);
+        ImGui::NextColumn();
+        ImGui::Text("Max");
+        ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::max);
         ImGui::End();
     }
 }

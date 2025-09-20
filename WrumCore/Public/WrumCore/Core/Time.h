@@ -14,6 +14,7 @@ namespace Wrum
     
     class Time
     {
+    public:
         static double GetCurrentTimeMicroSec()
         {
             LARGE_INTEGER freq, counter;
@@ -22,11 +23,13 @@ namespace Wrum
             return (counter.QuadPart * 1000000LL) / freq.QuadPart;
         }
         
+    private:
         static inline const double ProgramStartTime = GetCurrentTimeMicroSec();
         static inline double ProgramCurrentTime = ProgramStartTime;
         static inline unsigned long long Frame = 0;
         
     public:
+        
         static unsigned long long GetFrame() { return Frame; }
         
         static void Update()
