@@ -2,21 +2,25 @@
 
 namespace Wrum
 {
-    class CameraController
+    class Camera;
+}
+
+namespace Wrum
+{
+    class ICameraController
     {
     public:
-        virtual ~CameraController() = default;
+        virtual ~ICameraController() = default;
         
-        virtual void Update() = 0;
-        virtual void GetVelocity() = 0;
-        virtual void GetOrientation() = 0;
+        virtual void Update(Camera* camera) = 0;
     };
 
-    class FlyCameraController : public CameraController
+    class FlyCameraController : public ICameraController
     {
     public:
-        void Update() override;
-        void GetVelocity() override;
-        void GetOrientation() override;
+        void Update(Camera* camera) override;
+
+        float Speed = 0.01f;
+        float SprintMultiplier = 5.0f;
     };
 }

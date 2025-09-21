@@ -7,6 +7,7 @@
 
 #include "Sandbox/Window/SandboxUI.h"
 #include "Sandbox/Window/SandboxWindow.h"
+#include "WrumCore/Controllers/CameraController.h"
 #include "WrumCore/Controllers/InputController.h"
 #include "WrumCore/Core/FrameDiagnostics.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
@@ -27,11 +28,12 @@ void Sandbox::Application::Run()
     window.Init();
 
     Wrum::CameraSettings camSettings; 
+
+    Wrum::FlyCameraController flyCam;
+    Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings, &flyCam);
     
-    Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings);
-    
-    Wrum::DebugRenderer Dr;
-    Dr.Init();
+    Wrum::DebugRenderer DebugRenderer;
+    DebugRenderer.Init();
 
     Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
 
@@ -57,42 +59,36 @@ void Sandbox::Application::Run()
     
     while (!window.GetShouldClose())
     {
-        Wrum::FrameDiagnostics::GatherFrameStart();
         Wrum::Time::Update();
+        Wrum::FrameDiagnostics::GatherFrameStart();
+        dt = Wrum::FrameDiagnostics::last;
         
-        double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
-        dt = timeSinceStart - lastFrameTime; 
-        lastFrameTime = timeSinceStart;
+        //double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
+        //dt = timeSinceStart - lastFrameTime; 
+        //lastFrameTime = timeSinceStart;
 
         Wrum::InputController::PollInput(window);
 
-        if (Wrum::InputController::GetInput(Wrum::Input::W) == Wrum::InputState::Pressed)
-        {
-            LOG_MESSAGE("w")
-        }
+        // Call all pending events 
+        Wrum::Dispatcher::CallEvents();
         
         cam.Update(window.GetWidth(), window.GetHeight());
         
         framebuffer.Bind();
         
-        Dr.Update(dt);
-        Dr.Render(cam);
+        DebugRenderer.Update(dt);
+        DebugRenderer.Render(cam);
         renderer.DrawMesh(plane, material, model);
-
-        framebuffer.Unbind();
+        
         framebuffer.Draw();
 
         ui.CreateFrame(dt);
         ui.Render();
-        
-        // Call all pending events 
-        Wrum::Dispatcher::CallEvents();
-        window.Update();
 
-        if (Wrum::Time::GetFrame() > 2)
-        {
-            Wrum::FrameDiagnostics::GatherFrameEnd();
-        }
+        framebuffer.Bind();
+        window.Update();
+        
+        Wrum::FrameDiagnostics::GatherFrameEnd();
     }
 
     ui.Cleanup();

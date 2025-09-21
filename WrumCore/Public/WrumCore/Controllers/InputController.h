@@ -15,6 +15,7 @@ namespace Wrum
         S,
         D,
         RightMouseButton,
+        LeftShift,
     };
 
     enum class InputState
@@ -30,6 +31,7 @@ namespace Wrum
     public:
         static void PollInput(const Window& window);
         static InputState GetInput(Input input);
+        static bool InputPressedOrHeld(Input input);
         
     private:
         static void PollKey(Input input, int32 glKeyState);
@@ -41,6 +43,7 @@ namespace Wrum
             {Input::S, InputState::None},
             {Input::D, InputState::None},
             {Input::RightMouseButton, InputState::None},
+                {Input::LeftShift, InputState::None},
         };
     };
 }

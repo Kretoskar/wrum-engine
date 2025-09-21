@@ -17,7 +17,13 @@ namespace Wrum
 
         last = frameEnd - frameStart;
         min = last < min ? last : min;
-        max = last > max ? last : max;
+
+        // Don't take initialization into account for max frame
+        if (Time::GetFrame() > 5)
+        {
+            max = last > max ? last : max;
+        }
+        
         double n = Time::GetFrame();
         
         avg = avg * (n-1)/n + last /n;
