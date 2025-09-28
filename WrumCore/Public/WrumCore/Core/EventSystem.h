@@ -107,7 +107,7 @@ namespace Wrum
     {
         struct MousePositionEventPayload
         {
-            int32 posX, posY;
+            double posX, posY;
         };
 
         static HString Type()

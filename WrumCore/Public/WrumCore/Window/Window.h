@@ -21,7 +21,7 @@ namespace Wrum
 
         uint16 GetWidth() const { return _width; }
         uint16 GetHeight() const { return _height; }
-        
+
     protected:
         void BindWindowEvents();
         void UpdateWindowDimensions();
@@ -35,6 +35,7 @@ namespace Wrum
         virtual void OnWindowUnmaximized() {}
 
         virtual void OnWindowResized(uint16 width, uint16 height) {}
+        virtual void OnMouseMoved(double xpos, double ypos) {}
         
         GLFWwindow* _glfwWindow = nullptr;
         bool _isValid = false;

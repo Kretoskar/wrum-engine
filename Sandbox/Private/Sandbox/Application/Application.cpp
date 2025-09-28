@@ -28,9 +28,12 @@ void Sandbox::Application::Run()
     window.Init();
 
     Wrum::CameraSettings camSettings; 
-
+    camSettings._window = &window;
+    
     Wrum::FlyCameraController flyCam;
     Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings, &flyCam);
+
+    flyCam.Init(&cam);
     
     Wrum::DebugRenderer DebugRenderer;
     DebugRenderer.Init();
@@ -70,9 +73,11 @@ void Sandbox::Application::Run()
         Wrum::InputController::PollInput(window);
 
         // Call all pending events 
-        Wrum::Dispatcher::CallEvents();
+        
         
         cam.Update(window.GetWidth(), window.GetHeight());
+
+        Wrum::Dispatcher::CallEvents();
         
         framebuffer.Bind();
         

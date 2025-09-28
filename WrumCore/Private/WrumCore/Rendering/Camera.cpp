@@ -6,9 +6,12 @@ namespace Wrum
 {
     void Camera::Update(float width, float height)
     {
+        _settings._width = width;
+        _settings._height = height;
+        
         if (_controller)
         {
-            _controller->Update(this);
+            _controller->Update();
         }
         
         _view = Mat4::LookAt(Position, Position + Forward, Up);

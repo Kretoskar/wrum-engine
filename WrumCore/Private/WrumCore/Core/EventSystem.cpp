@@ -10,7 +10,6 @@ void Wrum::Dispatcher::Init(ArenaAllocator& Arena)
 
 void Wrum::Dispatcher::Subscribe(HString Type, std::function<void(void*)>&& Func)
 {
-    // TODO: std::move?
     _observers[Type].push_back(Func);
 }
 

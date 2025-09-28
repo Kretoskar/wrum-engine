@@ -5,6 +5,11 @@
 
 namespace Wrum
 {
+	class Window;
+}
+
+namespace Wrum
+{
 	class ICameraController;
 	
 	struct CameraSettings
@@ -15,6 +20,8 @@ namespace Wrum
 		float _FOVdeg = 75.0f;
 		float _nearPlane = 0.01f;
 		float _farPlane = 1000;
+
+		Window* _window = nullptr;
 	};
 	
 	class Camera
@@ -37,6 +44,7 @@ namespace Wrum
 		const Mat4& GetVPMatrix() const { return _viewProjection; }
 		const Mat4& GetProjectionMatrix() const { return _projection; }
 		const Mat4& GetViewMatrix() const { return _view; }
+		const CameraSettings& GetCameraSettings() const { return _settings; }
 		
 		Vec3 GetRightVector() const;
 

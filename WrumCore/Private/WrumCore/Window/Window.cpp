@@ -49,6 +49,12 @@ void Window::BindWindowEvents()
         Window* thisWindow = static_cast<Window*>(glfwGetWindowUserPointer(win));
         thisWindow->OnWindowResized(SafeCast_uint16(width), SafeCast_uint16(height));
     });
+
+    glfwSetCursorPosCallback(GetGlfwWindow(), [](GLFWwindow* win, double xpos, double ypos)
+    {
+        Window* thisWindow = static_cast<Window*>(glfwGetWindowUserPointer(win));
+        thisWindow->OnMouseMoved(xpos, ypos);
+    });
 }
 
 void Window::UpdateWindowDimensions()

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "WrumCore/Core/EventSystem.h"
 #include "WrumCore/Core/Types.h"
 #include "WrumCore/Window/Window.h"
 
@@ -28,7 +29,10 @@ namespace Sandbox
         void OnWindowUnmaximized() override;
 
         void OnWindowResized(uint16 width, uint16 height) override;
+        void OnMouseMoved(double xPos, double yPos) override;
 
         Wrum::Framebuffer* _framebuffer = nullptr;
+
+        Wrum::MousePositionEvent::MousePositionEventPayload payload;
     };
 }

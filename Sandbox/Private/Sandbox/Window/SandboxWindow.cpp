@@ -139,3 +139,10 @@ void Sandbox::SandboxWindow::OnWindowResized(uint16 width, uint16 height)
     }
     UpdateWindowDimensions();
 }
+
+void Sandbox::SandboxWindow::OnMouseMoved(double xPos, double yPos)
+{
+    LOG_MESSAGE("skibidi %f %f", xPos, yPos)
+    payload = { .posX= xPos, .posY= yPos};                                                                                         
+    POST_EVENT(Wrum::MousePositionEvent::Type(), &payload)
+}
