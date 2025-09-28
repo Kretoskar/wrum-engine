@@ -46,6 +46,9 @@ namespace Wrum
         static Dispatcher* _instance;
         std::map<HString, std::vector<std::function<void(void*)>>> _observers;
 
+        // TODO: Hold events payloads here, because they can get overriden or deleted between even post and call
+        ArenaAllocator* _arena;
+
         struct Event
         {
             Event(HString Type, void* Payload) : Type(Type), Payload(Payload) {}
