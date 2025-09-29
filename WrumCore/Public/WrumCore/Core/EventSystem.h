@@ -15,6 +15,13 @@ Wrum::Dispatcher::GetInstance()->Subscribe(type, \
 event(std::forward<decltype(PH1)>(PH1)); \
 });
 
+#define BIND_EVENT_STATIC(type, event) \
+Wrum::Dispatcher::GetInstance()->Subscribe(type, \
+[](auto&& PH1) \
+{ \
+event(std::forward<decltype(PH1)>(PH1)); \
+});
+
 #define POST_EVENT(type, payload) \
 Wrum::Dispatcher::GetInstance()->Post(type, payload);
 
@@ -38,7 +45,7 @@ namespace Wrum
 
         void Subscribe(HString Type, std::function<void(void*)>&& Func);
 
-        void Post(HString Type, void* Payload);
+        void Post(HString Type, const std::shared_ptr<void>& Payload);
         
         static void CallEvents();
         
@@ -46,15 +53,12 @@ namespace Wrum
         static Dispatcher* _instance;
         std::map<HString, std::vector<std::function<void(void*)>>> _observers;
 
-        // TODO: Hold events payloads here, because they can get overriden or deleted between even post and call
-        ArenaAllocator* _arena;
-
         struct Event
         {
-            Event(HString Type, void* Payload) : Type(Type), Payload(Payload) {}
+            Event(HString Type, const std::shared_ptr<void>& Payload) : Type(Type), Payload(Payload) {}
             
             HString Type;
-            void* Payload;
+            std::shared_ptr<void> Payload;
         };
         
         std::vector<Event> _eventsReadyToPost;

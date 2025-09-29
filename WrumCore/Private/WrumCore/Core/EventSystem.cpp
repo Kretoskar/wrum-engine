@@ -13,7 +13,7 @@ void Wrum::Dispatcher::Subscribe(HString Type, std::function<void(void*)>&& Func
     _observers[Type].push_back(Func);
 }
 
-void Wrum::Dispatcher::Post(HString Type, void* Payload)
+void Wrum::Dispatcher::Post(HString Type, const std::shared_ptr<void>& Payload)
 {
     _eventsReadyToPost.emplace_back(Type,Payload);
 }
@@ -41,7 +41,7 @@ void Wrum::Dispatcher::CallEvents()
     
         for (auto&& observer : observers)
         {
-            observer(e.Payload);
+            observer(e.Payload.get());
         }
     }
     

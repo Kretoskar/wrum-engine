@@ -32,7 +32,5 @@ namespace Sandbox
         void OnMouseMoved(double xPos, double yPos) override;
 
         Wrum::Framebuffer* _framebuffer = nullptr;
-
-        Wrum::MousePositionEvent::MousePositionEventPayload payload;
     };
 }

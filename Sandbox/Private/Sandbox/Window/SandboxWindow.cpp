@@ -142,7 +142,7 @@ void Sandbox::SandboxWindow::OnWindowResized(uint16 width, uint16 height)
 
 void Sandbox::SandboxWindow::OnMouseMoved(double xPos, double yPos)
 {
-    LOG_MESSAGE("skibidi %f %f", xPos, yPos)
-    payload = { .posX= xPos, .posY= yPos};                                                                                         
-    POST_EVENT(Wrum::MousePositionEvent::Type(), &payload)
+    std::shared_ptr<Wrum::MousePositionEvent::MousePositionEventPayload> payload =
+        std::make_shared<Wrum::MousePositionEvent::MousePositionEventPayload>(xPos, yPos);
+    POST_EVENT(Wrum::MousePositionEvent::Type(), payload)
 }
