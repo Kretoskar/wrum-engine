@@ -38,7 +38,7 @@ void Sandbox::Application::Run()
     Wrum::DebugRenderer DebugRenderer;
     DebugRenderer.Init();
 
-    //Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
+    Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
     //Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
     Wrum::Sphere sphere = Wrum::Sphere({1.0f, 0.0f, 0.0f}, 16, 16);
     
@@ -77,6 +77,7 @@ void Sandbox::Application::Run()
         DebugRenderer.Update(dt);
         DebugRenderer.Render(cam);
         renderer.DrawMesh(sphere, material, model);
+        renderer.DrawMesh(plane, material, model);
         
         framebuffer.Draw();
 

@@ -15,9 +15,9 @@ namespace Wrum
           _lineVbo = ArenaAllocator::New<VertexBufferObject>(_arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
           _lineEbo = ArenaAllocator::New<ElementBufferObject>(_arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
           
-          DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
-          
+          DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
+
           DrawCoordinateSystem();
           
           return true;
