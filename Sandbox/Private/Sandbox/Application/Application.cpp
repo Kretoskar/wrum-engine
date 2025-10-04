@@ -15,7 +15,9 @@
 #include "WrumCore/Core/Time.h"
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Renderer.h"
+#include "WrumCore/Rendering/Mesh/Primitives/Cube.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Plane.h"
+#include "WrumCore/Rendering/Mesh/Primitives/Sphere.h"
 #include "WrumCore/Window/UI.h"
 
 void Sandbox::Application::Run()
@@ -26,28 +28,26 @@ void Sandbox::Application::Run()
     
     SandboxWindow window;
     window.Init();
-
+    
     Wrum::CameraSettings camSettings; 
     camSettings._window = &window;
-    
     Wrum::FlyCameraController flyCam;
     Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings, &flyCam);
-
     flyCam.Init(&cam);
     
     Wrum::DebugRenderer DebugRenderer;
     DebugRenderer.Init();
 
-    Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
-
+    //Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
+    //Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
+    Wrum::Sphere sphere = Wrum::Sphere({1.0f, 0.0f, 0.0f}, 16, 16);
+    
     Wrum::Shader shader = Wrum::Shader("shaders/pbr.vert", "shaders/vertexColor.frag");
     Wrum::Material material = Wrum::Material(&shader);
 
     Wrum::Renderer renderer = Wrum::Renderer(&cam);
     
-    double lastFrameTime = 0.0;
     double dt = 0.0;
-    // TODO: delta time for debug renderer
 
     Wrum::Mat4 model = Wrum::Mat4::Identity;
     model.SetScale({0.1, 0.1, 0.1});
@@ -65,15 +65,8 @@ void Sandbox::Application::Run()
         Wrum::Time::Update();
         Wrum::FrameDiagnostics::GatherFrameStart();
         dt = Wrum::FrameDiagnostics::last;
-        
-        //double timeSinceStart = Wrum::Time::TimeSinceProgramStart(Wrum::TimeUnit::Milliseconds);
-        //dt = timeSinceStart - lastFrameTime; 
-        //lastFrameTime = timeSinceStart;
 
         Wrum::InputController::PollInput(window);
-
-        // Call all pending events 
-        
         
         cam.Update(window.GetWidth(), window.GetHeight());
 
@@ -83,7 +76,7 @@ void Sandbox::Application::Run()
         
         DebugRenderer.Update(dt);
         DebugRenderer.Render(cam);
-        renderer.DrawMesh(plane, material, model);
+        renderer.DrawMesh(sphere, material, model);
         
         framebuffer.Draw();
 
