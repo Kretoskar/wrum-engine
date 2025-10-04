@@ -9,6 +9,7 @@
 #include "Sandbox/Window/SandboxWindow.h"
 #include "WrumCore/Controllers/CameraController.h"
 #include "WrumCore/Controllers/InputController.h"
+#include "WrumCore/Core/Color.h"
 #include "WrumCore/Core/FrameDiagnostics.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
@@ -38,9 +39,9 @@ void Sandbox::Application::Run()
     Wrum::DebugRenderer DebugRenderer;
     DebugRenderer.Init();
 
-    Wrum::Plane plane = Wrum::Plane({0.0f, 1.0f, 0.0f});
+    Wrum::Plane plane = Wrum::Plane(Wrum::Color::PASTEL_PEACH);
     //Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
-    Wrum::Sphere sphere = Wrum::Sphere({1.0f, 0.0f, 0.0f}, 16, 16);
+    Wrum::Sphere sphere = Wrum::Sphere(Wrum::Color::PASTEL_RED, 16, 16);
     
     Wrum::Shader shader = Wrum::Shader("shaders/pbr.vert", "shaders/vertexColor.frag");
     Wrum::Material material = Wrum::Material(&shader);
@@ -50,9 +51,13 @@ void Sandbox::Application::Run()
     double dt = 0.0;
 
     Wrum::Mat4 model = Wrum::Mat4::Identity;
-    model.SetScale({0.1, 0.1, 0.1});
-    model.SetPosition({0.1f, 0.0f, 0.1f});
+    //model.SetScale({0.1f, 0.1f, 0.1f});
+    model.SetPosition({0.5f, 0.0f, 0.5f});
 
+    Wrum::Mat4 modelSphere = Wrum::Mat4::Identity;
+   // modelSphere.SetScale({0.1f, 0.1f, 0.1f});
+    modelSphere.SetPosition({0.5f, 0.5, 0.5});
+    
     Wrum::Framebuffer framebuffer;
     framebuffer.Init(window.GetWidth(), window.GetHeight());
     window.SetFramebuffer(&framebuffer);
@@ -76,7 +81,7 @@ void Sandbox::Application::Run()
         
         DebugRenderer.Update(dt);
         DebugRenderer.Render(cam);
-        renderer.DrawMesh(sphere, material, model);
+        renderer.DrawMesh(sphere, material, modelSphere);
         renderer.DrawMesh(plane, material, model);
         
         framebuffer.Draw();

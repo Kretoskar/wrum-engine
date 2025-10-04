@@ -68,7 +68,7 @@ namespace Wrum
             std::vector<Vertex> vertices;
             std::vector<uint32_t> indices;
 
-            CreateSphereMesh(vertices, indices, 1.0f, segments, rings, color);
+            CreateSphereMesh(vertices, indices, 0.5f, segments, rings, color);
             
             Init(
             {
