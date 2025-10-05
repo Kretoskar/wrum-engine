@@ -41,16 +41,19 @@ void Sandbox::Application::Run()
     DebugRenderer.Init();
 
     Wrum::Plane plane = Wrum::Plane(Wrum::Color::PASTEL_PEACH);
-    Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
+   // Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
     Wrum::Sphere sphere = Wrum::Sphere(Wrum::Color::PASTEL_RED, 16, 16);
 
     Wrum::Texture texture = Wrum::Texture("../res/cat.png");
     
-    Wrum::Shader shader = Wrum::Shader("shaders/pbr.vert", "shaders/pbr.frag");
+    Wrum::Shader pbrShader = Wrum::Shader("shaders/pbr.vert", "shaders/pbr.frag");
+    Wrum::Shader simpleShader = Wrum::Shader("shaders/pbr.vert", "shaders/vertexColor.frag");
+    
+    Wrum::PbrMaterial pbrMaterial = Wrum::PbrMaterial(&pbrShader);
+    pbrMaterial.diffuseMap = &texture;
 
+    Wrum::Material material = Wrum::Material(&simpleShader);
     
-    
-    Wrum::Material material = Wrum::Material(&shader);
 
     Wrum::Renderer renderer = Wrum::Renderer(&cam);
     
@@ -70,8 +73,6 @@ void Sandbox::Application::Run()
 
     SandboxUI ui;
     ui.Init(window.GetGlfwWindow());
-
-    shader.AssignDiffuseMap(texture);
     
     while (!window.GetShouldClose())
     {
@@ -86,13 +87,12 @@ void Sandbox::Application::Run()
         Wrum::Dispatcher::CallEvents();
         
         framebuffer.Bind();
-
-        
         
         DebugRenderer.Update(dt);
         DebugRenderer.Render(cam);
-        renderer.DrawMesh(sphere, material, modelSphere);
-        renderer.DrawMesh(cube, material, modelSphere);
+        
+        renderer.DrawMesh(sphere, pbrMaterial, modelSphere);
+      //  renderer.DrawMesh(cube, material, modelSphere);
         renderer.DrawMesh(plane, material, model);
         
         framebuffer.Draw();

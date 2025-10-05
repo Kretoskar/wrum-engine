@@ -5,6 +5,7 @@
 
 void Wrum::Renderer::DrawMesh(Mesh& mesh, Material& material, const Mat4& transform)
 {
+    material.Bind();
     material.BoundShader->SetModelMatrix(transform);
     material.BoundShader->SetCameraPosition(_camera->Position);
     material.BoundShader->SetVPMatrix(_camera->GetVPMatrix());
