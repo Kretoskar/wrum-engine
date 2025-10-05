@@ -18,6 +18,6 @@ namespace Wrum
 
     void PbrMaterial::Bind_Internal(Shader* shaderPtr)
     {
-        shaderPtr->SetUniform3f("color", Color.x, Color.y, Color.z);
+        //shaderPtr->SetUniform3f("color", Color.x, Color.y, Color.z);
     }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Texture.h"
 #include "WrumCore/Core/HString.h"
 #include "WrumCore/Math/Mat4.h"
 #include "WrumCore/Math/Vec3.h"
@@ -32,6 +33,8 @@ namespace Wrum
         void SetModelMatrix(Mat4 m);
         void SetVPMatrix(Mat4 m);
         void SetCameraPosition(Vec3 pos);
+
+        void AssignDiffuseMap(Texture& texture);
 
     private:
         int GetUniformLocation(HString name);

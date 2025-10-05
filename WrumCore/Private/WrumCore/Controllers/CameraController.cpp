@@ -80,37 +80,26 @@ namespace Wrum
         const CameraSettings& settings = _camera->GetCameraSettings();
         double height = settings._height;
         double width = settings._width;
-
-        // TODO: Why is this even needed, and why are there still sometimes random ass numbers
-     //   if (abs(posX) > DBL_EPSILON && abs(posY) > DBL_EPSILON && abs(posX) < width && abs(posY) < height)
-        {
-
-            // IT seems like when event is triggered 2 times in the frame, it's payload is set to 0,0
-
-            LOG_MESSAGE("rotX = %f, rotY = %f", posX, posY);
         
-            const float rotX = Sensitivity * static_cast<float>(posY - (height / 2)) / height;
-            const float rotY = Sensitivity * static_cast<float>(posX - (width / 2)) / width;
-
+        const float rotX = Sensitivity * static_cast<float>(posY - (height / 2)) / height;
+        const float rotY = Sensitivity * static_cast<float>(posX - (width / 2)) / width;
         
-        
-            Vec3 newOrientation =
-                Quat(MathCore::DegToRad(-rotX), Vec3::Cross(_camera->Forward, _camera->Up).Normalized()) * _camera->Forward;
+        Vec3 newOrientation =
+            Quat(MathCore::DegToRad(-rotX), Vec3::Cross(_camera->Forward, _camera->Up).Normalized()) * _camera->Forward;
 		
-            // TODO: maybe dot will be enough
-            if (abs(Vec3::Angle(newOrientation, _camera->Up)) > MathCore::DegToRad(5.0f) && 
-                abs(Vec3::Angle(newOrientation, _camera->Up * -1)) > MathCore::DegToRad(5.0f))
-            {
-                newOrientation = Quat(MathCore::DegToRad(-rotY), _camera->Up) * newOrientation;
-            }
+        // TODO: maybe dot will be enough
+        if (abs(Vec3::Angle(newOrientation, _camera->Up)) > MathCore::DegToRad(5.0f) && 
+            abs(Vec3::Angle(newOrientation, _camera->Up * -1)) > MathCore::DegToRad(5.0f))
+        {
+            newOrientation = Quat(MathCore::DegToRad(-rotY), _camera->Up) * newOrientation;
+        }
 
-            _newOrientation = newOrientation;
+        _newOrientation = newOrientation;
 
-            Window* window = settings._window;
-            if (window)
-            {
-                glfwSetCursorPos(window->GetGlfwWindow(), (width / 2), (height / 2));
-            }
+        Window* window = settings._window;
+        if (window)
+        {
+            glfwSetCursorPos(window->GetGlfwWindow(), (width / 2), (height / 2));
         }
     }
 }

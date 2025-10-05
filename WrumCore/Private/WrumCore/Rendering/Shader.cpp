@@ -83,6 +83,13 @@ namespace Wrum
         SetUniform3f("cameraPos", pos.x, pos.y, pos.z);
     }
 
+    void Shader::AssignDiffuseMap(Texture& texture)
+    {
+        Bind();
+        texture.Bind();
+        SetUniform1i("diffuseMap", 0);
+    }
+
     int Shader::GetUniformLocation(HString name)
     {
         Bind();

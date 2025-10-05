@@ -20,8 +20,6 @@ namespace Wrum
     
     struct PbrMaterial : public Material
     {
-        Vec3 Color;
-
     protected:
         void Bind_Internal(Shader* shaderPtr) override;
     };

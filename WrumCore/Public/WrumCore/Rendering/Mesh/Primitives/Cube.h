@@ -11,40 +11,40 @@ namespace Wrum
             Init(
     {
                 // Front face (Z+)
-                Vertex{Vec3(-0.5f, -0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3(-0.5f, -0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3(-0.5f,  0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3( 0.5f,  0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3( 0.5f, -0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3( 0.5f,  0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3( 0.5f, -0.5f,  0.5f), Vec3(0.0f, 0.0f, 0.5f), color, Vec2(1.0f, 1.0f)},
     
                 // Back face (Z-)
-                Vertex{Vec3( 0.5f, -0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3( 0.5f, -0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3( 0.5f,  0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3(-0.5f,  0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3(-0.5f,  0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(0.0f, 0.0f, -0.5f), color, Vec2(1.0f, 1.0f)},
     
                 // Left face (X-)
-                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3(-0.5f,  0.5f, -0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3(-0.5f,  0.5f,  0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3(-0.5f, -0.5f,  0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3(-0.5f,  0.5f,  0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3(-0.5f, -0.5f,  0.5f), Vec3(-0.5f, 0.0f, 0.0f), color, Vec2(1.0f, 1.0f)},
     
                 // Right face (X+)
-                Vertex{Vec3(0.5f, -0.5f,  0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3(0.5f, -0.5f,  0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3(0.5f,  0.5f,  0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3(0.5f,  0.5f, -0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3(0.5f, -0.5f, -0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3(0.5f,  0.5f, -0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3(0.5f, -0.5f, -0.5f), Vec3(0.5f, 0.0f, 0.0f), color, Vec2(1.0f, 1.0f)},
     
                 // Top face (Y+)
-                Vertex{Vec3(-0.5f, 0.5f,  0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3(-0.5f, 0.5f,  0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3(-0.5f, 0.5f, -0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3( 0.5f, 0.5f, -0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3( 0.5f, 0.5f,  0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3( 0.5f, 0.5f, -0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3( 0.5f, 0.5f,  0.5f), Vec3(0.0f, 0.5f, 0.0f), color, Vec2(1.0f, 1.0f)},
     
                 // Bottom face (Y-)
-                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(0.0f, 0.5f)},
+                Vertex{Vec3(-0.5f, -0.5f, -0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(0.0f, 1.0f)},
                 Vertex{Vec3(-0.5f, -0.5f,  0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(0.0f, 0.0f)},
-                Vertex{Vec3( 0.5f, -0.5f,  0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(0.5f, 0.0f)},
-                Vertex{Vec3( 0.5f, -0.5f, -0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(0.5f, 0.5f)},
+                Vertex{Vec3( 0.5f, -0.5f,  0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(1.0f, 0.0f)},
+                Vertex{Vec3( 0.5f, -0.5f, -0.5f), Vec3(0.0f, -0.5f, 0.0f), color, Vec2(1.0f, 1.0f)},
             },
     {
                  // Front face
