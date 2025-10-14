@@ -7,6 +7,7 @@
 #include "WrumCore/Core/Logger.h"
 #include "Sandbox/Window/SandboxUI.h"
 
+#include "imgui/imgui_internal.h"
 #include "WrumCore/Core/FrameDiagnostics.h"
 
 namespace Sandbox
@@ -14,7 +15,7 @@ namespace Sandbox
     void SandboxUI::CreateWidgets()
     {
         CreateLoggerWidget();
-        CreateFPSWidget();
+        CreateStatsWidget();
     }
     
     void SandboxUI::CreateLoggerWidget()
@@ -30,7 +31,7 @@ namespace Sandbox
         ImGui::SetNextWindowPos(HorCenterVerBottomPos, ImGuiCond_Always, ImVec2(0.5f, 1.0f));
         ImGui::SetNextWindowSize(ConsoleWindowSize, ImGuiCond_Always);
         ImGui::Begin("CONSOLE", nullptr, flags);
-
+        
         Wrum::Logger& logger = Wrum::Logger::GetInstance();
         
         for (unsigned int i = 0; i < logger.loggedLineBufferCurrCount; i++)
@@ -61,7 +62,7 @@ namespace Sandbox
         ImGui::End();
     }
 
-    void SandboxUI::CreateFPSWidget()
+    void SandboxUI::CreateStatsWidget()
     {
         ImVec2 DetailsWindowSize = ImGui::GetMainViewport()->Size;
         DetailsWindowSize.x /= 6;
@@ -72,7 +73,7 @@ namespace Sandbox
         ImGui::SetNextWindowBgAlpha(0.8f);
         ImGui::SetNextWindowPos(ImVec2(ImGui::GetMainViewport()->Size.x, 0.0f), ImGuiCond_Always, ImVec2(1.0f, 0.0f));
         ImGui::SetNextWindowSize(DetailsWindowSize, ImGuiCond_Always);
-        ImGui::Begin("Frame:", nullptr, flags);
+        ImGui::Begin("Stats:", nullptr, flags);
         ImGui::Columns(4);
         ImGui::Text("Last");
         ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::last);
@@ -85,6 +86,23 @@ namespace Sandbox
         ImGui::NextColumn();
         ImGui::Text("Max");
         ImGui::Text("%0.3lf", Wrum::FrameDiagnostics::max);
+        ImGui::EndColumns();
+
+        ImGui::Spacing();
+        
+        for (auto arena : Wrum::ArenaAllocator::GetMapOfObjects())
+        {
+            ImGui::Text(arena.second->GetTag().Get());
+            float offsetKB = (float)arena.second->GetOffset() / 1024.0f;
+            float capacityKB = (float)arena.second->GetCapacity() / 1024.0f;
+
+            char name[100];
+            std::sprintf(name, "%.0f/%.0fKiB", offsetKB, capacityKB);
+            
+            ImGui::ProgressBar(offsetKB / capacityKB, {0,0}, name);
+        }
+        
+        
         ImGui::End();
     }
 }

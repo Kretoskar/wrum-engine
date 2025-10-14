@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <map>
+
 #include "WrumCore/Core/Types.h"
 
 namespace Wrum
@@ -9,12 +11,29 @@ namespace Wrum
     public:
         ArenaAllocator() = delete;
         ArenaAllocator(uint64 capacity);
+        ArenaAllocator(const ArenaAllocator& a) = delete;
+        
+#ifdef AB_DEBUG
+        ArenaAllocator(uint64 capacity, HString tag);
+#endif
         ~ArenaAllocator();
         
         void* Allocate(uint64 size, uint64 alignment);
         void Reset();
         void Free();
 
+#ifdef AB_DEBUG
+    private:
+        HString _tag;
+    public:
+        HString GetTag() const { return _tag; }
+
+        static std::map<int, ArenaAllocator*>& GetMapOfObjects()
+        {
+            return _objects;
+        }
+#endif
+        
         template<typename T, typename ... Args>
         static T* New(ArenaAllocator& arena, Args&&... args)
         {
@@ -49,7 +68,15 @@ namespace Wrum
 
             return array;
         }
-    
+
+        uint64 GetOffset() const { return _offset; }
+        uint64 GetCapacity() const { return _capacity; }
+        
+    private:
+        static inline int32 _currID;  
+        static inline std::map<int32, ArenaAllocator*> _objects;
+        int32 _id;
+        
         uint8* _buffer;
         uint64 _offset;
         uint64 _capacity;

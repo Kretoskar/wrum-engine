@@ -16,7 +16,7 @@ namespace Wrum
     class DebugRenderer
     {
     public:
-        bool Init();
+        bool Init(ArenaAllocator& arena);
         void Update(float deltaTime);
         void Render(const Camera& camera);
         
@@ -28,8 +28,6 @@ namespace Wrum
         void DrawCoordinateSystem();
 
     private:
-        ArenaAllocator _arena = ArenaAllocator(2048 * 2048);
-        
         Shader* _shader = nullptr;
         VertexBufferObject* _lineVbo = nullptr;
         ElementBufferObject* _lineEbo = nullptr;

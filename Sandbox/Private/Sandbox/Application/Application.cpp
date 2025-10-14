@@ -22,90 +22,93 @@
 #include "WrumCore/Rendering/Mesh/Primitives/Sphere.h"
 #include "WrumCore/Window/UI.h"
 
+using namespace Wrum;
+
 void Sandbox::Application::Run()
 {
-    Wrum::ArenaAllocator Arena(1024 * 1024);
+    ArenaAllocator globalAppArena(1024 * 1024, "Global");
+    ArenaAllocator renderingArena(1024 * 1024, "Rendering");
     
-    Wrum::Dispatcher::Init(Arena);
+    Dispatcher::Init(globalAppArena);
     
-    SandboxWindow window;
-    window.Init();
+    SandboxWindow* window = ArenaAllocator::New<SandboxWindow>(globalAppArena);
+    window->Init();
     
-    Wrum::CameraSettings camSettings; 
-    camSettings._window = &window;
-    Wrum::FlyCameraController flyCam;
-    Wrum::Camera cam =  Wrum::Camera(Wrum::Vec3(1.0f, 1.0f, 1.0f), Wrum::Vec3(-0.5f, -0.5f, -0.5f), camSettings, &flyCam);
-    flyCam.Init(&cam);
+    CameraSettings* camSettings = ArenaAllocator::New<CameraSettings>(globalAppArena);
+    camSettings->_window = window;
     
-    Wrum::DebugRenderer DebugRenderer;
-    DebugRenderer.Init();
+    FlyCameraController* flyCam = ArenaAllocator::New<FlyCameraController>(globalAppArena);
+    Camera* cam =  ArenaAllocator::New<Camera>(globalAppArena, Vec3(1.0f, 1.0f, 1.0f), Vec3(-0.5f, -0.5f, -0.5f), *camSettings, flyCam);
+    flyCam->Init(cam);
+    
+    DebugRenderer* debugRenderer = ArenaAllocator::New<DebugRenderer>(renderingArena);
+    debugRenderer->Init(renderingArena);
 
-    Wrum::Plane plane = Wrum::Plane(Wrum::Color::PASTEL_PEACH);
+    Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
    // Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
-    Wrum::Sphere sphere = Wrum::Sphere(Wrum::Color::PASTEL_RED, 16, 16);
+    Sphere* sphere = ArenaAllocator::New<Sphere>(renderingArena, Color::PASTEL_RED, 16, 16);
 
-    Wrum::Texture texture = Wrum::Texture("../res/cat.png");
+    // TODO: collect texture memory data
+    Texture* texture = ArenaAllocator::New<Texture>(renderingArena, "../res/cat.png");
     
-    Wrum::Shader pbrShader = Wrum::Shader("shaders/pbr.vert", "shaders/pbr.frag");
-    Wrum::Shader simpleShader = Wrum::Shader("shaders/pbr.vert", "shaders/vertexColor.frag");
+    Shader* pbrShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/pbr.frag");
+    Shader* simpleShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/vertexColor.frag");
     
-    Wrum::PbrMaterial pbrMaterial = Wrum::PbrMaterial(&pbrShader);
-    pbrMaterial.diffuseMap = &texture;
+    PbrMaterial* pbrMaterial = ArenaAllocator::New<PbrMaterial>(renderingArena, pbrShader);
+    pbrMaterial->diffuseMap = texture;
 
-    Wrum::Material material = Wrum::Material(&simpleShader);
-    
+    Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShader);
+    Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
 
-    Wrum::Renderer renderer = Wrum::Renderer(&cam);
-    
-    double dt = 0.0;
+    Framebuffer* framebuffer = ArenaAllocator::New<Framebuffer>(renderingArena);
+    framebuffer->Init(window->GetWidth(), window->GetHeight());
+    window->SetFramebuffer(framebuffer);
 
-    Wrum::Mat4 model = Wrum::Mat4::Identity;
+    SandboxUI* ui = ArenaAllocator::New<SandboxUI>(globalAppArena);
+    ui->Init(window->GetGlfwWindow());
+
+    Mat4 model = Mat4::Identity;
     //model.SetScale({0.1f, 0.1f, 0.1f});
     model.SetPosition({0.5f, 0.0f, 0.5f});
 
-    Wrum::Mat4 modelSphere = Wrum::Mat4::Identity;
-   // modelSphere.SetScale({0.1f, 0.1f, 0.1f});
+    Mat4 modelSphere = Mat4::Identity;
+    // modelSphere.SetScale({0.1f, 0.1f, 0.1f});
     modelSphere.SetPosition({0.5f, 0.5, 0.5});
     
-    Wrum::Framebuffer framebuffer;
-    framebuffer.Init(window.GetWidth(), window.GetHeight());
-    window.SetFramebuffer(&framebuffer);
-
-    SandboxUI ui;
-    ui.Init(window.GetGlfwWindow());
+    double dt = 0.0;
     
-    while (!window.GetShouldClose())
+    while (!window->GetShouldClose())
     {
-        Wrum::Time::Update();
-        Wrum::FrameDiagnostics::GatherFrameStart();
-        dt = Wrum::FrameDiagnostics::last;
+        Time::Update();
+        FrameDiagnostics::GatherFrameStart();
+        dt = FrameDiagnostics::last;
 
-        Wrum::InputController::PollInput(window);
+        InputController::PollInput(*window);
         
-        cam.Update(window.GetWidth(), window.GetHeight());
+        cam->Update(window->GetWidth(), window->GetHeight());
 
-        Wrum::Dispatcher::CallEvents();
+        Dispatcher::CallEvents();
         
-        framebuffer.Bind();
+        framebuffer->Bind();
         
-        DebugRenderer.Update(dt);
-        DebugRenderer.Render(cam);
+        debugRenderer->Update(dt);
+        debugRenderer->Render(*cam);
         
-        renderer.DrawMesh(sphere, pbrMaterial, modelSphere);
+        renderer->DrawMesh(*sphere, *pbrMaterial, modelSphere);
       //  renderer.DrawMesh(cube, material, modelSphere);
-        renderer.DrawMesh(plane, material, model);
+        renderer->DrawMesh(*plane, *material, model);
         
-        framebuffer.Draw();
+        framebuffer->Draw();
 
-        ui.CreateFrame(dt);
-        ui.Render();
+        ui->CreateFrame(dt);
+        ui->Render();
 
-        framebuffer.Bind();
-        window.Update();
+        framebuffer->Bind();
+        window->Update();
         
-        Wrum::FrameDiagnostics::GatherFrameEnd();
+        FrameDiagnostics::GatherFrameEnd();
     }
 
-    ui.Cleanup();
-    window.Shutdown();
+    ui->Cleanup();
+    window->Shutdown();
 }

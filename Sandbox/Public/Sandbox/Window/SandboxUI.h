@@ -8,7 +8,7 @@ namespace Sandbox
     {
     protected:
         void CreateLoggerWidget();
-        void CreateFPSWidget();
+        void CreateStatsWidget();
         virtual void CreateWidgets() override;
     };
 }

@@ -3,17 +3,17 @@
 
 namespace Wrum
 {
-     bool DebugRenderer::Init()
+     bool DebugRenderer::Init(ArenaAllocator& arena)
      {
           _lifetimesLeft.reserve(MAX_LINE_COUNT);
           
-          _shader = ArenaAllocator::New<Shader>(_arena, "shaders/debug.vert", "shaders/vertexColor.frag");
+          _shader = ArenaAllocator::New<Shader>(arena, "shaders/debug.vert", "shaders/vertexColor.frag");
           _shader->Bind();
           
-          _lineVao = ArenaAllocator::New<VertexArrayObject>(_arena);
+          _lineVao = ArenaAllocator::New<VertexArrayObject>(arena);
           _lineVao->Bind();
-          _lineVbo = ArenaAllocator::New<VertexBufferObject>(_arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
-          _lineEbo = ArenaAllocator::New<ElementBufferObject>(_arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
+          _lineVbo = ArenaAllocator::New<VertexBufferObject>(arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
+          _lineEbo = ArenaAllocator::New<ElementBufferObject>(arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
           
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
           DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));

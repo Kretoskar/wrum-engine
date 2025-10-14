@@ -2,10 +2,16 @@
 #include "WrumCore/Memory/ArenaAllocator.h"
 
 Wrum::ArenaAllocator::ArenaAllocator(uint64 capacity)
+    : _buffer(static_cast<uint8_t*>(malloc(capacity))), _offset(0), _capacity(capacity)
 {
-    _buffer = static_cast<uint8_t*>(malloc(capacity));
-    _capacity = capacity;
-    _offset = 0;
+    _id = _currID++;
+    _objects[_id] = this;
+}
+
+Wrum::ArenaAllocator::ArenaAllocator(uint64_t capacity, HString tag)
+    : ArenaAllocator(capacity)
+{
+    _tag = tag;
 }
 
 void* Wrum::ArenaAllocator::Allocate(uint64 size, uint64 alignment)
@@ -41,5 +47,6 @@ void Wrum::ArenaAllocator::Free()
 
 Wrum::ArenaAllocator::~ArenaAllocator()
 {
+    _objects.erase(_id);
     free(_buffer);
 }
