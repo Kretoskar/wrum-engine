@@ -34,7 +34,7 @@ namespace Wrum
         static bool InputPressedOrHeld(Input input);
         
     private:
-        static void PollKey(Input input, int32 glKeyState);
+        static void PollKey(Input input, i32 glKeyState);
         
         static inline std::map<Input, InputState> Inputs
         {

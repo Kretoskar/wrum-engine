@@ -10,9 +10,9 @@ namespace Wrum
 {
     class Shader
     {
-        std::unordered_map<HString, int32, HString::HStringHasher> _uniformLocationCache;
+        std::unordered_map<HString, i32, HString::HStringHasher> _uniformLocationCache;
 
-        uint32 _id;
+        u32 _id;
 
     public:
         Shader(const File& vertexShaderFile, const File& fragmentShaderFile);
@@ -38,7 +38,7 @@ namespace Wrum
 
     private:
         int GetUniformLocation(HString name);
-        static uint32 CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile);
-        static uint32 CompileShader(unsigned int type, const std::string& source);
+        static u32 CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile);
+        static u32 CompileShader(unsigned int type, const std::string& source);
     };
 }

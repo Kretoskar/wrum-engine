@@ -91,7 +91,7 @@ void Sandbox::SandboxWindow::Shutdown()
     glfwTerminate();
 }
 
-void Sandbox::SandboxWindow::OnWindowMoved(int16 xPos, int16 yPos)
+void Sandbox::SandboxWindow::OnWindowMoved(i16 xPos, i16 yPos)
 {
 }
 
@@ -131,7 +131,7 @@ void Sandbox::SandboxWindow::OnWindowUnmaximized()
     }
 }
 
-void Sandbox::SandboxWindow::OnWindowResized(uint16 width, uint16 height)
+void Sandbox::SandboxWindow::OnWindowResized(u16 width, u16 height)
 {
     if (_framebuffer)
     {

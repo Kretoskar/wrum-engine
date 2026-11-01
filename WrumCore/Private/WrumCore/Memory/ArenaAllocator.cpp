@@ -1,7 +1,7 @@
 ﻿#include "PCH.h"
 #include "WrumCore/Memory/ArenaAllocator.h"
 
-Wrum::ArenaAllocator::ArenaAllocator(uint64 capacity)
+Wrum::ArenaAllocator::ArenaAllocator(u64 capacity)
     : _buffer(static_cast<uint8_t*>(malloc(capacity))), _offset(0), _capacity(capacity)
 {
     _id = _currID++;
@@ -14,20 +14,20 @@ Wrum::ArenaAllocator::ArenaAllocator(uint64_t capacity, HString tag)
     _tag = tag;
 }
 
-void* Wrum::ArenaAllocator::Allocate(uint64 size, uint64 alignment)
+void* Wrum::ArenaAllocator::Allocate(u64 size, u64 alignment)
 {
     const uint8_t* currentPtr = (_buffer + _offset);
 
-    const uint64 currentAddress = reinterpret_cast<uint64>(currentPtr);
+    const u64 currentAddress = reinterpret_cast<u64>(currentPtr);
     // round up the pointer to next multiple of alignment
-    const uint64 alignedAddress = (currentAddress + alignment - 1) & ~(alignment - 1);
+    const u64 alignedAddress = (currentAddress + alignment - 1) & ~(alignment - 1);
 
-    const uint64 padding = alignedAddress - currentAddress;
+    const u64 padding = alignedAddress - currentAddress;
 
     ASSERT(_offset + size + padding <= _capacity, "Arena Allocator overflow")
 
     _offset += padding;
-    uint8* alignedPtr = _buffer + _offset;
+    u8* alignedPtr = _buffer + _offset;
     
     _offset += size;
     return alignedPtr;

@@ -16,9 +16,9 @@ namespace Wrum
         void Bind() const;
         void Delete();
 
-        uint32 GetId() const { return _id; }
+        u32 GetId() const { return _id; }
 
     private:
-        uint32 _id {};
+        u32 _id {};
     };
 }

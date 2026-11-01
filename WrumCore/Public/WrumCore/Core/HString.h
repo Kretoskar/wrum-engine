@@ -18,12 +18,12 @@ namespace Wrum
             : _hash(Hash(s.c_str())) {}
 
         [[nodiscard]]
-        uint32 GetHash() const { return _hash; }
+        u32 GetHash() const { return _hash; }
 
         static HString None;
 
     private:
-        uint32 _hash {};
+        u32 _hash {};
 
     public:
         [[nodiscard]]
@@ -34,10 +34,10 @@ namespace Wrum
 
     private:
         // hash using prime numbers
-        static constexpr uint32 Hash(const char* s)
+        static constexpr u32 Hash(const char* s)
         {
-            uint32 h = 37;
-            uint32 size = 0;
+            u32 h = 37;
+            u32 size = 0;
 
             while (*s)
             {
@@ -54,7 +54,7 @@ namespace Wrum
             // Check for hash conflicts
             if (hashTable[h][0] != '\0')
             {
-                for (uint32 i = 0; i < hashTableMaxStringLength; i++)
+                for (u32 i = 0; i < hashTableMaxStringLength; i++)
                 {
                     const char existingChar = hashTable[h][i];
                     const char newChar = *(s + i);
@@ -69,7 +69,7 @@ namespace Wrum
             }
 #endif
 
-            uint32 i = 0;
+            u32 i = 0;
 
             while (*s)
             {
@@ -81,8 +81,8 @@ namespace Wrum
             return h;
         }
 
-        static constexpr uint32 hashTableSize = 65536;
-        static constexpr uint32 hashTableMaxStringLength = 512;
+        static constexpr u32 hashTableSize = 65536;
+        static constexpr u32 hashTableMaxStringLength = 512;
         static char hashTable[hashTableSize][hashTableMaxStringLength];
 
     public:

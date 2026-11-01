@@ -14,9 +14,11 @@
 #include "WrumCore/Rendering/DebugRenderer.h"
 #include "WrumCore/ResourceHandling/File.h"
 #include "WrumCore/Core/Time.h"
+#include "WrumCore/Math/Quat.h"
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Renderer.h"
 #include "WrumCore/Rendering/Texture.h"
+#include "WrumCore/Rendering/Mesh/Primitives/Arrow.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Cube.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Plane.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Sphere.h"
@@ -44,10 +46,20 @@ void Sandbox::Application::Run()
     DebugRenderer* debugRenderer = ArenaAllocator::New<DebugRenderer>(renderingArena);
     debugRenderer->Init(renderingArena);
 
-    Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
+    //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
    // Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
     Sphere* sphere = ArenaAllocator::New<Sphere>(renderingArena, Color::PASTEL_RED, 16, 16);
-
+    
+    Arrow* arrowX = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_RED);
+    Mat4 modelArrowX = Mat4::Identity;
+    modelArrowX = Quat::FromRPY(MathCore::DegToRad(90.0f), 0.0f, 0.0f).ToMat4();
+    
+    Arrow* arrowY = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_GREEN);
+    
+    Arrow* arrowZ = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_BLUE);
+    Mat4 modelArrowZ = Mat4::Identity;
+    modelArrowZ = Quat::FromRPY(0.0f, 0.0f, MathCore::DegToRad(-90.0f)).ToMat4();
+    
     // TODO: collect texture memory data
     Texture* texture = ArenaAllocator::New<Texture>(renderingArena, "../res/cat.png");
     
@@ -72,7 +84,7 @@ void Sandbox::Application::Run()
     model.SetPosition({0.5f, 0.0f, 0.5f});
 
     Mat4 modelSphere = Mat4::Identity;
-    // modelSphere.SetScale({0.1f, 0.1f, 0.1f});
+    modelSphere.SetScale({0.2f, 0.2f, 0.2f});
     modelSphere.SetPosition({0.5f, 0.5, 0.5});
     
     double dt = 0.0;
@@ -95,8 +107,11 @@ void Sandbox::Application::Run()
         debugRenderer->Render(*cam);
         
         renderer->DrawMesh(*sphere, *pbrMaterial, modelSphere);
+        renderer->DrawMesh(*arrowX, *material, modelArrowX);
+        renderer->DrawMesh(*arrowY, *material, Mat4::Identity);
+        renderer->DrawMesh(*arrowZ, *material, modelArrowZ);
       //  renderer.DrawMesh(cube, material, modelSphere);
-        renderer->DrawMesh(*plane, *material, model);
+       // renderer->DrawMesh(*plane, *material, model);
         
         framebuffer->Draw();
 

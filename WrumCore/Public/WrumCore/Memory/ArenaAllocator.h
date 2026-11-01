@@ -10,15 +10,15 @@ namespace Wrum
     {
     public:
         ArenaAllocator() = delete;
-        ArenaAllocator(uint64 capacity);
+        ArenaAllocator(u64 capacity);
         ArenaAllocator(const ArenaAllocator& a) = delete;
         
 #ifdef AB_DEBUG
-        ArenaAllocator(uint64 capacity, HString tag);
+        ArenaAllocator(u64 capacity, HString tag);
 #endif
         ~ArenaAllocator();
         
-        void* Allocate(uint64 size, uint64 alignment);
+        void* Allocate(u64 size, u64 alignment);
         void Reset();
         void Free();
 
@@ -69,16 +69,16 @@ namespace Wrum
             return array;
         }
 
-        uint64 GetOffset() const { return _offset; }
-        uint64 GetCapacity() const { return _capacity; }
+        u64 GetOffset() const { return _offset; }
+        u64 GetCapacity() const { return _capacity; }
         
     private:
-        static inline int32 _currID;  
-        static inline std::map<int32, ArenaAllocator*> _objects;
-        int32 _id;
+        static inline i32 _currID;  
+        static inline std::map<i32, ArenaAllocator*> _objects;
+        i32 _id;
         
-        uint8* _buffer;
-        uint64 _offset;
-        uint64 _capacity;
+        u8* _buffer;
+        u64 _offset;
+        u64 _capacity;
     };
 }

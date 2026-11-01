@@ -14,8 +14,8 @@ namespace Wrum
 	
 	struct CameraSettings
 	{
-		uint16 _width = 1920;
-		uint16 _height = 1080;
+		u16 _width = 1920;
+		u16 _height = 1080;
 
 		float _FOVdeg = 75.0f;
 		float _nearPlane = 0.01f;

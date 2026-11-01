@@ -9,7 +9,7 @@ void Wrum::AllocationMetrics::LogAllocationMetrics() const
         GetCurrentUsage(), TotalAllocated, TotalFreed)
 }
 
-void* operator new(uint64 size)
+void* operator new(u64 size)
 {
 #ifdef AB_DEBUG
     Wrum::AllocationMetrics::GetHeapAllocationMetrics().TotalAllocated += size;
@@ -18,7 +18,7 @@ void* operator new(uint64 size)
     return malloc(size);
 }
 
-void operator delete(void* memory, uint64 size)
+void operator delete(void* memory, u64 size)
 {
 #ifdef AB_DEBUG
     Wrum::AllocationMetrics::GetHeapAllocationMetrics().TotalFreed += size;

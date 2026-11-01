@@ -20,7 +20,7 @@ namespace Sandbox
         void SetFramebuffer(Wrum::Framebuffer* framebuffer) { _framebuffer = framebuffer; }
         
     protected:
-        void OnWindowMoved(int16 xPos, int16 yPos) override;
+        void OnWindowMoved(i16 xPos, i16 yPos) override;
         
         void OnWindowMinimized() override;
         void OnWindowRestored() override;
@@ -28,7 +28,7 @@ namespace Sandbox
         void OnWindowMaximized() override;
         void OnWindowUnmaximized() override;
 
-        void OnWindowResized(uint16 width, uint16 height) override;
+        void OnWindowResized(u16 width, u16 height) override;
         void OnMouseMoved(double xPos, double yPos) override;
 
         Wrum::Framebuffer* _framebuffer = nullptr;

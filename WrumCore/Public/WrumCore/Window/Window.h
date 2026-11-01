@@ -19,14 +19,14 @@ namespace Wrum
         GLFWwindow* GetGlfwWindow() const { return _glfwWindow; }
         bool GetShouldClose() const { return _glfwWindow ? glfwWindowShouldClose(_glfwWindow) : false; }
 
-        uint16 GetWidth() const { return _width; }
-        uint16 GetHeight() const { return _height; }
+        u16 GetWidth() const { return _width; }
+        u16 GetHeight() const { return _height; }
 
     protected:
         void BindWindowEvents();
         void UpdateWindowDimensions();
 
-        virtual void OnWindowMoved(int16 xPos, int16 yPos){}
+        virtual void OnWindowMoved(i16 xPos, i16 yPos){}
         
         virtual void OnWindowMinimized() {}
         virtual void OnWindowRestored() {}
@@ -34,13 +34,13 @@ namespace Wrum
         virtual void OnWindowMaximized() {}
         virtual void OnWindowUnmaximized() {}
 
-        virtual void OnWindowResized(uint16 width, uint16 height) {}
+        virtual void OnWindowResized(u16 width, u16 height) {}
         virtual void OnMouseMoved(double xpos, double ypos) {}
         
         GLFWwindow* _glfwWindow = nullptr;
         bool _isValid = false;
 
-        uint16 _width {}, _height{};
+        u16 _width {}, _height{};
         HString _name;
     };
 } 

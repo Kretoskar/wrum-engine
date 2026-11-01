@@ -8,10 +8,10 @@ namespace Wrum
     struct Mesh
     {
         void Bind();
-        void Init(const std::vector<Vertex>& vertices,  std::vector<uint32> indices);
+        void Init(const std::vector<Vertex>& vertices,  std::vector<u32> indices);
         
         std::vector<Vertex> Vertices;
-        std::vector<uint32> Indices;
+        std::vector<u32> Indices;
 
     private:
         VertexArrayObject _vao;

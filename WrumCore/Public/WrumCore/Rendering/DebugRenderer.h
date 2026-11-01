@@ -33,15 +33,15 @@ namespace Wrum
         ElementBufferObject* _lineEbo = nullptr;
         VertexArrayObject* _lineVao = nullptr;
 
-        uint32 _lineCount = 0;
+        u32 _lineCount = 0;
         
         static constexpr unsigned MAX_LINE_COUNT = 4096;
         SimpleVertex _lineVertices[MAX_LINE_COUNT * 2];
-        uint32 _lineIndices[MAX_LINE_COUNT * 2] = {};
+        u32 _lineIndices[MAX_LINE_COUNT * 2] = {};
 
         struct DebugVertexLifetime
         {
-            uint32 Index{};
+            u32 Index{};
             float TimeLeft{};
         };
         

@@ -18,21 +18,21 @@ namespace Wrum
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
           DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
 
-          DrawCoordinateSystem();
+          //DrawCoordinateSystem();
           
           return true;
      }
 
      void DebugRenderer::Update(float deltaTime)
      {
-          for (uint32 i = 0; i < _lifetimesLeft.size(); i++)
+          for (u32 i = 0; i < _lifetimesLeft.size(); i++)
           {
                DebugVertexLifetime& lifetime = _lifetimesLeft[i];
                lifetime.TimeLeft -= deltaTime;
 
                if (lifetime.TimeLeft <= 0)
                {
-                    uint32 index = lifetime.Index;
+                    u32 index = lifetime.Index;
                     
                     _lineVertices[index] = _lineVertices[(_lineCount - 1) * 2];
                     _lineVertices[index + 1] = _lineVertices[(_lineCount - 1) * 2 - 1];

@@ -5,7 +5,7 @@
 
 namespace Wrum
 {
-    enum class TimeUnit : uint8
+    enum class TimeUnit : u8
     {
         Microseconds,
         Milliseconds,

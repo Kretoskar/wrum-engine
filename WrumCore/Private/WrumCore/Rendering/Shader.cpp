@@ -143,11 +143,11 @@ namespace Wrum
         glShaderSource(id, 1, &scr, nullptr);
         glCompileShader(id);
 
-        int32 result;
+        i32 result;
         glGetShaderiv(id, GL_COMPILE_STATUS, &result);
         if (result == GL_FALSE)
         {
-            int32 length;
+            i32 length;
             glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
             char* message = static_cast<char*>(alloca(length * sizeof(char)));
             glGetShaderInfoLog(id, length, &length, message);

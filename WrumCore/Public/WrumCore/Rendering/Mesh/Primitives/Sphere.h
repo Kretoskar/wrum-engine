@@ -63,7 +63,7 @@ namespace Wrum
             }
         }
         
-        Sphere(Vec3 color, int32 segments, int32 rings)
+        Sphere(Vec3 color, i32 segments, i32 rings)
         {
             std::vector<Vertex> vertices;
             std::vector<uint32_t> indices;
