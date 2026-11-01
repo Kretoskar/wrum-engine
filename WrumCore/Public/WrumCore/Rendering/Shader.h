@@ -1,9 +1,12 @@
 #pragma once
 
+#include <span>
+
 #include "Texture.h"
 #include "WrumCore/Core/HString.h"
 #include "WrumCore/Math/Mat4.h"
 #include "WrumCore/Math/Vec3.h"
+#include "WrumCore/Rendering/Light/PointLight.h"
 #include "WrumCore/ResourceHandling/File.h"
 
 namespace Wrum
@@ -15,6 +18,9 @@ namespace Wrum
         u32 _id;
 
     public:
+        // Must match MAX_POINT_LIGHTS in pbr.frag
+        static constexpr u32 MaxPointLights = 16;
+
         Shader(const File& vertexShaderFile, const File& fragmentShaderFile);
         ~Shader();
 
@@ -33,6 +39,7 @@ namespace Wrum
         void SetModelMatrix(Mat4 m);
         void SetVPMatrix(Mat4 m);
         void SetCameraPosition(Vec3 pos);
+        void SetPointLights(std::span<const PointLight> pointLights);
 
         void AssignDiffuseMap(Texture& texture);
 

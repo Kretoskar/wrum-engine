@@ -71,6 +71,10 @@ void Sandbox::Application::Run()
 
     Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShader);
     Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
+    renderer->PointLights = {
+        {{1.5f, 2.0f, 1.5f}, {1.0f, 0.8f, 0.6f}, 15.0f},
+        {{-1.0f, 1.0f, 0.0f}, {0.4f, 0.6f, 1.0f}, 8.0f}
+    };
 
     Framebuffer* framebuffer = ArenaAllocator::New<Framebuffer>(renderingArena);
     framebuffer->Init(window->GetWidth(), window->GetHeight());
@@ -84,7 +88,7 @@ void Sandbox::Application::Run()
     model.SetPosition({0.5f, 0.0f, 0.5f});
 
     Mat4 modelSphere = Mat4::Identity;
-    modelSphere.SetScale({0.2f, 0.2f, 0.2f});
+    //modelSphere.SetScale({0.2f, 0.2f, 0.2f});
     modelSphere.SetPosition({0.5f, 0.5, 0.5});
     
     double dt = 0.0;
@@ -104,6 +108,10 @@ void Sandbox::Application::Run()
         framebuffer->Bind();
         
         debugRenderer->Update(dt);
+        for (const PointLight& light : renderer->PointLights)
+        {
+            debugRenderer->DrawLightBulb(light.Position, light.Color);
+        }
         debugRenderer->Render(*cam);
         
         renderer->DrawMesh(*sphere, *pbrMaterial, modelSphere);

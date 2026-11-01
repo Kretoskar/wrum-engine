@@ -1,6 +1,9 @@
 #include "PCH.h"
 #include "WrumCore/Rendering/DebugRenderer.h"
 
+#include <cmath>
+#include "WrumCore/Math/MathCore.h"
+
 namespace Wrum
 {
      bool DebugRenderer::Init(ArenaAllocator& arena)
@@ -55,6 +58,12 @@ namespace Wrum
 
      void DebugRenderer::Render(const Camera& camera)
      {
+          const u32 persistentLineCount = _lineCount;
+          for (const LightBulbGizmo& gizmo : _lightBulbs)
+          {
+               DrawLightBulbLines(camera, gizmo);
+          }
+
           _lineVao->Bind();
           _lineVbo->Init((float*)_lineVertices, _lineCount * 2 * 6 * 4);
           _lineEbo->Init(_lineIndices, MAX_LINE_COUNT * 2 * 4);
@@ -68,6 +77,66 @@ namespace Wrum
           _shader->SetVPMatrix(camera.GetVPMatrix());
           _lineVao->Bind();
           glDrawElements(GL_LINES, _lineCount * 2, GL_UNSIGNED_INT, 0);
+
+          _lineCount = persistentLineCount;
+          _lightBulbs.clear();
+     }
+
+     void DebugRenderer::DrawLightBulb(Vec3 position, Vec3 color, float size)
+     {
+          if (size > 0.0f)
+          {
+               _lightBulbs.push_back({position, color, size});
+          }
+     }
+
+     void DebugRenderer::DrawLightBulbLines(const Camera& camera, const LightBulbGizmo& gizmo)
+     {
+          constexpr i32 arcSegments = 16;
+          constexpr i32 rayCount = 7;
+          constexpr i32 lineCount = arcSegments + rayCount + 10;
+          if (_lineCount + lineCount > MAX_LINE_COUNT)
+          {
+               return;
+          }
+
+          const Vec3 right = camera.GetRightVector();
+          const Vec3 up = Vec3::Cross(right, camera.Forward).Normalized();
+          auto point = [&](float x, float y)
+          {
+               return gizmo.Position + right * (x * gizmo.Size) + up * (y * gizmo.Size);
+          };
+          auto line = [&](float x0, float y0, float x1, float y1)
+          {
+               DrawLine(point(x0, y0), point(x1, y1), gizmo.Color);
+          };
+
+          for (i32 i = 0; i < arcSegments; i++)
+          {
+               const f32 a0 = -MathCore::PI / 4.0f + 1.5f * MathCore::PI * i / arcSegments;
+               const f32 a1 = -MathCore::PI / 4.0f + 1.5f * MathCore::PI * (i + 1) / arcSegments;
+               line(std::cos(a0), std::sin(a0), std::cos(a1), std::sin(a1));
+          }
+
+          const f32 shoulder = std::sqrt(0.5f);
+          line(-shoulder, -shoulder, -0.35f, -1.1f);
+          line(shoulder, -shoulder, 0.35f, -1.1f);
+          line(-0.35f, -1.1f, -0.35f, -1.55f);
+          line(0.35f, -1.1f, 0.35f, -1.55f);
+          line(-0.35f, -1.55f, 0.35f, -1.55f);
+          line(-0.35f, -1.2f, 0.35f, -1.2f);
+          line(-0.35f, -1.35f, 0.35f, -1.35f);
+          line(-0.25f, -0.15f, -0.15f, -0.6f);
+          line(-0.15f, -0.6f, 0.15f, -0.6f);
+          line(0.15f, -0.6f, 0.25f, -0.15f);
+
+          for (int i = 0; i < rayCount; i++)
+          {
+               const f32 angle = -MathCore::PI / 6.0f + (4.0f * MathCore::PI / 3.0f) * i / (rayCount - 1);
+               const f32 x = std::cos(angle);
+               const f32 y = std::sin(angle);
+               line(x * 1.3f, y * 1.3f, x * 1.6f, y * 1.6f);
+          }
      }
 
      void DebugRenderer::DrawLine(Vec3 start, Vec3 end, Vec3 color)

@@ -16,7 +16,7 @@ uniform mat4 viewProj;
 void main()
 {
     pos = vec3(model * vec4(aPos, 1.0f));
-    normal = aNormal;
+    normal = transpose(inverse(mat3(model))) * aNormal;
     color = aColor;
     texUV = aTexUV;
 

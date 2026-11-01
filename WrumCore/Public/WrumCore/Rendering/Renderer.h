@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Framebuffer.h"
 #include "Material.h"
 #include "Mesh/Mesh.h"
@@ -20,6 +22,8 @@ namespace Wrum
         }
         
         void DrawMesh(Mesh& mesh, Material& material, const Mat4& transform);
+        
+        std::vector<PointLight> PointLights;
         
     private:
         Camera* _camera;

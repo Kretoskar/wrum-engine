@@ -27,7 +27,19 @@ namespace Wrum
         
         void DrawCoordinateSystem();
 
+        void DrawLightBulb(Vec3 position, Vec3 color, float size = 0.15f);
+
     private:
+        struct LightBulbGizmo
+        {
+            Vec3 Position;
+            Vec3 Color;
+            float Size;
+        };
+
+        void DrawLightBulbLines(const Camera& camera, const LightBulbGizmo& gizmo);
+        std::vector<LightBulbGizmo> _lightBulbs;
+
         Shader* _shader = nullptr;
         VertexBufferObject* _lineVbo = nullptr;
         ElementBufferObject* _lineEbo = nullptr;

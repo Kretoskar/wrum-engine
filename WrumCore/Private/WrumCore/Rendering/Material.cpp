@@ -18,6 +18,9 @@ namespace Wrum
 
     void PbrMaterial::Bind_Internal(Shader* shaderPtr)
     {
+        shaderPtr->SetUniform1f("metallic", metallic);
+        shaderPtr->SetUniform1f("roughness", roughness);
+
         if (diffuseMap)
         {
             shaderPtr->AssignDiffuseMap(*diffuseMap);   

@@ -83,6 +83,28 @@ namespace Wrum
         SetUniform3f("cameraPos", pos.x, pos.y, pos.z);
     }
 
+    void Shader::SetPointLights(std::span<const PointLight> pointLights)
+    {
+        // ignore for unlit shaders
+        const i32 countLocation = GetUniformLocation("pointLightCount");
+        if (countLocation < 0)
+        {
+            return;
+        }
+
+        const i32 count = static_cast<i32>(std::min(pointLights.size(), static_cast<size_t>(MaxPointLights)));
+        glUniform1i(countLocation, count);
+
+        for (int i = 0; i < count; i++)
+        {
+            const PointLight& light = pointLights[i];
+            const std::string prefix = "pointLights[" + std::to_string(i) + "].";
+            SetUniform3f(prefix + "position", light.Position.x, light.Position.y, light.Position.z);
+            SetUniform3f(prefix + "color", light.Color.r, light.Color.g, light.Color.b);
+            SetUniform1f(prefix + "intensity", light.Intensity);
+        }
+    }
+
     void Shader::AssignDiffuseMap(Texture& texture)
     {
         Bind();
@@ -103,13 +125,8 @@ namespace Wrum
 
         const int location = glGetUniformLocation(_id, nameChar);
         _uniformLocationCache[nameChar] = location;
-
-        if (location < 0)
-        {
-            LOG_WARNING("Trying to retrieve invalid uniform location of name %s", nameChar)
-        }
-
-        return 1;
+        
+        return location;
     }
 
     uint32_t Shader::CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile)
