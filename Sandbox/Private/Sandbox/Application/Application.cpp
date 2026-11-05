@@ -47,7 +47,7 @@ void Sandbox::Application::Run()
     debugRenderer->Init(renderingArena);
 
     //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
-   // Wrum::Cube  cube = Wrum::Cube({1.0f, 0.0f, 0.0f});
+    // Cube* cube = ArenaAllocator::New<Cube>(renderingArena, Color::PASTEL_RED);
     Sphere* sphere = ArenaAllocator::New<Sphere>(renderingArena, Color::PASTEL_RED, 16, 16);
     
     Arrow* arrowX = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_RED);
@@ -61,13 +61,19 @@ void Sandbox::Application::Run()
     modelArrowZ = Quat::FromRPY(0.0f, 0.0f, MathCore::DegToRad(-90.0f)).ToMat4();
     
     // TODO: collect texture memory data
-    Texture* texture = ArenaAllocator::New<Texture>(renderingArena, "../res/cat.png");
+    Texture* texture = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic3-alb.png");
+    Texture* roughnessMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-rough.png");
+    Texture* metallicMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-metal.png");
+    Texture* normalMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-normal.png");
     
     Shader* pbrShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/pbr.frag");
     Shader* simpleShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/vertexColor.frag");
     
     PbrMaterial* pbrMaterial = ArenaAllocator::New<PbrMaterial>(renderingArena, pbrShader);
     pbrMaterial->diffuseMap = texture;
+    pbrMaterial->roughnessMap = roughnessMap;
+    pbrMaterial->metallicMap = metallicMap;
+    pbrMaterial->normalMap = normalMap;
 
     Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShader);
     Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);

@@ -108,7 +108,7 @@ namespace Wrum
     void Shader::AssignDiffuseMap(Texture& texture)
     {
         Bind();
-        texture.Bind();
+        texture.Bind(0);
         SetUniform1i("diffuseMap", 0);
     }
 

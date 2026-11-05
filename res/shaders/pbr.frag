@@ -7,6 +7,12 @@ in vec3 color;
 in vec2 texUV;
 
 uniform sampler2D diffuseMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D metallicMap;
+uniform sampler2D normalMap;
+uniform bool hasRoughnessMap;
+uniform bool hasMetallicMap;
+uniform bool hasNormalMap;
 uniform vec3 cameraPos;
 uniform float metallic;
 uniform float roughness;
@@ -49,15 +55,55 @@ vec3 FresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
+vec3 GetSurfaceNormal()
+{
+    vec3 N = normalize(normal);
+    if (!hasNormalMap)
+    {
+        return N;
+    }
+
+    vec3 tangentNormal = texture(normalMap, texUV).rgb * 2.0 - 1.0;
+    // Images are loaded top-first, so OpenGL normal-map +Y opposes increasing V.
+    tangentNormal.y = -tangentNormal.y;
+
+    // Build a world-space tangent frame without requiring vertex tangents.
+    vec3 dpdx = dFdx(pos);
+    vec3 dpdy = dFdy(pos);
+    vec2 duvdx = dFdx(texUV);
+    vec2 duvdy = dFdy(texUV);
+    float determinant = duvdx.x * duvdy.y - duvdx.y * duvdy.x;
+    if (abs(determinant) < 0.0000000001)
+    {
+        return N;
+    }
+
+    vec3 T = (dpdx * duvdy.y - dpdy * duvdx.y) / determinant;
+    T -= N * dot(N, T);
+    if (dot(T, T) < 0.0000000001)
+    {
+        return N;
+    }
+    T = normalize(T);
+
+    // Preserve the handedness of mirrored UVs.
+    vec3 increasingV = (dpdy * duvdx.x - dpdx * duvdy.x) / determinant;
+    vec3 B = cross(N, T);
+    B *= dot(B, increasingV) < 0.0 ? -1.0 : 1.0;
+
+    return normalize(mat3(T, B, N) * tangentNormal);
+}
+
 void main()
 {
     vec4 diffuse = texture(diffuseMap, texUV);
     vec3 albedo = pow(diffuse.rgb, vec3(2.2));
 	
-    float surfaceMetallic = clamp(metallic, 0.0, 1.0);
-    float surfaceRoughness = clamp(roughness, 0.05, 1.0);
+    // Material maps contain linear data; only albedo needs gamma decoding.
+    float surfaceMetallic = clamp(hasMetallicMap ? texture(metallicMap, texUV).r : metallic, 0.0, 1.0);
+    float surfaceRoughness = clamp(hasRoughnessMap ? texture(roughnessMap, texUV).r : roughness, 0.05, 1.0);
 	
-    vec3 N = normalize(normal);
+    vec3 N = GetSurfaceNormal();
     vec3 viewOffset = cameraPos - pos;
     vec3 V = viewOffset / max(length(viewOffset), 0.0001);
     float NdotV = max(dot(N, V), 0.0);

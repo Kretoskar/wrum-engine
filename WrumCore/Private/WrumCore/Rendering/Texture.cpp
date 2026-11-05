@@ -31,7 +31,12 @@ namespace Wrum
 
     void Texture::Bind()
     {
-        glActiveTexture(GL_TEXTURE0 + _unit);
+        Bind(_unit);
+    }
+
+    void Texture::Bind(u32 unit)
+    {
+        glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(_type, _id);
     }
 

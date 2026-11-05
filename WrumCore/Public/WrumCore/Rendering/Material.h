@@ -24,6 +24,11 @@ namespace Wrum
 
         // TODO: GUID system for detecting deletion etc
         Texture* diffuseMap;
+        Texture* roughnessMap = nullptr;
+        Texture* metallicMap = nullptr;
+        Texture* normalMap = nullptr;
+
+        // Used when the corresponding map is not assigned.
         f32 metallic = 0.0f;
         f32 roughness = 0.5f;
         
