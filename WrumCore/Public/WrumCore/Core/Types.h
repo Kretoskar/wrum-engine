@@ -47,3 +47,23 @@ static double SafeCast_double(unsigned long long i)
     ASSERT(i <= DBL_MAX, "Failed to cast unsigned long long to uint")
     return static_cast<double>(i);
 }
+
+#define MAKE_TAG32(a, b, c, d) u32(u32(a) | u32(b) << 8 | u32(c) << 16 | u32(d) << 24)
+union Tag32String
+{
+    char str[5] = {0};
+    u32 tag;
+
+    Tag32String(const char* s, u32 length)
+    {
+        length = length > 5 ? 5 : length;
+        for (u32 i = 0; i < length; ++i)
+            str[i] = s[i];
+    }
+    
+    Tag32String(u32 t)
+    {
+        tag = t;
+        str[4] = 0;
+    }
+};
