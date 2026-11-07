@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <utility>
 
 #include "WrumCore/Math/MathCore.h"
 #include "WrumCore/Rendering/Mesh/Mesh.h"
@@ -113,7 +114,7 @@ namespace Wrum
             std::vector<Vertex> vertices;
             std::vector<u32> indices;
             CreateArrowMesh(vertices, indices, length, arrowheadAlpha, segments, color);
-            Init(vertices, indices);
+            Init(std::move(vertices), std::move(indices));
         }
     };
 }

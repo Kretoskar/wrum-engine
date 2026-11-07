@@ -9,16 +9,16 @@ void Wrum::Mesh::Bind()
     _vao.Bind();
 }
 
-void Wrum::Mesh::Init(const std::vector<Vertex>& vertices, std::vector<uint32_t> indices)
+void Wrum::Mesh::Init(std::vector<Vertex>&& vertices, std::vector<u32>&& indices)
 {
-    Vertices = vertices;
-    Indices = indices;
+    Vertices = std::move(vertices);
+    Indices = std::move(indices);
 
     // already created in vao constructor
     _vao.Bind();
 
-    const VertexBufferObject vbo = VertexBufferObject(vertices);
-    const ElementBufferObject ebo = ElementBufferObject(indices);
+    const VertexBufferObject vbo = VertexBufferObject(Vertices);
+    const ElementBufferObject ebo = ElementBufferObject(Indices);
 
     // position
     _vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);

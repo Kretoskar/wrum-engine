@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "WrumCore/Math/MathCore.h"
+#include <utility>
 #include "WrumCore/Rendering/Mesh/Mesh.h"
 
 namespace Wrum
@@ -70,13 +71,7 @@ namespace Wrum
 
             CreateSphereMesh(vertices, indices, 0.5f, segments, rings, color);
             
-            Init(
-            {
-                    vertices
-            },
-            {
-                indices
-            });
+            Init(std::move(vertices), std::move(indices));
         }
     };
 }
