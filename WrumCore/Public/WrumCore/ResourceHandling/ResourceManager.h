@@ -5,12 +5,6 @@
 
 namespace Wrum
 {
-    typedef u64 ResourceID;
-    
-    constexpr ResourceID InvalidResourceID = static_cast<u64>(MAKE_TAG32('I', 'N', 'V', 'D')) << 32 | 0xFFFFFFFF;
-    constexpr u32 MaxResourcesPerType = 128;
-    constexpr u32 ResourcesTypesNum = 4;
-    
     enum class ResourceType : u32
     {
         Shader = MAKE_TAG32('S', 'H', 'D', 'R'),
@@ -18,6 +12,26 @@ namespace Wrum
         Texture = MAKE_TAG32('T', 'X', 'T', 'R'),
         Mesh = MAKE_TAG32('M', 'E', 'S', 'H')
     };
+    
+    struct ResourceID
+    {
+        u64 ID;
+        
+        static constexpr u64 InvalidID = static_cast<u64>(MAKE_TAG32('I', 'N', 'V', 'D')) << 32 | 0xFFFFFFFF;
+        
+        ResourceID() : ID(InvalidID) {}
+        ResourceID(ResourceType type, u32 typeIdx) : ID(static_cast<u64>(type) << 32 |typeIdx) {}
+        
+        FORCE_INLINE bool IsValid() const { return ID != InvalidID; }
+        FORCE_INLINE ResourceType GetType() const { return static_cast<ResourceType>(ID >> 32); }
+        FORCE_INLINE u32 GetTypeIdx() const { return static_cast<u32>(ID); }
+        
+        bool operator==(const ResourceID& other) const { return ID == other.ID; }
+        bool operator!=(const ResourceID& other) const { return ID != other.ID; }
+    };
+    
+    constexpr u32 MaxResourcesPerType = 128;
+    constexpr u32 ResourcesTypesNum = 4;
     
     struct Resource;
     
@@ -62,9 +76,6 @@ namespace Wrum
         }
         
         bool Load(ResourceManager& manager);
-    
-        ResourceType GetType() const;
-        u32 GetTypeIndex() const;
         
         HString GetPath1() const { return _path1; }
         HString GetPath2() const { return _path2; }

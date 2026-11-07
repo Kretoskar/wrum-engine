@@ -20,38 +20,38 @@ namespace Wrum
             ASSERT(_shadersCount < 0xFFFFFFFF, "Reached max shaders count")
         #endif
             _shadersCount++;
-            return static_cast<u64>(ResourceType::Shader) << 32 | _shadersCount - 1;
+            return ResourceID(type, _shadersCount - 1);
         
         case ResourceType::Material:
         #if AB_DEBUG
             ASSERT(_materialsCount < 0xFFFFFFFF, "Reached max materials count")
         #endif
             _materialsCount++;
-            return static_cast<u64>(ResourceType::Material) << 32 | _materialsCount - 1;
+            return ResourceID(type, _materialsCount - 1);
                 
         case ResourceType::Texture:
         #if AB_DEBUG
             ASSERT(_texturesCount < 0xFFFFFFFF, "Reached max textures count")
         #endif
             _texturesCount++;
-            return static_cast<u64>(ResourceType::Texture) << 32 | _texturesCount - 1;
+            return ResourceID(type, _texturesCount - 1);
                 
         case ResourceType::Mesh:
         #if AB_DEBUG
             ASSERT(_meshesCount < 0xFFFFFFFF, "Reached max meshes count")
         #endif
             _meshesCount++;
-            return static_cast<u64>(ResourceType::Mesh) << 32 | _meshesCount - 1;
+            return ResourceID(ResourceType::Mesh, _meshesCount - 1);
         }
             
-        return InvalidResourceID;
+        return ResourceID();
     }
 
     Shader* ResourceManager::LoadShader(const Resource& resource)
     {
-        ASSERT(resource.GetType() == ResourceType::Shader, "Invalid resource type")
+        ASSERT(resource.GetResourceId().GetType() == ResourceType::Shader, "Invalid resource type")
         
-        u32 idx = resource.GetTypeIndex();
+        u32 idx = resource.GetResourceId().GetTypeIdx();
         Shader& shader = _shaders[idx];
         
         File vertFile(resource.GetPath1().Get());
@@ -64,7 +64,7 @@ namespace Wrum
 
     bool Resource::Load(ResourceManager& manager)
     {
-        switch (GetType()) 
+        switch (_resourceId.GetType()) 
         {
         case ResourceType::Shader:
             _shader = manager.LoadShader(*this);
@@ -81,15 +81,5 @@ namespace Wrum
         }
         
         return true;
-    }
-
-    ResourceType Resource::GetType() const
-    {
-        return static_cast<ResourceType>(_resourceId >> 32);
-    }
-
-    u32 Resource::GetTypeIndex() const
-    {
-        return static_cast<u32>(_resourceId);  
     }
 }
