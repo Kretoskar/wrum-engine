@@ -8,7 +8,7 @@ namespace Wrum
         if (BoundShader)
         {
             BoundShader->Bind();
-            Bind_Internal(BoundShader);
+            doBind(BoundShader);
         }
         else
         {
@@ -16,7 +16,7 @@ namespace Wrum
         }
     }
 
-    void PbrMaterial::Bind_Internal(Shader* shaderPtr)
+    void PbrMaterial::doBind(Shader* shaderPtr)
     {
         shaderPtr->SetUniform1f("metallic", metallic);
         shaderPtr->SetUniform1f("roughness", roughness);

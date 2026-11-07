@@ -15,7 +15,7 @@ namespace Wrum
         void Bind();
 
     protected:
-        virtual void Bind_Internal(Shader* shaderPtr) {}
+        virtual void doBind(Shader* shaderPtr) {}
     };
     
     struct PbrMaterial : public Material
@@ -33,6 +33,6 @@ namespace Wrum
         f32 roughness = 0.5f;
         
     protected:
-        void Bind_Internal(Shader* shaderPtr) override;
+        void doBind(Shader* shaderPtr) override;
     };
 }
