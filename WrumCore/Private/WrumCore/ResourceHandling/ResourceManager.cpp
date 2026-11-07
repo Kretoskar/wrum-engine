@@ -3,6 +3,14 @@
 
 namespace Wrum
 {
+    Resource* ResourceManager::MakeShaderResource(HString vertexPath, HString fragmentPath)
+    {
+        Resource* resource = 
+            ArenaAllocator::New<Resource>(_resourcesArena, vertexPath, fragmentPath, NewResourceID(ResourceType::Shader));
+        
+        return resource;
+    }
+
     ResourceID ResourceManager::NewResourceID(ResourceType type)
     {
         switch (type)
@@ -13,7 +21,7 @@ namespace Wrum
         #endif
             _shadersCount++;
             return static_cast<u64>(ResourceType::Shader) << 32 | _shadersCount - 1;
-                
+        
         case ResourceType::Material:
         #if AB_DEBUG
             ASSERT(_materialsCount < 0xFFFFFFFF, "Reached max materials count")
@@ -37,5 +45,51 @@ namespace Wrum
         }
             
         return InvalidResourceID;
+    }
+
+    Shader* ResourceManager::LoadShader(const Resource& resource)
+    {
+        ASSERT(resource.GetType() == ResourceType::Shader, "Invalid resource type")
+        
+        u32 idx = resource.GetTypeIndex();
+        Shader& shader = _shaders[idx];
+        
+        File vertFile(resource.GetPath1().Get());
+        File fragFile(resource.GetPath2().Get());
+        
+        shader.Create(vertFile, fragFile);
+        
+        return &shader;
+    }
+
+    bool Resource::Load(ResourceManager& manager)
+    {
+        switch (GetType()) 
+        {
+        case ResourceType::Shader:
+            _shader = manager.LoadShader(*this);
+            return _shader != nullptr;
+            
+        case ResourceType::Material:
+            break;
+            
+        case ResourceType::Texture:
+            break;
+            
+        case ResourceType::Mesh:
+            break;
+        }
+        
+        return true;
+    }
+
+    ResourceType Resource::GetType() const
+    {
+        return static_cast<ResourceType>(_resourceId >> 32);
+    }
+
+    u32 Resource::GetTypeIndex() const
+    {
+        return static_cast<u32>(_resourceId);  
     }
 }

@@ -21,6 +21,7 @@ namespace Wrum
         // Must match MAX_POINT_LIGHTS in pbr.frag
         static constexpr u32 MaxPointLights = 16;
 
+        Shader() = default;
         Shader(const File& vertexShaderFile, const File& fragmentShaderFile);
         ~Shader();
 

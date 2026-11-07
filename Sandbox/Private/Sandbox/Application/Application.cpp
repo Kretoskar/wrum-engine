@@ -22,14 +22,15 @@
 #include "WrumCore/Rendering/Mesh/Primitives/Cube.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Plane.h"
 #include "WrumCore/Rendering/Mesh/Primitives/Sphere.h"
+#include "WrumCore/ResourceHandling/ResourceManager.h"
 #include "WrumCore/Window/UI.h"
 
 using namespace Wrum;
 
 void Sandbox::Application::Run()
 {
-    ArenaAllocator globalAppArena(1024 * 1024, "Global");
-    ArenaAllocator renderingArena(1024 * 1024, "Rendering");
+    ArenaAllocator globalAppArena(BIT_MEGA_BYTE(1), "Global");
+    ArenaAllocator renderingArena(BIT_MEGA_BYTE(1), "Rendering");
     
     Dispatcher::Init(globalAppArena);
     
@@ -45,6 +46,11 @@ void Sandbox::Application::Run()
     
     DebugRenderer* debugRenderer = ArenaAllocator::New<DebugRenderer>(renderingArena);
     debugRenderer->Init(renderingArena);
+    
+    ResourceManager* resourceManager = ArenaAllocator::New<ResourceManager>(globalAppArena);
+    
+    Resource* pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
+    pbrShaderResource->Load(*resourceManager);
 
     //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
     // Cube* cube = ArenaAllocator::New<Cube>(renderingArena, Color::PASTEL_RED);
@@ -66,10 +72,9 @@ void Sandbox::Application::Run()
     Texture* metallicMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-metal.png");
     Texture* normalMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-normal.png");
     
-    Shader* pbrShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/pbr.frag");
     Shader* simpleShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/vertexColor.frag");
     
-    PbrMaterial* pbrMaterial = ArenaAllocator::New<PbrMaterial>(renderingArena, pbrShader);
+    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, &pbrShaderResource->GetShader());
     pbrMaterial->diffuseMap = diffuseMap;
     pbrMaterial->roughnessMap = roughnessMap;
     pbrMaterial->metallicMap = metallicMap;

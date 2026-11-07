@@ -7,6 +7,7 @@ namespace Wrum
 {
     struct Material
     {
+        Material() = default;
         Material(Shader* shader) : BoundShader(shader) {}
         virtual ~Material() = default;
         
@@ -14,15 +15,6 @@ namespace Wrum
 
         void Bind();
 
-    protected:
-        virtual void doBind(Shader* shaderPtr) {}
-    };
-    
-    struct PbrMaterial : public Material
-    {
-        PbrMaterial(Shader* shader) : Material(shader) {}
-
-        // TODO: GUID system for detecting deletion etc
         Texture* diffuseMap= nullptr;
         Texture* roughnessMap = nullptr;
         Texture* metallicMap = nullptr;
@@ -31,8 +23,5 @@ namespace Wrum
         // Used when the corresponding map is not assigned.
         f32 metallic = 0.0f;
         f32 roughness = 0.5f;
-        
-    protected:
-        void doBind(Shader* shaderPtr) override;
     };
 }

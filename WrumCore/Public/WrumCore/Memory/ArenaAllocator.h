@@ -55,6 +55,7 @@ namespace Wrum
             return array;
         }
 
+        // for built-in types
         template<typename T, typename ... Args>
         static T* NewArrayBuiltIn(ArenaAllocator& arena, size_t count)
         {

@@ -67,3 +67,7 @@ union Tag32String
         str[4] = 0;
     }
 };
+
+#define BIT_KILO_BYTE(x) (x << 10)
+#define BIT_MEGA_BYTE(x) (x << 20)
+#define BIT_GIGA_BYTE(x) ((size_t)(x) << 30)

@@ -66,7 +66,7 @@ namespace Sandbox
     {
         ImVec2 DetailsWindowSize = ImGui::GetMainViewport()->Size;
         DetailsWindowSize.x /= 6;
-        DetailsWindowSize.y = (DetailsWindowSize.y / 4);
+        DetailsWindowSize.y = (DetailsWindowSize.y / 3);
 
         ImGuiWindowFlags flags = 0;
 

@@ -8,7 +8,7 @@ Wrum::ArenaAllocator::ArenaAllocator(u64 capacity)
     _objects[_id] = this;
 }
 
-Wrum::ArenaAllocator::ArenaAllocator(uint64_t capacity, HString tag)
+Wrum::ArenaAllocator::ArenaAllocator(u64 capacity, HString tag)
     : ArenaAllocator(capacity)
 {
     _tag = tag;
