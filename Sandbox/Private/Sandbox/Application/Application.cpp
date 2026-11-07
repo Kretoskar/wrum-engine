@@ -61,7 +61,7 @@ void Sandbox::Application::Run()
     modelArrowZ = Quat::FromRPY(0.0f, 0.0f, MathCore::DegToRad(-90.0f)).ToMat4();
     
     // TODO: collect texture memory data
-    Texture* texture = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic3-alb.png");
+    Texture* diffuseMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic3-alb.png");
     Texture* roughnessMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-rough.png");
     Texture* metallicMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-metal.png");
     Texture* normalMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-normal.png");
@@ -70,14 +70,16 @@ void Sandbox::Application::Run()
     Shader* simpleShader = ArenaAllocator::New<Shader>(renderingArena, "shaders/pbr.vert", "shaders/vertexColor.frag");
     
     PbrMaterial* pbrMaterial = ArenaAllocator::New<PbrMaterial>(renderingArena, pbrShader);
-    pbrMaterial->diffuseMap = texture;
+    pbrMaterial->diffuseMap = diffuseMap;
     pbrMaterial->roughnessMap = roughnessMap;
     pbrMaterial->metallicMap = metallicMap;
     pbrMaterial->normalMap = normalMap;
 
     Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShader);
     Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
-    renderer->PointLights = {
+    
+    renderer->PointLights = 
+    {
         {{1.5f, 2.0f, 1.5f}, {1.0f, 0.8f, 0.6f}, 15.0f},
         {{-1.0f, 1.0f, 0.0f}, {0.4f, 0.6f, 1.0f}, 8.0f}
     };

@@ -15,11 +15,11 @@ namespace Wrum
         void Cleanup();
 
     private:
-        unsigned _bufferWidth = 640;
-        unsigned _bufferHeight = 480;
-        unsigned _buffer = 0;
-        unsigned _colorTex = 0;
-        unsigned _depthBuffer = 0;
+        u32 _bufferWidth = 640;
+        u32 _bufferHeight = 480;
+        u32 _buffer = 0;
+        u32 _colorTex = 0;
+        u32 _depthBuffer = 0;
 
         bool CheckComplete();
     };

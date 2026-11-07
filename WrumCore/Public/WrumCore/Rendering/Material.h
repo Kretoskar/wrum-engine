@@ -20,10 +20,10 @@ namespace Wrum
     
     struct PbrMaterial : public Material
     {
-        PbrMaterial(Shader* shader) : Material(shader), diffuseMap(nullptr) {}
+        PbrMaterial(Shader* shader) : Material(shader) {}
 
         // TODO: GUID system for detecting deletion etc
-        Texture* diffuseMap;
+        Texture* diffuseMap= nullptr;
         Texture* roughnessMap = nullptr;
         Texture* metallicMap = nullptr;
         Texture* normalMap = nullptr;

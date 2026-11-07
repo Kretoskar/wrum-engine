@@ -10,9 +10,11 @@ uniform sampler2D diffuseMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D metallicMap;
 uniform sampler2D normalMap;
+
 uniform bool hasRoughnessMap;
 uniform bool hasMetallicMap;
 uniform bool hasNormalMap;
+
 uniform vec3 cameraPos;
 uniform float metallic;
 uniform float roughness;
@@ -99,7 +101,7 @@ void main()
     vec4 diffuse = texture(diffuseMap, texUV);
     vec3 albedo = pow(diffuse.rgb, vec3(2.2));
 	
-    // Material maps contain linear data; only albedo needs gamma decoding.
+    // Material maps contain linear data. Only albedo needs gamma decoding.
     float surfaceMetallic = clamp(hasMetallicMap ? texture(metallicMap, texUV).r : metallic, 0.0, 1.0);
     float surfaceRoughness = clamp(hasRoughnessMap ? texture(roughnessMap, texUV).r : roughness, 0.05, 1.0);
 	
