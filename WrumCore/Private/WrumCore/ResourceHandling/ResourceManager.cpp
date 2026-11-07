@@ -62,6 +62,13 @@ namespace Wrum
         return &shader;
     }
 
+    Shader* ResourceManager::GetShader(ResourceID shaderId)
+    {
+        ASSERT(shaderId.GetType() == ResourceType::Shader, "Invalid resource type")
+        
+        return &_shaders[shaderId.GetTypeIdx()];
+    }
+
     bool Resource::Load(ResourceManager& manager)
     {
         switch (_resourceId.GetType()) 

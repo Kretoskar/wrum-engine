@@ -2,16 +2,22 @@
 #include <map>
 
 #include "Shader.h"
+#include "WrumCore/ResourceHandling/ResourceID.h"
 
 namespace Wrum
 {
+    class ResourceManager;
+
     struct Material
     {
         Material() = default;
-        Material(Shader* shader) : BoundShader(shader) {}
+        Material(ResourceID shaderResourceID, ResourceManager* resourceManager)
+            : BoundShaderResourceID(shaderResourceID), ResourceManager(resourceManager) {}
         virtual ~Material() = default;
         
-        Shader* BoundShader;
+        Shader* GetShader() const;
+        
+        ResourceID BoundShaderResourceID;
 
         void Bind();
 
@@ -23,5 +29,7 @@ namespace Wrum
         // Used when the corresponding map is not assigned.
         f32 metallic = 0.0f;
         f32 roughness = 0.5f;
+        
+        ResourceManager* ResourceManager = nullptr;
     };
 }
