@@ -72,6 +72,8 @@ union Tag32String
 #define BIT_MEGA_BYTE(x) (x << 20)
 #define BIT_GIGA_BYTE(x) ((size_t)(x) << 30)
 
+#define U32_MAX (std::numeric_limits<u32>::max)()
+
 #if defined(_MSC_VER)
     #define FORCE_INLINE __forceinline
 #elif defined(__GNUC__) || defined(__clang__)
