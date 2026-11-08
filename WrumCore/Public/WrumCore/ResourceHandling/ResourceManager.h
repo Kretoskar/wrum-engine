@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "WrumCore/ResourceHandling/ResourceID.h"
+#include "WrumCore/Containers/StaticVersionedArray.h"
 
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Shader.h"
@@ -26,15 +27,10 @@ namespace Wrum
         Shader* GetShader(ResourceID shaderId);
         
     private:
-        Shader _shaders[MaxResourcesPerType];
-        Material _materials[MaxResourcesPerType];
-        Texture _textures[MaxResourcesPerType];
-        Mesh _meshes[MaxResourcesPerType];
-        
-        u32 _shadersCount = 0;
-        u32 _materialsCount = 0;
-        u32 _texturesCount = 0;
-        u32 _meshesCount = 0;
+        StaticVersionedArray<Shader, MaxResourcesPerType> _shaders;
+        StaticVersionedArray<Material, MaxResourcesPerType> _materials;
+        StaticVersionedArray<Texture, MaxResourcesPerType> _textures;
+        StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
         ArenaAllocator _resourcesArena = ArenaAllocator(BIT_KILO_BYTE(10), "Resources");
     };

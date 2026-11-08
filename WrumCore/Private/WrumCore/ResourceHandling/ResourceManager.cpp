@@ -5,8 +5,14 @@ namespace Wrum
 {
     Resource* ResourceManager::MakeShaderResource(HString vertexPath, HString fragmentPath)
     {
-        Resource* resource = 
-            ArenaAllocator::New<Resource>(_resourcesArena, vertexPath, fragmentPath, NewResourceID(ResourceType::Shader));
+        ResourceID resourceId = NewResourceID(ResourceType::Shader);
+        if (!resourceId.IsValid())
+        {
+            return nullptr;
+        }
+
+        Resource* resource =
+            ArenaAllocator::New<Resource>(_resourcesArena, vertexPath, fragmentPath, resourceId);
         
         return resource;
     }
@@ -16,32 +22,28 @@ namespace Wrum
         switch (type)
         {
         case ResourceType::Shader:
-        #if AB_DEBUG
-            ASSERT(_shadersCount < 0xFFFFFFFF, "Reached max shaders count")
-        #endif
-            _shadersCount++;
-            return ResourceID(type, _shadersCount - 1);
+        {
+            auto handle = _shaders.Add();
+            return handle.IsValid() ? ResourceID(type, handle.Version, handle.Index) : ResourceID();
+        }
         
         case ResourceType::Material:
-        #if AB_DEBUG
-            ASSERT(_materialsCount < 0xFFFFFFFF, "Reached max materials count")
-        #endif
-            _materialsCount++;
-            return ResourceID(type, _materialsCount - 1);
+        {
+            auto handle = _materials.Add();
+            return handle.IsValid() ? ResourceID(type, handle.Version, handle.Index) : ResourceID();
+        }
                 
         case ResourceType::Texture:
-        #if AB_DEBUG
-            ASSERT(_texturesCount < 0xFFFFFFFF, "Reached max textures count")
-        #endif
-            _texturesCount++;
-            return ResourceID(type, _texturesCount - 1);
+        {
+            auto handle = _textures.Add();
+            return handle.IsValid() ? ResourceID(type, handle.Version, handle.Index) : ResourceID();
+        }
                 
         case ResourceType::Mesh:
-        #if AB_DEBUG
-            ASSERT(_meshesCount < 0xFFFFFFFF, "Reached max meshes count")
-        #endif
-            _meshesCount++;
-            return ResourceID(ResourceType::Mesh, _meshesCount - 1);
+        {
+            auto handle = _meshes.Add();
+            return handle.IsValid() ? ResourceID(type, handle.Version, handle.Index) : ResourceID();
+        }
         }
             
         return ResourceID();
@@ -49,24 +51,28 @@ namespace Wrum
 
     Shader* ResourceManager::LoadShader(const Resource& resource)
     {
-        ASSERT(resource.GetResourceId().GetType() == ResourceType::Shader, "Invalid resource type")
-        
-        u32 idx = resource.GetResourceId().GetTypeIdx();
-        Shader& shader = _shaders[idx];
+        Shader* shader = GetShader(resource.GetResourceId());
+        if (shader == nullptr)
+        {
+            return nullptr;
+        }
         
         File vertFile(resource.GetPath1().Get());
         File fragFile(resource.GetPath2().Get());
         
-        shader.Create(vertFile, fragFile);
+        shader->Create(vertFile, fragFile);
         
-        return &shader;
+        return shader;
     }
 
     Shader* ResourceManager::GetShader(ResourceID shaderId)
     {
-        ASSERT(shaderId.GetType() == ResourceType::Shader, "Invalid resource type")
-        
-        return &_shaders[shaderId.GetTypeIdx()];
+        if (!shaderId.IsValid() || shaderId.GetType() != ResourceType::Shader)
+        {
+            return nullptr;
+        }
+
+        return _shaders.Get(shaderId.GetTypeIdx(), shaderId.GetVersion());
     }
 
     bool Resource::Load(ResourceManager& manager)

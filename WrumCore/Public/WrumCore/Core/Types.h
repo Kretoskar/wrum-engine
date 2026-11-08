@@ -48,6 +48,26 @@ static double SafeCast_double(unsigned long long i)
     return static_cast<double>(i);
 }
 
+#define MAKE_TAG16(a, b) u16(u16(a) | u16(b) << 8)
+union Tag16String
+{
+    char str[3] = {0};
+    u16 tag;
+
+    Tag16String(const char* s, u32 length)
+    {
+        length = length > 2 ? 2 : length;
+        for (u32 i = 0; i < length; ++i)
+            str[i] = s[i];
+    }
+
+    Tag16String(u16 t)
+    {
+        tag = t;
+        str[2] = 0;
+    }
+};
+
 #define MAKE_TAG32(a, b, c, d) u32(u32(a) | u32(b) << 8 | u32(c) << 16 | u32(d) << 24)
 union Tag32String
 {
