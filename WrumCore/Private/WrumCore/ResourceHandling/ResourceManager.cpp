@@ -3,18 +3,22 @@
 
 namespace Wrum
 {
-    Resource* ResourceManager::MakeShaderResource(HString vertexPath, HString fragmentPath)
+    ResourceID ResourceManager::MakeShaderResource(HString vertexPath, HString fragmentPath)
     {
         ResourceID resourceId = NewResourceID(ResourceType::Shader);
         if (!resourceId.IsValid())
         {
-            return nullptr;
+            return {};
         }
 
-        Resource* resource =
-            ArenaAllocator::New<Resource>(_resourcesArena, vertexPath, fragmentPath, resourceId);
+        u32 resourceIdx = resourceId.GetTypeIdx();
+        u16 resourceVersion = resourceId.GetVersion();
         
-        return resource;
+        
+        Resource* resource = _shadersResources.Get(resourceIdx, resourceVersion);
+        *resource = Resource(vertexPath, fragmentPath, resourceId);
+        
+        return resourceId;
     }
 
     ResourceID ResourceManager::NewResourceID(ResourceType type)
@@ -24,7 +28,24 @@ namespace Wrum
         case ResourceType::Shader:
         {
             auto handle = _shaders.Add();
-            return handle.IsValid() ? ResourceID(type, handle.Version, handle.Index) : ResourceID();
+            if (!handle.IsValid())
+            {
+                return {};
+            }
+
+            // Both arrays must resolve the same resource ID.
+            auto resourceHandle = _shadersResources.Add();
+            if (!resourceHandle.IsValid() || resourceHandle.Index != handle.Index || resourceHandle.Version != handle.Version)
+            {
+                _shaders.Remove(handle.Index, handle.Version);
+                if (resourceHandle.IsValid())
+                {
+                    _shadersResources.Remove(resourceHandle.Index, resourceHandle.Version);
+                }
+                return {};
+            }
+
+            return ResourceID(type, handle.Version, handle.Index);
         }
         
         case ResourceType::Material:
@@ -49,16 +70,19 @@ namespace Wrum
         return ResourceID();
     }
 
-    Shader* ResourceManager::LoadShader(const Resource& resource)
+    Shader* ResourceManager::LoadShader(ResourceID resourceID)
     {
-        Shader* shader = GetShader(resource.GetResourceId());
+        Shader* shader = GetShader(resourceID);
+        
         if (shader == nullptr)
         {
             return nullptr;
         }
         
-        File vertFile(resource.GetPath1().Get());
-        File fragFile(resource.GetPath2().Get());
+        Resource* resource = _shadersResources.Get(resourceID.GetTypeIdx(), resourceID.GetVersion());
+        
+        File vertFile(resource->GetPath1().Get());
+        File fragFile(resource->GetPath2().Get());
         
         shader->Create(vertFile, fragFile);
         
@@ -73,26 +97,5 @@ namespace Wrum
         }
 
         return _shaders.Get(shaderId.GetTypeIdx(), shaderId.GetVersion());
-    }
-
-    bool Resource::Load(ResourceManager& manager)
-    {
-        switch (_resourceId.GetType()) 
-        {
-        case ResourceType::Shader:
-            _shader = manager.LoadShader(*this);
-            return _shader != nullptr;
-            
-        case ResourceType::Material:
-            break;
-            
-        case ResourceType::Texture:
-            break;
-            
-        case ResourceType::Mesh:
-            break;
-        }
-        
-        return true;
     }
 }

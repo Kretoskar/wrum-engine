@@ -49,11 +49,11 @@ void Sandbox::Application::Run()
     
     ResourceManager* resourceManager = ArenaAllocator::New<ResourceManager>(globalAppArena);
     
-    Resource* pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
-    pbrShaderResource->Load(*resourceManager);
+    ResourceID pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
+    resourceManager->LoadShader(pbrShaderResource);
 
-    Resource* simpleShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/vertexColor.frag");
-    simpleShaderResource->Load(*resourceManager);
+    ResourceID simpleShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/vertexColor.frag");
+    resourceManager->LoadShader(simpleShaderResource);
 
     //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
     // Cube* cube = ArenaAllocator::New<Cube>(renderingArena, Color::PASTEL_RED);
@@ -76,13 +76,13 @@ void Sandbox::Application::Run()
     Texture* normalMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-normal.png");
     
     
-    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, pbrShaderResource->GetResourceId(), resourceManager);
+    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, pbrShaderResource, resourceManager);
     pbrMaterial->diffuseMap = diffuseMap;
     pbrMaterial->roughnessMap = roughnessMap;
     pbrMaterial->metallicMap = metallicMap;
     pbrMaterial->normalMap = normalMap;
 
-    Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShaderResource->GetResourceId(), resourceManager);
+    Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShaderResource, resourceManager);
     Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
     
     renderer->PointLights = 

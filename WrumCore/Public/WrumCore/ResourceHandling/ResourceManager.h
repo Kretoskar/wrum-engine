@@ -12,17 +12,15 @@ namespace Wrum
     constexpr u32 MaxResourcesPerType = 128;
     constexpr u32 ResourcesTypesNum = 4;
     
-    struct Resource;
-    
     class ResourceManager
     {
     public:
         ResourceManager() = default;
-        Resource* MakeShaderResource(HString vertexPath, HString fragmentPath);
+        ResourceID MakeShaderResource(HString vertexPath, HString fragmentPath);
         
         ResourceID NewResourceID(ResourceType type);
         
-        Shader* LoadShader(const Resource& resource);
+        Shader* LoadShader(ResourceID resourceID);
     
         Shader* GetShader(ResourceID shaderId);
         
@@ -32,47 +30,35 @@ namespace Wrum
         StaticVersionedArray<Texture, MaxResourcesPerType> _textures;
         StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
-        ArenaAllocator _resourcesArena = ArenaAllocator(BIT_KILO_BYTE(10), "Resources");
-    };
-    
-    struct Resource
-    {
-        Resource() = default;
-        Resource(HString path1, HString path2, ResourceID resourceId) : _resourceId(resourceId), _path1(path1), _path2(path2) {};
-        virtual ~Resource() = default;
-        
-        ResourceID GetResourceId() const
+        struct Resource
         {
-            return _resourceId;
-        }
+            Resource() = default;
+            Resource(HString path1, HString path2, ResourceID resourceId) 
+                : _resourceId(resourceId), _path1(path1), _path2(path2) {};
+            virtual ~Resource() = default;
         
-        bool IsLoaded() const
-        {
-            return _isLoaded;
-        }
+            ResourceID GetResourceId() const
+            {
+                return _resourceId;
+            }
         
-        bool Load(ResourceManager& manager);
+            bool IsLoaded() const
+            {
+                return _isLoaded;
+            }
         
-        HString GetPath1() const { return _path1; }
-        HString GetPath2() const { return _path2; }
+            HString GetPath1() const { return _path1; }
+            HString GetPath2() const { return _path2; }
         
-        Shader& GetShader() const
-        {
-            ASSERT(_shader != nullptr, "Trying to retrieve unloaded shader");
-            return *_shader;
-        }
+        private:
+            ResourceID _resourceId;
+            bool _isLoaded = false;
         
-    private:
-        ResourceID _resourceId;
-        bool _isLoaded = false;
+            // 2 paths for shaders (frag and vert)
+            HString _path1;
+            HString _path2;
+        };
         
-        // 2 paths for shaders (frag and vert)
-        HString _path1;
-        HString _path2;
-        
-        Shader* _shader = nullptr;
-        Material* _material = nullptr;
-        Texture* _texture = nullptr;
-        Mesh* _mesh = nullptr;
+        StaticVersionedArray<Resource, MaxResourcesPerType> _shadersResources;
     };
 }
