@@ -20,6 +20,23 @@ namespace Wrum
         return resourceId;
     }
 
+    ResourceID ResourceManager::MakeTextureResource(HString path)
+    {
+        ResourceID resourceId = NewResourceID(ResourceType::Texture);
+        if (!IsResourceIDValid(resourceId))
+        {
+            return {};
+        }
+
+        u32 resourceIdx = GetResourceIDTypeIdx(resourceId);
+        u16 resourceVersion = GetResourceIDVersion(resourceId);
+        
+        Resource* resource = _texturesResources.Get(resourceIdx, resourceVersion);
+        *resource = Resource(path, path, resourceId);
+        
+        return resourceId;
+    }
+
     ResourceID ResourceManager::NewResourceID(ResourceType type)
     {
         switch (type)
@@ -56,6 +73,23 @@ namespace Wrum
             case ResourceType::Texture:
             {
                 auto handle = _textures.Add();
+                if (!handle.IsValid())
+                {
+                    return {};
+                }
+                
+                // Both arrays must resolve the same resource ID.
+                auto resourceHandle = _texturesResources.Add();
+                if (!resourceHandle.IsValid() || resourceHandle.Index != handle.Index || resourceHandle.Version != handle.Version)
+                {
+                    _textures.Remove(handle.Index, handle.Version);
+                    if (resourceHandle.IsValid())
+                    {
+                        _texturesResources.Remove(resourceHandle.Index, resourceHandle.Version);
+                    }
+                    return {};
+                }
+                
                 return handle.IsValid() ? MakeResourceID(type, SafeCast_uint16(handle.Version), handle.Index) : ResourceID();
             }
                     
@@ -88,13 +122,38 @@ namespace Wrum
         return shader;
     }
 
-    Shader* ResourceManager::GetShader(ResourceID shaderId)
+    Shader* ResourceManager::GetShader(ResourceID resourceID)
     {
-        if (!IsResourceIDValid(shaderId) || GetResourceIDType(shaderId) != ResourceType::Shader)
+        if (!IsResourceIDValid(resourceID) || GetResourceIDType(resourceID) != ResourceType::Shader)
         {
             return nullptr;
         }
 
-        return _shaders.Get(GetResourceIDTypeIdx(shaderId), GetResourceIDVersion(shaderId));
+        return _shaders.Get(GetResourceIDTypeIdx(resourceID), GetResourceIDVersion(resourceID));
+    }
+
+    Texture* ResourceManager::LoadTexture(ResourceID resourceID)
+    {
+        Texture* texture = GetTexture(resourceID);
+        
+        if (texture == nullptr)
+        {
+            return nullptr;
+        }
+        
+        Resource* resource = _texturesResources.Get(GetResourceIDTypeIdx(resourceID), GetResourceIDVersion(resourceID));
+        *texture = Texture(resource->GetPath1()); 
+        
+        return texture;
+    }
+
+    Texture* ResourceManager::GetTexture(ResourceID resourceID)
+    {
+        if (!IsResourceIDValid(resourceID) || GetResourceIDType(resourceID) != ResourceType::Texture)
+        {
+            return nullptr;
+        }
+
+        return _textures.Get(GetResourceIDTypeIdx(resourceID), GetResourceIDVersion(resourceID));
     }
 }

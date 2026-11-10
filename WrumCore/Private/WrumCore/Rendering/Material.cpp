@@ -5,47 +5,46 @@
 
 namespace Wrum
 {
-    Shader* Material::GetShader() const
-    {
-        return ResourceManager->GetShader(BoundShaderResourceID);
-    }
-
     void Material::Bind()
     {
-        if (ResourceManager && IsResourceIDValid(BoundShaderResourceID))
+        if (IsResourceIDValid(BoundShaderResourceID))
         {
             ASSERT(GetResourceIDType(BoundShaderResourceID) == ResourceType::Shader, "Trying to bind material with invalid shader resource ID")
             
-            Shader* shader = GetShader();
+            Shader* shader = ResourceManager::GetInstance()->GetShader(BoundShaderResourceID);
             
             shader->Bind();
             
             shader->SetUniform1f("metallic", metallic);
             shader->SetUniform1f("roughness", roughness);
-            shader->SetUniform1i("hasRoughnessMap", roughnessMap != nullptr);
-            shader->SetUniform1i("hasMetallicMap", metallicMap != nullptr);
-            shader->SetUniform1i("hasNormalMap", normalMap != nullptr);
+            shader->SetUniform1i("hasRoughnessMap", roughnessMapResource != INVALID_RESOURCE_ID);
+            shader->SetUniform1i("hasMetallicMap", metallicMapResource != INVALID_RESOURCE_ID);
+            shader->SetUniform1i("hasNormalMap", normalMapResource != INVALID_RESOURCE_ID);
 
-            if (diffuseMap)
+            if (IsResourceIDValid(diffuseMapResource))
             {
-                shader->AssignDiffuseMap(*diffuseMap);   
+                Texture* texture = ResourceManager::GetInstance()->GetTexture(diffuseMapResource);
+                shader->AssignDiffuseMap(*texture);
             }
 
-            if (roughnessMap)
+            if (IsResourceIDValid(roughnessMapResource))
             {
-                roughnessMap->Bind(1);
+                Texture* texture = ResourceManager::GetInstance()->GetTexture(roughnessMapResource);
+                texture->Bind(1);
                 shader->SetUniform1i("roughnessMap", 1);
             }
 
-            if (metallicMap)
+            if (IsResourceIDValid(metallicMapResource))
             {
-                metallicMap->Bind(2);
+                Texture* texture = ResourceManager::GetInstance()->GetTexture(metallicMapResource);
+                texture->Bind(2);
                 shader->SetUniform1i("metallicMap", 2);
             }
 
-            if (normalMap)
+            if (IsResourceIDValid(normalMapResource))
             {
-                normalMap->Bind(3);
+                Texture* texture = ResourceManager::GetInstance()->GetTexture(normalMapResource);
+                texture->Bind(3);
                 shader->SetUniform1i("normalMap", 3);
             }
         }

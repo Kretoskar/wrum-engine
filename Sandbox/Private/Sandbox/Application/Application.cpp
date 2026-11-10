@@ -48,6 +48,7 @@ void Sandbox::Application::Run()
     debugRenderer->Init(renderingArena);
     
     ResourceManager* resourceManager = ArenaAllocator::New<ResourceManager>(globalAppArena);
+    ResourceManager::SetInstance(resourceManager);
     
     ResourceID pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
     resourceManager->LoadShader(pbrShaderResource);
@@ -70,19 +71,22 @@ void Sandbox::Application::Run()
     modelArrowZ = Quat::FromRPY(0.0f, 0.0f, MathCore::DegToRad(-90.0f)).ToMat4();
     
     // TODO: collect texture memory data
-    Texture* diffuseMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic3-alb.png");
-    Texture* roughnessMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-rough.png");
-    Texture* metallicMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-metal.png");
-    Texture* normalMap = ArenaAllocator::New<Texture>(renderingArena, "../res/textures/scuffed-plastic-normal.png");
+    ResourceID diffuseMapResource = resourceManager->MakeTextureResource("../res/textures/scuffed-plastic3-alb.png");
+    ResourceID roughnessMapResource = resourceManager->MakeTextureResource("../res/textures/scuffed-plastic-rough.png");
+    ResourceID metallicMapResource = resourceManager->MakeTextureResource("../res/textures/scuffed-plastic-metal.png");
+    ResourceID normalMapResource = resourceManager->MakeTextureResource("../res/textures/scuffed-plastic-normal.png");
+    resourceManager->LoadTexture(diffuseMapResource);
+    resourceManager->LoadTexture(roughnessMapResource);
+    resourceManager->LoadTexture(metallicMapResource);
+    resourceManager->LoadTexture(normalMapResource);
     
-    
-    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, pbrShaderResource, resourceManager);
-    pbrMaterial->diffuseMap = diffuseMap;
-    pbrMaterial->roughnessMap = roughnessMap;
-    pbrMaterial->metallicMap = metallicMap;
-    pbrMaterial->normalMap = normalMap;
+    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, pbrShaderResource);
+    pbrMaterial->diffuseMapResource = diffuseMapResource;
+    pbrMaterial->roughnessMapResource = roughnessMapResource;
+    pbrMaterial->metallicMapResource = metallicMapResource;
+    pbrMaterial->normalMapResource = normalMapResource;
 
-    Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShaderResource, resourceManager);
+    Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShaderResource);
     Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
     
     renderer->PointLights = 

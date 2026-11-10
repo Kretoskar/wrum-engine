@@ -15,15 +15,27 @@ namespace Wrum
     class ResourceManager
     {
     public:
+        
         ResourceManager() = default;
+        
         ResourceID MakeShaderResource(HString vertexPath, HString fragmentPath);
+        ResourceID MakeTextureResource(HString path);
         
         ResourceID NewResourceID(ResourceType type);
         
         Shader* LoadShader(ResourceID resourceID);
-        Shader* GetShader(ResourceID shaderId);
+        [[nodiscard]] Shader* GetShader(ResourceID resourceID);
+        
+        Texture* LoadTexture(ResourceID resourceID);
+        [[nodiscard]] Texture* GetTexture(ResourceID resourceID);
+        
+        // split to set and get to find where the instance is set easier
+        static FORCE_INLINE ResourceManager* SetInstance(ResourceManager* instance) { return _instance = instance; }
+        static [[nodiscard]] FORCE_INLINE ResourceManager* GetInstance() { return _instance; }
         
     private:
+        static inline ResourceManager* _instance;
+        
         struct Resource
         {
             Resource() = default;
@@ -60,5 +72,6 @@ namespace Wrum
         StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
         StaticVersionedArray<Resource, MaxResourcesPerType> _shadersResources;
+        StaticVersionedArray<Resource, MaxResourcesPerType> _texturesResources;
     };
 }

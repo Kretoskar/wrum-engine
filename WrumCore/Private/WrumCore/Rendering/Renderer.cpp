@@ -2,11 +2,12 @@
 #include "WrumCore/Rendering/Renderer.h"
 
 #include "WrumCore/Rendering/Camera.h"
+#include "WrumCore/ResourceHandling/ResourceManager.h"
 
 void Wrum::Renderer::DrawMesh(Mesh& mesh, Material& material, const Mat4& transform)
 {
     material.Bind();
-    Shader* shader = material.GetShader();
+    Shader* shader = ResourceManager::GetInstance()->GetShader(material.BoundShaderResourceID);
     
     shader->SetModelMatrix(transform);
     shader->SetCameraPosition(_camera->Position);

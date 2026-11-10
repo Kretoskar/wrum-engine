@@ -14,7 +14,7 @@ namespace Wrum
     
     typedef u64 ResourceID;
     
-    constexpr u64 InvalidResourceID = static_cast<u64>(MAKE_TAG16('I', 'N')) << 48 | 0xFFFFFFFF;
+    constexpr u64 INVALID_RESOURCE_ID = static_cast<u64>(MAKE_TAG16('I', 'N')) << 48 | 0xFFFFFFFF;
     
     [[nodiscard]] FORCE_INLINE ResourceID MakeResourceID(ResourceType type, u16 version, u32 typeIdx)
     {
@@ -27,6 +27,6 @@ namespace Wrum
     
     [[nodiscard]] FORCE_INLINE bool IsResourceIDValid(ResourceID ID)
     {
-        return ID != InvalidResourceID && GetResourceIDVersion(ID) != 0;
+        return ID != INVALID_RESOURCE_ID && GetResourceIDVersion(ID) != 0;
     }
 }

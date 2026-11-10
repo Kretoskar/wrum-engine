@@ -11,25 +11,21 @@ namespace Wrum
     struct Material
     {
         Material() = default;
-        Material(ResourceID shaderResourceID, ResourceManager* resourceManager)
-            : BoundShaderResourceID(shaderResourceID), ResourceManager(resourceManager) {}
+        Material(ResourceID shaderResourceID)
+            : BoundShaderResourceID(shaderResourceID) {}
         virtual ~Material() = default;
         
-        Shader* GetShader() const;
-        
-        ResourceID BoundShaderResourceID;
-
         void Bind();
+        
+        ResourceID BoundShaderResourceID = INVALID_RESOURCE_ID;
 
-        Texture* diffuseMap= nullptr;
-        Texture* roughnessMap = nullptr;
-        Texture* metallicMap = nullptr;
-        Texture* normalMap = nullptr;
+        ResourceID diffuseMapResource = INVALID_RESOURCE_ID;
+        ResourceID roughnessMapResource = INVALID_RESOURCE_ID;
+        ResourceID metallicMapResource = INVALID_RESOURCE_ID;
+        ResourceID normalMapResource = INVALID_RESOURCE_ID;
 
         // Used when the corresponding map is not assigned.
         f32 metallic = 0.0f;
         f32 roughness = 0.5f;
-        
-        ResourceManager* ResourceManager = nullptr;
     };
 }
