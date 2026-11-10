@@ -12,9 +12,9 @@ namespace Wrum
 
     void Material::Bind()
     {
-        if (ResourceManager && BoundShaderResourceID.IsValid())
+        if (ResourceManager && IsResourceIDValid(BoundShaderResourceID))
         {
-            ASSERT(BoundShaderResourceID.GetType() == ResourceType::Shader, "Trying to bind material with invalid shader resource ID")
+            ASSERT(GetResourceIDType(BoundShaderResourceID) == ResourceType::Shader, "Trying to bind material with invalid shader resource ID")
             
             Shader* shader = GetShader();
             

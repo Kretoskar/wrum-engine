@@ -12,23 +12,21 @@ namespace Wrum
         Mesh = MAKE_TAG16('M', 'S')
     };
     
-    // 16 bits type (2 chars) followed by 16 bits version and 32 bits type index
-    struct ResourceID
+    typedef u64 ResourceID;
+    
+    constexpr u64 InvalidResourceID = static_cast<u64>(MAKE_TAG16('I', 'N')) << 48 | 0xFFFFFFFF;
+    
+    [[nodiscard]] FORCE_INLINE ResourceID MakeResourceID(ResourceType type, u16 version, u32 typeIdx)
     {
-        u64 ID;
-        
-        static constexpr u64 InvalidID = static_cast<u64>(MAKE_TAG16('I', 'N')) << 48 | 0xFFFFFFFF;
-        
-        ResourceID() : ID(InvalidID) {}
-        ResourceID(ResourceType type, u16 version, u32 typeIdx)
-            : ID(static_cast<u64>(type) << 48 | static_cast<u64>(version) << 32 | typeIdx) {}
-        
-        FORCE_INLINE bool IsValid() const { return ID != InvalidID && GetVersion() != 0; }
-        [[nodiscard]] FORCE_INLINE ResourceType GetType() const { return static_cast<ResourceType>(ID >> 48); }
-        [[nodiscard]] FORCE_INLINE u16 GetVersion() const { return static_cast<u16>(ID >> 32); }
-        [[nodiscard]] FORCE_INLINE u32 GetTypeIdx() const { return static_cast<u32>(ID); }
-        
-        bool operator==(const ResourceID& other) const { return ID == other.ID; }
-        bool operator!=(const ResourceID& other) const { return ID != other.ID; }
-    };
+        return static_cast<u64>(type) << 48 | static_cast<u64>(version) << 32 | typeIdx;
+    }
+    
+    [[nodiscard]] FORCE_INLINE ResourceType GetResourceIDType(ResourceID ID)    {  return static_cast<ResourceType>(ID >> 48);  }
+    [[nodiscard]] FORCE_INLINE u16 GetResourceIDVersion(ResourceID ID)          {  return static_cast<u16>(ID >> 32);           }
+    [[nodiscard]] FORCE_INLINE u32 GetResourceIDTypeIdx(ResourceID ID)          {  return static_cast<u32>(ID);                 }
+    
+    [[nodiscard]] FORCE_INLINE bool IsResourceIDValid(ResourceID ID)
+    {
+        return ID != InvalidResourceID && GetResourceIDVersion(ID) != 0;
+    }
 }

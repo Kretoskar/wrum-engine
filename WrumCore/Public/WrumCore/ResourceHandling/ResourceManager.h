@@ -21,20 +21,15 @@ namespace Wrum
         ResourceID NewResourceID(ResourceType type);
         
         Shader* LoadShader(ResourceID resourceID);
-    
         Shader* GetShader(ResourceID shaderId);
         
     private:
-        StaticVersionedArray<Shader, MaxResourcesPerType> _shaders;
-        StaticVersionedArray<Material, MaxResourcesPerType> _materials;
-        StaticVersionedArray<Texture, MaxResourcesPerType> _textures;
-        StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
-        
         struct Resource
         {
             Resource() = default;
             Resource(HString path1, HString path2, ResourceID resourceId) 
                 : _resourceId(resourceId), _path1(path1), _path2(path2) {};
+            
             virtual ~Resource() = default;
         
             ResourceID GetResourceId() const
@@ -58,6 +53,11 @@ namespace Wrum
             HString _path1;
             HString _path2;
         };
+        
+        StaticVersionedArray<Shader, MaxResourcesPerType> _shaders;
+        StaticVersionedArray<Material, MaxResourcesPerType> _materials;
+        StaticVersionedArray<Texture, MaxResourcesPerType> _textures;
+        StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
         StaticVersionedArray<Resource, MaxResourcesPerType> _shadersResources;
     };
