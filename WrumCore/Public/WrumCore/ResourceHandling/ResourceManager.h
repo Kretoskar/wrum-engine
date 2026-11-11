@@ -40,7 +40,7 @@ namespace Wrum
         {
             Resource() = default;
             Resource(HString path1, HString path2, ResourceID resourceId) 
-                : _resourceId(resourceId), _path1(path1), _path2(path2) {};
+                : IsCreated(true), _resourceId(resourceId), _path1(path1), _path2(path2) {};
             
             virtual ~Resource() = default;
         
@@ -49,22 +49,21 @@ namespace Wrum
                 return _resourceId;
             }
         
-            bool IsLoaded() const
-            {
-                return _isLoaded;
-            }
-        
             HString GetPath1() const { return _path1; }
             HString GetPath2() const { return _path2; }
         
+            bool IsCreated = false;
+            bool IsLoaded = false;
+            
         private:
             ResourceID _resourceId;
-            bool _isLoaded = false;
         
             // 2 paths for shaders (frag and vert)
             HString _path1;
             HString _path2;
         };
+        
+        Resource* GetResource (ResourceID resourceID);
         
         StaticVersionedArray<Shader, MaxResourcesPerType> _shaders;
         StaticVersionedArray<Material, MaxResourcesPerType> _materials;
@@ -72,6 +71,8 @@ namespace Wrum
         StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
         StaticVersionedArray<Resource, MaxResourcesPerType> _shadersResources;
+        StaticVersionedArray<Resource, MaxResourcesPerType> _materialsResources;
         StaticVersionedArray<Resource, MaxResourcesPerType> _texturesResources;
+        StaticVersionedArray<Resource, MaxResourcesPerType> _meshesResources;
     };
 }
