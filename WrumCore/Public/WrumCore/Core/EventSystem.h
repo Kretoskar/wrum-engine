@@ -74,11 +74,11 @@ namespace Wrum
     
     namespace MouseButtonEvent
     {
-        static HString Type(int button, int action, int mods)
+        static HString Type(i32 button, i32 action, i32 mods)
         {
             static std::map<unsigned, HString> lookupMap;
 
-            const unsigned lookupKey = button * 100 + action * 10 + mods;
+            const u32 lookupKey = button * 100 + action * 10 + mods;
             if (lookupMap.count(lookupKey) == 0)
             {
                 char buffer[100];
@@ -93,11 +93,11 @@ namespace Wrum
 
     namespace KeyboardEvent
     {
-        static HString Type(int key, int action, int mods)
+        static HString Type(i32 key, i32 action, i32 mods)
         {
-            static std::map<unsigned, HString> lookupMap;
+            static std::map<u32, HString> lookupMap;
 
-            const unsigned lookupKey = key * 100 + action * 10 + mods;
+            const u32 lookupKey = key * 100 + action * 10 + mods;
             if (lookupMap.count(lookupKey) == 0)
             {
                 char buffer[100];
@@ -114,7 +114,7 @@ namespace Wrum
     {
         struct MousePositionEventPayload
         {
-            double posX, posY;
+            f64 posX, posY;
         };
 
         static HString Type()

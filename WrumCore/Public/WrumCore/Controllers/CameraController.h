@@ -23,9 +23,9 @@ namespace Wrum
         void Init(Camera* camera) override;
         void Update() override;
         
-        float Speed = 0.01f;
-        float SprintMultiplier = 5.0f;
-        float Sensitivity = 100.0f;
+        f32 Speed = 0.01f;
+        f32 SprintMultiplier = 5.0f;
+        f32 Sensitivity = 100.0f;
         
     private:
         void OnMouseMoved(void* payload);

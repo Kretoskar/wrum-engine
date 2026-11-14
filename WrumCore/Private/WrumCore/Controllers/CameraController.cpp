@@ -74,15 +74,15 @@ namespace Wrum
             return;
         }
 
-        const double posX = *static_cast<double*>(payload);
-        const double posY = *reinterpret_cast<double*>(static_cast<char*>(payload) + sizeof(double));
+        const f64 posX = *static_cast<double*>(payload);
+        const f64 posY = *reinterpret_cast<double*>(static_cast<char*>(payload) + sizeof(double));
 
         const CameraSettings& settings = _camera->GetCameraSettings();
-        double height = settings._height;
-        double width = settings._width;
+        f64 height = settings._height;
+        f64 width = settings._width;
         
-        const float rotX = Sensitivity * static_cast<float>(posY - (height / 2)) / height;
-        const float rotY = Sensitivity * static_cast<float>(posX - (width / 2)) / width;
+        const f32 rotX = Sensitivity * static_cast<float>(posY - (height / 2)) / height;
+        const f32 rotY = Sensitivity * static_cast<float>(posX - (width / 2)) / width;
         
         Vec3 newOrientation =
             Quat(MathCore::DegToRad(-rotX), Vec3::Cross(_camera->Forward, _camera->Up).Normalized()) * _camera->Forward;

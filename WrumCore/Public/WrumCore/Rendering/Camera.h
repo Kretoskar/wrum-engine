@@ -17,9 +17,9 @@ namespace Wrum
 		u16 _width = 1920;
 		u16 _height = 1080;
 
-		float _FOVdeg = 75.0f;
-		float _nearPlane = 0.01f;
-		float _farPlane = 1000;
+		f32 _FOVdeg = 75.0f;
+		f32 _nearPlane = 0.01f;
+		f32 _farPlane = 1000;
 
 		Window* _window = nullptr;
 	};

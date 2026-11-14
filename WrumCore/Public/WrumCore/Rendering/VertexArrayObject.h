@@ -10,13 +10,13 @@ namespace Wrum
     public:
         VertexArrayObject();
 
-        void LinkAttrib(const VertexBufferObject& vbo, unsigned layout, int numComponents, unsigned type, int stride, void* offset);
+        void LinkAttrib(const VertexBufferObject& vbo, u32 layout, i32 numComponents, u32 type, i32 stride, void* offset);
         void Bind();
         void Delete();
 
-        unsigned int GetId() const { return _id; }
+        u32 GetId() const { return _id; }
 
     private:
-        unsigned int _id;
+        u32 _id;
     };
 }

@@ -29,31 +29,31 @@ namespace Wrum
         glDeleteProgram(_id);
     }
 
-    void Shader::SetUniform4f(HString name, float v0, float v1, float v2, float v3)
+    void Shader::SetUniform4f(HString name, f32 v0, f32 v1, f32 v2, f32 v3)
     {
         Bind();
         glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
     }
 
-    void Shader::SetUniform1f(HString name, float v0)
+    void Shader::SetUniform1f(HString name, f32 v0)
     {
         Bind();
         glUniform1f(GetUniformLocation(name), v0);
     }
 
-    void Shader::SetUniform2f(HString name, float v0, float v1)
+    void Shader::SetUniform2f(HString name, f32 v0, f32 v1)
     {
         Bind();
         glUniform2f(GetUniformLocation(name), v0, v1);
     }
 
-    void Shader::SetUniform3f(HString name, float v0, float v1, float v2)
+    void Shader::SetUniform3f(HString name, f32 v0, f32 v1, f32 v2)
     {
         Bind();
         glUniform3f(GetUniformLocation(name), v0, v1, v2);
     }
 
-    void Shader::SetUniform1i(HString name, int v0)
+    void Shader::SetUniform1i(HString name, i32 v0)
     {
         Bind();
         glUniform1i(GetUniformLocation(name), v0);
@@ -65,19 +65,19 @@ namespace Wrum
         glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat.v[0]);
     }
 
-    void Shader::SetModelMatrix(Mat4 m)
+    void Shader::SetModelMatrix(const Mat4& m)
     {
         Bind();
         SetUniformMat4f("model", m);
     }
 
-    void Shader::SetVPMatrix(Mat4 m)
+    void Shader::SetVPMatrix(const Mat4& m)
     {
         Bind();
         SetUniformMat4f("viewProj", m);
     }
 
-    void Shader::SetCameraPosition(Vec3 pos)
+    void Shader::SetCameraPosition(const Vec3& pos)
     {
         Bind();
         SetUniform3f("cameraPos", pos.x, pos.y, pos.z);
@@ -112,7 +112,7 @@ namespace Wrum
         SetUniform1i("diffuseMap", 0);
     }
 
-    int Shader::GetUniformLocation(HString name)
+    i32 Shader::GetUniformLocation(HString name)
     {
         Bind();
 
@@ -129,7 +129,7 @@ namespace Wrum
         return location;
     }
 
-    uint32_t Shader::CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile)
+    u32 Shader::CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile)
     {
         if (!vertexShaderFile.IsValid() || !fragmentShaderFile.IsValid())
         {
@@ -153,7 +153,7 @@ namespace Wrum
     }
 
 
-    uint32_t Shader::CompileShader(unsigned int type, const std::string& source)
+    u32 Shader::CompileShader(u32 type, const std::string& source)
     {
         unsigned int id = glCreateShader(type);
         const char* scr = source.c_str();

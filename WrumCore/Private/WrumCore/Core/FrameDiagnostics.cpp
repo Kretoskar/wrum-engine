@@ -13,7 +13,7 @@ namespace Wrum
 
     void FrameDiagnostics::GatherFrameEnd()
     {
-        double frameEnd = Time::Convert(Time::GetCurrentTimeMicroSec(), TimeUnit::Microseconds, TimeUnit::Milliseconds);
+        f64 frameEnd = Time::Convert(Time::GetCurrentTimeMicroSec(), TimeUnit::Microseconds, TimeUnit::Milliseconds);
 
         last = frameEnd - frameStart;
         min = last < min ? last : min;
@@ -24,7 +24,7 @@ namespace Wrum
             max = last > max ? last : max;
         }
         
-        double n = Time::GetFrame();
+        f64 n = Time::GetFrame();
         
         avg = avg * (n-1)/n + last /n;
     }

@@ -29,24 +29,24 @@ namespace Wrum
         void Bind() const;
         void Delete();
 
-        void SetUniform4f(HString name, float v0, float v1, float v2, float v3);
-        void SetUniform1f(HString name, float v0);
-        void SetUniform2f(HString name, float v0, float v1);
-        void SetUniform3f(HString name, float v0, float v1, float v2);
-        void SetUniform1i(HString name, int v0);
+        void SetUniform4f(HString name, f32 v0, f32 v1, f32 v2, f32 v3);
+        void SetUniform1f(HString name, f32 v0);
+        void SetUniform2f(HString name, f32 v0, f32 v1);
+        void SetUniform3f(HString name, f32 v0, f32 v1, f32 v2);
+        void SetUniform1i(HString name, i32 v0);
 
         void SetUniformMat4f(HString name, const Mat4& mat);
 
-        void SetModelMatrix(Mat4 m);
-        void SetVPMatrix(Mat4 m);
-        void SetCameraPosition(Vec3 pos);
+        void SetModelMatrix(const Mat4& m);
+        void SetVPMatrix(const Mat4& m);
+        void SetCameraPosition(const Vec3& pos);
         void SetPointLights(std::span<const PointLight> pointLights);
 
         void AssignDiffuseMap(Texture& texture);
 
     private:
-        int GetUniformLocation(HString name);
+        i32 GetUniformLocation(HString name);
         static u32 CreateShader(const File& vertexShaderFile, const File& fragmentShaderFile);
-        static u32 CompileShader(unsigned int type, const std::string& source);
+        static u32 CompileShader(u32 type, const std::string& source);
     };
 }

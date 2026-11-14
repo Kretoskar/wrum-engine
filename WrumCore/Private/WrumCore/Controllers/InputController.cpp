@@ -6,7 +6,7 @@
 
 namespace Wrum
 {
-    void InputController::PollKey(Input input, int32_t glKeyState)
+    void InputController::PollKey(Input input, i32 glKeyState)
     {
         if (glKeyState == GLFW_PRESS || glKeyState == GLFW_REPEAT)
         {

@@ -27,6 +27,5 @@ namespace Wrum
         
     private:
         Camera* _camera;
-        std::vector<std::weak_ptr<Shader>> _shaders;
     };
 }
