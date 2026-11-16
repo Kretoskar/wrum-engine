@@ -64,7 +64,7 @@ namespace Wrum
                         break;
                     }
 
-                    ASSERT(existingChar == newChar, "HASH_CONFLICT")
+                    ASSERT_MSG(existingChar == newChar, "HASH_CONFLICT")
                 }
             }
 #endif

@@ -26,25 +26,25 @@
 
 static i16 SafeCast_int16(int i)
 {
-    ASSERT(i >= INT16_MIN && i <= INT16_MAX, "Failed to cast integer to int16")
+    ASSERT_MSG(i >= INT16_MIN && i <= INT16_MAX, "Failed to cast integer to int16")
     return static_cast<i16>(i);
 }
 
 static u16 SafeCast_uint16(unsigned i)
 {
-    ASSERT(i <= UINT16_MAX, "Failed to cast integer to int16")
+    ASSERT_MSG(i <= UINT16_MAX, "Failed to cast integer to int16")
     return static_cast<u16>(i);
 }
 
 static int SafeCast_int(u32 i)
 {
-    ASSERT(i <= INT_MAX, "Failed to cast uint32 to int")
+    ASSERT_MSG(i <= INT_MAX, "Failed to cast uint32 to int")
     return static_cast<int>(i);
 }
 
 static double SafeCast_double(unsigned long long i)
 {
-    ASSERT(i <= DBL_MAX, "Failed to cast unsigned long long to uint")
+    ASSERT_MSG(i <= DBL_MAX, "Failed to cast unsigned long long to uint")
     return static_cast<double>(i);
 }
 

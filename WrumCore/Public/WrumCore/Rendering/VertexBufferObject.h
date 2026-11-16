@@ -9,9 +9,11 @@ namespace Wrum
     public:
         VertexBufferObject() = default;
         VertexBufferObject(const float* vertices, long long size);
-        VertexBufferObject(const std::vector<Vertex>& vertices);
+        VertexBufferObject(const Vertices& vertices);
+        VertexBufferObject(const SimpleVertices& vertices);
         void Init(const float* vertices, long long size);
-        void Init(const std::vector<Vertex>& vertices);
+        void Init(const Vertices& vertices);
+        void Init(const SimpleVertices& vertices);
 
         void Bind() const;
         void Delete();

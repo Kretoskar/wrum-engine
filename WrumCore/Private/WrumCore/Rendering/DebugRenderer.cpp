@@ -9,14 +9,20 @@ namespace Wrum
      bool DebugRenderer::Init(ArenaAllocator& arena)
      {
           _lifetimesLeft.reserve(MAX_LINE_COUNT);
+          _lineVertices.Positions.reserve(MAX_LINE_COUNT * 2);
+          _lineVertices.Colors.reserve(MAX_LINE_COUNT * 2);
           
           _shader = ArenaAllocator::New<Shader>(arena, "shaders/debug.vert", "shaders/vertexColor.frag");
           _shader->Bind();
           
           _lineVao = ArenaAllocator::New<VertexArrayObject>(arena);
           _lineVao->Bind();
-          _lineVbo = ArenaAllocator::New<VertexBufferObject>(arena, (float*)_lineVertices, MAX_LINE_COUNT * 6 * 4);
-          _lineEbo = ArenaAllocator::New<ElementBufferObject>(arena, _lineIndices, MAX_LINE_COUNT * 2 * 4);
+          _lineVbo = ArenaAllocator::New<VertexBufferObject>(arena);
+          for (u32 i = 0; i < MAX_LINE_COUNT * 2; ++i)
+          {
+               _lineIndices[i] = i;
+          }
+          _lineEbo = ArenaAllocator::New<ElementBufferObject>(arena, _lineIndices, sizeof(_lineIndices));
           
           DrawNet(100, 1.0f, 100.0f, Vec3(0.6f, 0.6f, 0.6f));
           DrawNet(1000, 0.1f, 100.0f, Vec3(0.3f, 0.3f, 0.3f));
@@ -28,30 +34,36 @@ namespace Wrum
 
      void DebugRenderer::Update(float deltaTime)
      {
-          for (u32 i = 0; i < _lifetimesLeft.size(); i++)
+          for (u32 i = 0; i < _lifetimesLeft.size();)
           {
                DebugVertexLifetime& lifetime = _lifetimesLeft[i];
                lifetime.TimeLeft -= deltaTime;
 
                if (lifetime.TimeLeft <= 0)
                {
-                    u32 index = lifetime.Index;
-                    
-                    _lineVertices[index] = _lineVertices[(_lineCount - 1) * 2];
-                    _lineVertices[index + 1] = _lineVertices[(_lineCount - 1) * 2 - 1];
+                    const u32 index = lifetime.Index;
+                    const u32 lastIndex = (_lineCount - 1) * 2;
+                    for (u32 endpoint = 0; endpoint < 2; ++endpoint)
+                    {
+                         _lineVertices.Positions[index + endpoint] = _lineVertices.Positions[lastIndex + endpoint];
+                         _lineVertices.Colors[index + endpoint] = _lineVertices.Colors[lastIndex + endpoint];
+                    }
 
-                    _lineVertices[(_lineCount - 1) * 2] = {};
-                    _lineVertices[(_lineCount - 1) * 2 - 1] = {};
-
-                    _lineIndices[index] = _lineIndices[(_lineCount - 1) * 2];
-                    _lineIndices[index + 1] = _lineIndices[(_lineCount - 1) * 2 - 1];
-
-                    _lineIndices[(_lineCount - 1) * 2] = {};
-                    _lineIndices[(_lineCount - 1) * 2 - 1] = {};
-                    
-                    _lineCount--;
-                    
+                    --_lineCount;
+                    _lineVertices.Positions.resize(_lineCount * 2);
+                    _lineVertices.Colors.resize(_lineCount * 2);
                     _lifetimesLeft.erase(_lifetimesLeft.begin() + i);
+                    for (DebugVertexLifetime& movedLifetime : _lifetimesLeft)
+                    {
+                         if (movedLifetime.Index == lastIndex)
+                         {
+                              movedLifetime.Index = index;
+                         }
+                    }
+               }
+               else
+               {
+                    ++i;
                }
           }
      }
@@ -65,12 +77,12 @@ namespace Wrum
           }
 
           _lineVao->Bind();
-          _lineVbo->Init((float*)_lineVertices, _lineCount * 2 * 6 * 4);
-          _lineEbo->Init(_lineIndices, MAX_LINE_COUNT * 2 * 4);
+          _lineVbo->Init(_lineVertices);
           // position
-          _lineVao->LinkAttrib(*_lineVbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+          _lineVao->LinkAttrib(*_lineVbo, 0, 3, GL_FLOAT, sizeof(Vec3), nullptr);
           // color
-          _lineVao->LinkAttrib(*_lineVbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+          _lineVao->LinkAttrib(*_lineVbo, 1, 3, GL_FLOAT, sizeof(Vec3),
+               reinterpret_cast<void*>(_lineVertices.Positions.size() * sizeof(Vec3)));
           
           _shader->Bind();
           _shader->SetModelMatrix(Mat4());
@@ -79,6 +91,8 @@ namespace Wrum
           glDrawElements(GL_LINES, _lineCount * 2, GL_UNSIGNED_INT, 0);
 
           _lineCount = persistentLineCount;
+          _lineVertices.Positions.resize(_lineCount * 2);
+          _lineVertices.Colors.resize(_lineCount * 2);
           _lightBulbs.clear();
      }
 
@@ -147,20 +161,22 @@ namespace Wrum
                return;
           }
 
-          _lineVertices[_lineCount * 2] = { start, color };
-          _lineVertices[_lineCount * 2 + 1] = { end, color };
-
-          _lineIndices[_lineCount * 2] = _lineCount * 2;
-          _lineIndices[_lineCount * 2 + 1] = _lineCount * 2 + 1;
+          _lineVertices.Positions.push_back(start);
+          _lineVertices.Positions.push_back(end);
+          _lineVertices.Colors.push_back(color);
+          _lineVertices.Colors.push_back(color);
 
           _lineCount++;
      }
 
      void DebugRenderer::DrawLine(Vec3 start, Vec3 end, Vec3 color, float lifetime, TimeUnit timeUnit)
      {
-          _lifetimesLeft.emplace_back(_lineCount * 2,  Time::Convert(lifetime, timeUnit, TimeUnit::Milliseconds));
-          
+          const u32 index = _lineCount * 2;
           DrawLine(start, end, color);
+          if (_lineCount * 2 > index)
+          {
+               _lifetimesLeft.emplace_back(index, Time::Convert(lifetime, timeUnit, TimeUnit::Milliseconds));
+          }
      }
 
      void DebugRenderer::DrawNet(unsigned count, float stride, float size, Vec3 color)

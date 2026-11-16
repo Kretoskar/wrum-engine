@@ -9,9 +9,9 @@ namespace Wrum
     struct Mesh
     {
         void Bind();
-        void Init(std::vector<Vertex>&& vertices, std::vector<u32>&& indices);
+        void Init(Wrum::Vertices&& vertices, std::vector<u32>&& indices);
         
-        std::vector<Vertex> Vertices;
+        Wrum::Vertices Vertices;
         std::vector<u32> Indices;
 
     private:

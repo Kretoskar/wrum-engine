@@ -34,7 +34,7 @@ namespace Wrum
                 }
                 
                 // like this could ever happen
-                ASSERT(_versions[i] != U32_MAX, "skibidi")
+                ASSERT_MSG(_versions[i] != U32_MAX, "skibidi")
 
                 _entries[i] = std::move(value);
                 ++_versions[i];

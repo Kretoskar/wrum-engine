@@ -3,7 +3,7 @@
 #include "Logger.h"
 
 #ifdef AB_DEBUG
-    # define ASSERT(condition, message) \
+    # define ASSERT_MSG(condition, message) \
     { \
         if (!(condition)) \
         { \
@@ -14,9 +14,12 @@
         } \
     }
 
-#define ASSERT_NO_ENTRY() ASSERT(false, "No entry assert entered")
+    # define ASSERT(condition) assert(condition)
+
+    #define ASSERT_NO_ENTRY() ASSERT_MSG(false, "No entry assert entered")
 
 #else
-    #   define ASSERT(condition, message) {}
+    #   define ASSERT_MSG(condition, message) {}
+    #   define ASSERT(condition) {}
     #   define ASSERT_NO_ENTRY(message) {}
 #endif

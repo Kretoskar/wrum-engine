@@ -11,9 +11,9 @@ namespace Wrum
     // Arrow pointing along +Y, with its base at the origin
     struct Arrow : public Mesh
     {
-        void CreateArrowMesh(std::vector<Vertex>& vertices, std::vector<u32>& indices, float length, float arrowheadAlpha, i32 segments, const Vec3& color)
+        void CreateArrowMesh(Wrum::Vertices& vertices, std::vector<u32>& indices, float length, float arrowheadAlpha, i32 segments, const Vec3& color)
         {
-            vertices.clear();
+            vertices.Clear();
             indices.clear();
             if (length <= 0.0f)
             {
@@ -34,7 +34,7 @@ namespace Wrum
             f32 headRadius = hasHead ? 0.1f : shaftRadius;
             constexpr u32 verticesPerRing = 7;
 
-            vertices.reserve((static_cast<size_t>(segments) + 1) * verticesPerRing + 1);
+            vertices.Reserve((static_cast<size_t>(segments) + 1) * verticesPerRing + 1);
             indices.reserve(static_cast<size_t>(segments) * 18);
 
             for (i32 i = 0; i <= segments; ++i)
@@ -52,27 +52,27 @@ namespace Wrum
                 Vec3 headBase(headRadius * c, shaftLength, headRadius * s);
 
                 // Shaft sides (0, 1); separate cap vertices keep the edges sharp
-                vertices.push_back(Vertex{bottom, radialNormal, color, Vec2(u, 0.0f)});
-                vertices.push_back(Vertex{shaftTop, radialNormal, color, Vec2(u, arrowheadAlpha)});
+                vertices.Add(bottom, radialNormal, color, Vec2(u, 0.0f));
+                vertices.Add(shaftTop, radialNormal, color, Vec2(u, arrowheadAlpha));
 
                 // Bottom cap (2) and the head underside or shaft top cap (3, 4).
                 Vec2 capUV(0.5f + 0.5f * c, 0.5f + 0.5f * s);
                 Vec2 innerUV(0.5f + 0.5f * shaftRadius / headRadius * c, 0.5f + 0.5f * shaftRadius / headRadius * s);
-                vertices.push_back(Vertex{hasShaft ? bottom : headBase, down, color, capUV});
-                vertices.push_back(Vertex{shaftTop, headCapNormal, color, innerUV});
-                vertices.push_back(Vertex{headBase, headCapNormal, color, capUV});
+                vertices.Add(hasShaft ? bottom : headBase, down, color, capUV);
+                vertices.Add(shaftTop, headCapNormal, color, innerUV);
+                vertices.Add(headBase, headCapNormal, color, capUV);
 
                 // Cone side (5) and a tip normal for this segment (6).
                 Vec3 coneNormal = Vec3(headLength * c, headRadius, headLength * s).Normalized();
                 f32 tipU = i == segments ? 1.0f : (static_cast<f32>(i) + 0.5f) / segments;
                 f32 tipAngle = tipU * 2.0f * MathCore::PI;
                 Vec3 tipNormal = Vec3(headLength * std::cos(tipAngle), headRadius, headLength * std::sin(tipAngle)).Normalized();
-                vertices.push_back(Vertex{headBase, coneNormal, color, Vec2(u, arrowheadAlpha)});
-                vertices.push_back(Vertex{Vec3(0.0f, length, 0.0f), tipNormal, color, Vec2(tipU, 1.0f)});
+                vertices.Add(headBase, coneNormal, color, Vec2(u, arrowheadAlpha));
+                vertices.Add(Vec3(0.0f, length, 0.0f), tipNormal, color, Vec2(tipU, 1.0f));
             }
 
-            u32 bottomCenter = static_cast<u32>(vertices.size());
-            vertices.push_back(Vertex{Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, -1.0f, 0.0f), color, Vec2(0.5f, 0.5f)});
+            u32 bottomCenter = static_cast<u32>(vertices.Positions.size());
+            vertices.Add(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, -1.0f, 0.0f), color, Vec2(0.5f, 0.5f));
 
             for (i32 i = 0; i < segments; ++i)
             {
@@ -111,7 +111,7 @@ namespace Wrum
         
         Arrow(Vec3 color, float length = 1.0f, float arrowheadAlpha = 0.75f, i32 segments = 32)
         {
-            std::vector<Vertex> vertices;
+            Wrum::Vertices vertices;
             std::vector<u32> indices;
             CreateArrowMesh(vertices, indices, length, arrowheadAlpha, segments, color);
             Init(std::move(vertices), std::move(indices));

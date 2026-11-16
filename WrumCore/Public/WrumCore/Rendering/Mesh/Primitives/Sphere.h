@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "WrumCore/Math/MathCore.h"
 #include <utility>
@@ -8,12 +8,12 @@ namespace Wrum
 {
     struct Sphere : public Mesh
     {
-        void CreateSphereMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, float radius, int segments, int rings, const Vec3& color)
+        void CreateSphereMesh(Wrum::Vertices& vertices, std::vector<uint32_t>& indices, float radius, int segments, int rings, const Vec3& color)
         {
-            vertices.clear();
+            vertices.Clear();
             indices.clear();
 
-            vertices.reserve((segments + 1) * (rings + 1));
+            vertices.Reserve((segments + 1) * (rings + 1));
             indices.reserve(segments * rings * 6); // 2 triangles per quad, 3 indices per triangle
             
             for (int y = 0; y <= rings; ++y)
@@ -40,7 +40,7 @@ namespace Wrum
                     Vec3 normal = position.Normalized();
                     Vec2 texUV = Vec2(u, v);
 
-                    vertices.emplace_back(Vertex{ position, normal, color, texUV });
+                    vertices.Add( position, normal, color, texUV );
                 }
             }
 
@@ -66,7 +66,7 @@ namespace Wrum
         
         Sphere(Vec3 color, i32 segments, i32 rings)
         {
-            std::vector<Vertex> vertices;
+            Wrum::Vertices vertices;
             std::vector<uint32_t> indices;
 
             CreateSphereMesh(vertices, indices, 0.5f, segments, rings, color);

@@ -24,7 +24,7 @@ void* Wrum::ArenaAllocator::Allocate(u64 size, u64 alignment)
 
     const u64 padding = alignedAddress - currentAddress;
 
-    ASSERT(_offset + size + padding <= _capacity, "Arena Allocator overflow")
+    ASSERT_MSG(_offset + size + padding <= _capacity, "Arena Allocator overflow")
 
     _offset += padding;
     u8* alignedPtr = _buffer + _offset;
