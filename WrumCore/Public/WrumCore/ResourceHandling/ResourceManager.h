@@ -21,6 +21,7 @@ namespace Wrum
         
         ResourceID MakeShaderResource(HString vertexPath, HString fragmentPath);
         ResourceID MakeTextureResource(HString path);
+        ResourceID MakeMaterialResource(ResourceID shaderResourceID);
         ResourceID MakePrimitiveMeshResource(PrimitiveType type);
         
         ResourceID NewResourceID(ResourceType type);

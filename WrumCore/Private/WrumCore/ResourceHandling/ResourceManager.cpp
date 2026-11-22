@@ -18,6 +18,33 @@ namespace Wrum
         return MakeResource(ResourceType::Texture, path, "");
     }
 
+    ResourceID ResourceManager::MakeMaterialResource(ResourceID shaderResourceID)
+    {
+        if (!IsResourceIDValid(shaderResourceID) || GetResourceIDType(shaderResourceID) != ResourceType::Shader)
+        {
+            LOG_WARNING("Trying to create material using invalid shader ID")
+            return {};
+        }
+
+        ResourceID materialResourceID = MakeResource(ResourceType::Material, "", "");
+        if (!IsResourceIDValid(materialResourceID))
+        {
+            return {};
+        }
+
+        Material* material = _materials.Get(GetResourceIDTypeIdx(materialResourceID), GetResourceIDVersion(materialResourceID));
+        Resource* resource = GetResource(materialResourceID);
+        if (material == nullptr || resource == nullptr)
+        {
+            LOG_WARNING("Can't create material resource")
+            return {};
+        }
+
+        *material = Material(shaderResourceID);
+        resource->IsLoaded = true;
+        return materialResourceID;
+    }
+
     ResourceID ResourceManager::MakePrimitiveMeshResource(PrimitiveType type)
     {
         // encoding primitive type in path

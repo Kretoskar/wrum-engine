@@ -50,6 +50,13 @@ void Sandbox::Application::Run()
     ResourceManager* resourceManager = ArenaAllocator::New<ResourceManager>(globalAppArena);
     ResourceManager::SetInstance(resourceManager);
     
+    Framebuffer* framebuffer = ArenaAllocator::New<Framebuffer>(renderingArena);
+    framebuffer->Init(window->GetWidth(), window->GetHeight());
+    window->SetFramebuffer(framebuffer);
+
+    SandboxUI* ui = ArenaAllocator::New<SandboxUI>(globalAppArena);
+    ui->Init(window->GetGlfwWindow());
+    
     ResourceID pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
     resourceManager->LoadShader(pbrShaderResource);
 
@@ -82,7 +89,9 @@ void Sandbox::Application::Run()
     resourceManager->LoadTexture(metallicMapResource);
     resourceManager->LoadTexture(normalMapResource);
     
-    Material* pbrMaterial = ArenaAllocator::New<Material>(renderingArena, pbrShaderResource);
+    ResourceID pbrMaterialResource = resourceManager->MakeMaterialResource(pbrShaderResource);
+    // TODO: encode shader resource as path and add laod material maybe?
+    Material* pbrMaterial = resourceManager->GetMaterial(pbrMaterialResource);
     pbrMaterial->diffuseMapResource = diffuseMapResource;
     pbrMaterial->roughnessMapResource = roughnessMapResource;
     pbrMaterial->metallicMapResource = metallicMapResource;
@@ -96,13 +105,6 @@ void Sandbox::Application::Run()
         {{1.5f, 2.0f, 1.5f}, {1.0f, 0.8f, 0.6f}, 15.0f},
         {{-1.0f, 1.0f, 0.0f}, {0.4f, 0.6f, 1.0f}, 8.0f}
     };
-
-    Framebuffer* framebuffer = ArenaAllocator::New<Framebuffer>(renderingArena);
-    framebuffer->Init(window->GetWidth(), window->GetHeight());
-    window->SetFramebuffer(framebuffer);
-
-    SandboxUI* ui = ArenaAllocator::New<SandboxUI>(globalAppArena);
-    ui->Init(window->GetGlfwWindow());
 
     Mat4 model = Mat4::Identity;
     //model.SetScale({0.1f, 0.1f, 0.1f});
@@ -135,10 +137,12 @@ void Sandbox::Application::Run()
         }
         debugRenderer->Render(*cam);
         
-        renderer->DrawMesh(*resourceManager->GetMesh(sphereResource), *pbrMaterial, modelSphere);
+        renderer->AddMeshToRender(sphereResource, pbrMaterialResource, modelSphere);
         renderer->DrawMesh(*arrowX, *material, modelArrowX);
         renderer->DrawMesh(*arrowY, *material, Mat4::Identity);
         renderer->DrawMesh(*arrowZ, *material, modelArrowZ);
+        
+        renderer->Render();
         
       //  renderer.DrawMesh(cube, material, modelSphere);
        // renderer->DrawMesh(*plane, *material, model);
