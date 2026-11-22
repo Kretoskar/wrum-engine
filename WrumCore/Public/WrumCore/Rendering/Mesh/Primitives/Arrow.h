@@ -3,6 +3,7 @@
 #include <cmath>
 #include <utility>
 
+#include "WrumCore/Core/Color.h"
 #include "WrumCore/Math/MathCore.h"
 #include "WrumCore/Rendering/Mesh/Mesh.h"
 
@@ -108,6 +109,8 @@ namespace Wrum
                 }
             }
         }
+        
+        Arrow() : Arrow(Color::GREEN) {}
         
         Arrow(Vec3 color, float length = 1.0f, float arrowheadAlpha = 0.75f, i32 segments = 32)
         {

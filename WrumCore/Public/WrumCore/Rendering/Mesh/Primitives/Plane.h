@@ -6,6 +6,8 @@ namespace Wrum
 {
     struct Plane : public Mesh
     {
+        Plane() : Plane(Color::GREEN) {}
+        
         Plane(Vec3 color)
         {
             Init(Wrum::Vertices{

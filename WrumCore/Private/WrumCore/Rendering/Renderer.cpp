@@ -15,6 +15,60 @@ void Wrum::Renderer::DrawMesh(Mesh& mesh, Material& material, const Mat4& transf
     shader->SetPointLights(PointLights);
     
     mesh.Bind();
-
     glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+void Wrum::Renderer::AddMeshToRender(ResourceID mesh, ResourceID material, const Mat4& transform)
+{
+    const BatchKey key{mesh, material};
+    const auto found = _batchLookup.find(key);
+    if (found != _batchLookup.end())
+    {
+        _batches[found->second].Transforms.push_back(transform);
+        return;
+    }
+
+    const size_t batchIndex = _batches.size();
+    _batches.push_back({mesh, material, {transform}});
+    _batchLookup.emplace(key, batchIndex);
+}
+
+void Wrum::Renderer::AddEntityToRender(const Entity& entity)
+{
+    AddMeshToRender(entity.MeshID, entity.MaterialID, entity.Transform);
+}
+
+void Wrum::Renderer::Render()
+{
+    ResourceManager* resources = ResourceManager::GetInstance();
+    for (const Batch& batch : _batches)
+    {
+        Mesh* mesh = resources->GetMesh(batch.MeshResource);
+        Material* material = resources->GetMaterial(batch.MaterialResource);
+        if (mesh == nullptr || material == nullptr)
+        {
+            continue;
+        }
+
+        material->Bind();
+        Shader* shader = resources->GetShader(material->BoundShaderResourceID);
+        if (shader == nullptr)
+        {
+            continue;
+        }
+        shader->SetCameraPosition(_camera->Position);
+        shader->SetVPMatrix(_camera->GetVPMatrix());
+        shader->SetPointLights(PointLights);
+        mesh->Bind();
+
+        // The current vertex format uses a per-draw model uniform, so preserve each
+        // submitted transform until the mesh's vertex format supports instance data.
+        for (const Mat4& transform : batch.Transforms)
+        {
+            shader->SetModelMatrix(transform);
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->Indices.size()), GL_UNSIGNED_INT, 0);
+        }
+    }
+    _batches.clear();
+    _batchLookup.clear();
 }

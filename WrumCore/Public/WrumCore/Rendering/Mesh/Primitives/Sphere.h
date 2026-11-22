@@ -2,6 +2,8 @@
 
 #include "WrumCore/Math/MathCore.h"
 #include <utility>
+
+#include "WrumCore/Core/Color.h"
 #include "WrumCore/Rendering/Mesh/Mesh.h"
 
 namespace Wrum
@@ -62,6 +64,15 @@ namespace Wrum
                     indices.push_back(i1 + 1);
                 }
             }
+        }
+        
+        Sphere()
+        {
+            Wrum::Vertices vertices;
+            std::vector<uint32_t> indices;
+
+            CreateSphereMesh(vertices, indices, 0.5f, 8, 8, Color::GREEN);
+            Init(std::move(vertices), std::move(indices));
         }
         
         Sphere(Vec3 color, i32 segments, i32 rings)

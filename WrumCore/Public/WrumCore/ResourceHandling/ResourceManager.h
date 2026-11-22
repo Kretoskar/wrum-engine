@@ -6,6 +6,7 @@
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Shader.h"
 #include "WrumCore/Rendering/Mesh/Mesh.h"
+#include "WrumCore/Rendering/Mesh/Primitives/PrimitiveType.h"
 
 namespace Wrum
 {
@@ -20,11 +21,15 @@ namespace Wrum
         
         ResourceID MakeShaderResource(HString vertexPath, HString fragmentPath);
         ResourceID MakeTextureResource(HString path);
+        ResourceID MakePrimitiveMeshResource(PrimitiveType type);
         
         ResourceID NewResourceID(ResourceType type);
         
         Shader* LoadShader(ResourceID resourceID);
+        Mesh* LoadPrimitiveMesh(ResourceID resourceID);
         [[nodiscard]] Shader* GetShader(ResourceID resourceID);
+        [[nodiscard]] Material* GetMaterial(ResourceID resourceID);
+        [[nodiscard]] Mesh* GetMesh(ResourceID resourceID);
         
         Texture* LoadTexture(ResourceID resourceID);
         [[nodiscard]] Texture* GetTexture(ResourceID resourceID);
@@ -35,6 +40,8 @@ namespace Wrum
         
     private:
         static inline ResourceManager* _instance;
+        
+        ResourceID MakeResource(ResourceType type, HString path1, HString path2);
         
         struct Resource
         {
@@ -68,6 +75,7 @@ namespace Wrum
         StaticVersionedArray<Shader, MaxResourcesPerType> _shaders;
         StaticVersionedArray<Material, MaxResourcesPerType> _materials;
         StaticVersionedArray<Texture, MaxResourcesPerType> _textures;
+        // meshes have embedded std::vector. Need to rethink storage
         StaticVersionedArray<Mesh, MaxResourcesPerType> _meshes;
         
         StaticVersionedArray<Resource, MaxResourcesPerType> _shadersResources;

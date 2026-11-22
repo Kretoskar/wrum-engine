@@ -1,11 +1,14 @@
 #pragma once
 
+#include "WrumCore/Core/Color.h"
 #include "WrumCore/Rendering/Mesh/Mesh.h"
 
 namespace Wrum
 {
     struct Cube : public Mesh
     {
+        Cube() : Cube(Color::GREEN) {}
+        
         Cube(Vec3 color)
         {
             Init(Wrum::Vertices{

@@ -58,7 +58,9 @@ void Sandbox::Application::Run()
 
     //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
     // Cube* cube = ArenaAllocator::New<Cube>(renderingArena, Color::PASTEL_RED);
-    Sphere* sphere = ArenaAllocator::New<Sphere>(renderingArena, Color::PASTEL_RED, 16, 16);
+    
+    ResourceID sphereResource = resourceManager->MakePrimitiveMeshResource(PrimitiveType::Sphere);
+    resourceManager->LoadPrimitiveMesh(sphereResource);
     
     Arrow* arrowX = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_RED);
     Mat4 modelArrowX = Mat4::Identity;
@@ -133,10 +135,11 @@ void Sandbox::Application::Run()
         }
         debugRenderer->Render(*cam);
         
-        renderer->DrawMesh(*sphere, *pbrMaterial, modelSphere);
+        renderer->DrawMesh(*resourceManager->GetMesh(sphereResource), *pbrMaterial, modelSphere);
         renderer->DrawMesh(*arrowX, *material, modelArrowX);
         renderer->DrawMesh(*arrowY, *material, Mat4::Identity);
         renderer->DrawMesh(*arrowZ, *material, modelArrowZ);
+        
       //  renderer.DrawMesh(cube, material, modelSphere);
        // renderer->DrawMesh(*plane, *material, model);
         
