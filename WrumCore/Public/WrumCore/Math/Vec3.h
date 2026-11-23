@@ -47,6 +47,7 @@ namespace Wrum
 		void Normalize();
 		Vec3 Normalized() const;
 		std::string ToString() const;
+		static Vec3 FromString(const std::string& value);
 
 		static Vec3 Zero;
 		

@@ -2,6 +2,7 @@
 
 #include "WrumCore/ResourceHandling/ResourceID.h"
 #include "WrumCore/Containers/StaticVersionedArray.h"
+#include "WrumCore/Core/Color.h"
 
 #include "WrumCore/Rendering/Material.h"
 #include "WrumCore/Rendering/Shader.h"
@@ -22,7 +23,7 @@ namespace Wrum
         ResourceID MakeShaderResource(HString vertexPath, HString fragmentPath);
         ResourceID MakeTextureResource(HString path);
         ResourceID MakeMaterialResource(ResourceID shaderResourceID);
-        ResourceID MakePrimitiveMeshResource(PrimitiveType type);
+        ResourceID MakePrimitiveMeshResource(PrimitiveType type, const Vec3& color);
         
         ResourceID NewResourceID(ResourceType type);
         

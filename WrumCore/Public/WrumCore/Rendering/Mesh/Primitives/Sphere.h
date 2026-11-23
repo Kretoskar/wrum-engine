@@ -66,14 +66,11 @@ namespace Wrum
             }
         }
         
-        Sphere()
-        {
-            Wrum::Vertices vertices;
-            std::vector<uint32_t> indices;
-
-            CreateSphereMesh(vertices, indices, 0.5f, 8, 8, Color::GREEN);
-            Init(std::move(vertices), std::move(indices));
-        }
+        Sphere() : Sphere(Color::GREEN, 32, 32)
+        {}
+        
+        Sphere(Vec3 color) : Sphere(color, 32, 32)
+        {}
         
         Sphere(Vec3 color, i32 segments, i32 rings)
         {

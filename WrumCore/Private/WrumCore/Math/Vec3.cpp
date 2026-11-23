@@ -1,4 +1,5 @@
 #include "PCH.h"
+#include <cstdio>
 #include "WrumCore/Math/Vec3.h"
 #include "WrumCore/Math/MathCore.h"
 
@@ -75,13 +76,23 @@ namespace Wrum
 	std::string Vec3::ToString() const
 	{
 		std::string ret = "{x: ";
-		ret += x;
+		ret += std::to_string(x);
 		ret += " y: ";
-		ret += y;
+		ret += std::to_string(y);
 		ret += " z: ";
-		ret += z;
+		ret += std::to_string(z);
 		ret += "}";
 		return ret;
+	}
+
+	Vec3 Vec3::FromString(const std::string& value)
+	{
+		float x, y, z;
+		if (std::sscanf(value.c_str(), "{x: %f y: %f z: %f}", &x, &y, &z) != 3)
+		{
+			return Vec3();
+		}
+		return Vec3(x, y, z);
 	}
 
 	float Vec3::LenSq() const

@@ -45,13 +45,13 @@ namespace Wrum
         return materialResourceID;
     }
 
-    ResourceID ResourceManager::MakePrimitiveMeshResource(PrimitiveType type)
+    ResourceID ResourceManager::MakePrimitiveMeshResource(PrimitiveType type, const Vec3& color)
     {
         // encoding primitive type in path
         Tag16String tag((u16)type);
-        return MakeResource(ResourceType::Mesh, tag.str, "");
+        return MakeResource(ResourceType::Mesh, tag.str, color.ToString());
     }
-
+    
     ResourceID ResourceManager::NewResourceID(ResourceType type)
     {
         switch (type)
@@ -203,22 +203,26 @@ namespace Wrum
             return nullptr;
         }
         
-        HString path = resource->GetPath1();
-        Tag16String tag(path.Get(), 2);
+        HString path1 = resource->GetPath1();
+        Tag16String tag(path1.Get(), 2);
+        
+        HString path2 = resource->GetPath2();
+        Vec3 color = Vec3::FromString(path2.Get());
+            
         PrimitiveType primitiveType = (PrimitiveType)tag.tag;
         switch (primitiveType)
         {
         case PrimitiveType::Sphere:
-            *mesh = Wrum::Sphere();
+            *mesh = Wrum::Sphere(color);
             break;
         case PrimitiveType::Cube:
-            *mesh = Wrum::Cube();
+            *mesh = Wrum::Cube(color);
             break;
         case PrimitiveType::Plane:
-            *mesh = Wrum::Plane();
+            *mesh = Wrum::Plane(color);
             break;
         case PrimitiveType::Arrow:
-            *mesh = Wrum::Arrow();
+            *mesh = Wrum::Arrow(color);
             break;
         }
         

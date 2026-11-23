@@ -57,6 +57,14 @@ void Sandbox::Application::Run()
     SandboxUI* ui = ArenaAllocator::New<SandboxUI>(globalAppArena);
     ui->Init(window->GetGlfwWindow());
     
+    Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
+    
+    renderer->PointLights = 
+    {
+        {{1.5f, 2.0f, 1.5f}, {1.0f, 0.8f, 0.6f}, 15.0f},
+        {{-1.0f, 1.0f, 0.0f}, {0.4f, 0.6f, 1.0f}, 8.0f}
+    };
+    
     ResourceID pbrShaderResource = resourceManager->MakeShaderResource("shaders/pbr.vert", "shaders/pbr.frag");
     resourceManager->LoadShader(pbrShaderResource);
 
@@ -66,10 +74,13 @@ void Sandbox::Application::Run()
     //Plane* plane = ArenaAllocator::New<Plane>(renderingArena, Color::PASTEL_PEACH);
     // Cube* cube = ArenaAllocator::New<Cube>(renderingArena, Color::PASTEL_RED);
     
-    ResourceID sphereResource = resourceManager->MakePrimitiveMeshResource(PrimitiveType::Sphere);
+    ResourceID sphereResource = resourceManager->MakePrimitiveMeshResource(PrimitiveType::Sphere, Color::RED);
     resourceManager->LoadPrimitiveMesh(sphereResource);
     
-    Arrow* arrowX = ArenaAllocator::New<Arrow>(renderingArena, Color::PASTEL_RED);
+    ResourceID arrowXResource = resourceManager->MakePrimitiveMeshResource(PrimitiveType::Arrow, Color::PASTEL_RED);
+    resourceManager->LoadPrimitiveMesh(arrowXResource);
+    
+    // TODO: Store color in material
     Mat4 modelArrowX = Mat4::Identity;
     modelArrowX = Quat::FromRPY(MathCore::DegToRad(90.0f), 0.0f, 0.0f).ToMat4();
     
@@ -98,13 +109,8 @@ void Sandbox::Application::Run()
     pbrMaterial->normalMapResource = normalMapResource;
 
     Material* material = ArenaAllocator::New<Material>(renderingArena, simpleShaderResource);
-    Renderer* renderer = ArenaAllocator::New<Renderer>(renderingArena, cam);
     
-    renderer->PointLights = 
-    {
-        {{1.5f, 2.0f, 1.5f}, {1.0f, 0.8f, 0.6f}, 15.0f},
-        {{-1.0f, 1.0f, 0.0f}, {0.4f, 0.6f, 1.0f}, 8.0f}
-    };
+    ResourceID simpleMaterialResource = resourceManager->MakeMaterialResource(simpleShaderResource);
 
     Mat4 model = Mat4::Identity;
     //model.SetScale({0.1f, 0.1f, 0.1f});
@@ -137,9 +143,22 @@ void Sandbox::Application::Run()
         }
         debugRenderer->Render(*cam);
         
-        renderer->AddMeshToRender(sphereResource, pbrMaterialResource, modelSphere);
-        renderer->DrawMesh(*arrowX, *material, modelArrowX);
-        renderer->DrawMesh(*arrowY, *material, Mat4::Identity);
+        for (i32 i = 0; i < 10; ++i)
+        {
+            //modelSphere.SetPosition(modelSphere.position.ToVec3() + Vec3(1.0f, 0.0f, 0.0f));
+            for (i32 j = 0; j < 10; ++j)
+            {
+                for (i32 k = 0; k < 10; ++k)
+                {
+                    modelSphere.SetPosition(Vec3(i, j, k));
+                    renderer->AddMeshToRender(sphereResource, pbrMaterialResource, modelSphere);
+                }
+            }
+        }
+        
+        renderer->AddMeshToRender(arrowXResource, simpleMaterialResource, modelArrowX);
+        
+        renderer->DrawMesh(*arrowY, *resourceManager->GetMaterial(simpleMaterialResource), Mat4::Identity);
         renderer->DrawMesh(*arrowZ, *material, modelArrowZ);
         
         renderer->Render();
