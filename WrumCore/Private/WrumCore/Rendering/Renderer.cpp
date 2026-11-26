@@ -61,13 +61,9 @@ void Wrum::Renderer::Render()
         shader->SetPointLights(PointLights);
         mesh->Bind();
 
-        // The current vertex format uses a per-draw model uniform, so preserve each
-        // submitted transform until the mesh's vertex format supports instance data.
-        for (const Mat4& transform : batch.Transforms)
-        {
-            shader->SetModelMatrix(transform);
-            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->Indices.size()), GL_UNSIGNED_INT, 0);
-        }
+        mesh->BindInstanceTransforms(batch.Transforms);
+        glDrawElementsInstanced(GL_TRIANGLES, static_cast<GLsizei>(mesh->Indices.size()), GL_UNSIGNED_INT, 0,
+            static_cast<GLsizei>(batch.Transforms.size()));
     }
     _batches.clear();
     _batchLookup.clear();

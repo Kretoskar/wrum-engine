@@ -9,6 +9,26 @@ void Wrum::Mesh::Bind()
     _vao.Bind();
 }
 
+void Wrum::Mesh::BindInstanceTransforms(const std::vector<Mat4>& transforms)
+{
+    _vao.Bind();
+    if (_instanceVbo == 0)
+    {
+        glGenBuffers(1, &_instanceVbo);
+    }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _instanceVbo);
+    glBufferData(GL_ARRAY_BUFFER, transforms.size() * sizeof(Mat4), transforms.data(), GL_STREAM_DRAW);
+    
+    for (u32 column = 0; column < 4; ++column)
+    {
+        const u32 location = 4 + column;
+        glEnableVertexAttribArray(location);
+        glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, sizeof(Mat4), reinterpret_cast<void*>(column * sizeof(Vec4)));
+        glVertexAttribDivisor(location, 1);
+    }
+}
+
 void Wrum::Mesh::Init(Wrum::Vertices&& vertices, std::vector<u32>&& indices)
 {
     Vertices = std::move(vertices);

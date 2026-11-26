@@ -143,7 +143,7 @@ void Sandbox::Application::Run()
         }
         debugRenderer->Render(*cam);
         
-        for (i32 i = 0; i < 10; ++i)
+        for (i32 i = 0; i < 100; ++i)
         {
             //modelSphere.SetPosition(modelSphere.position.ToVec3() + Vec3(1.0f, 0.0f, 0.0f));
             for (i32 j = 0; j < 10; ++j)
